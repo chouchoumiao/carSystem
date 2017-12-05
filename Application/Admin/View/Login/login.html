@@ -1,0 +1,48 @@
+<extend name="login_layout" />
+<block name="login_title"><title>登录</title></block>
+<block name="login_content">
+
+    <form method="post" action="__APP__/Admin/Login/login" id="loginform" name="loginform">
+        <p>
+            <label for="user_login">用户名或电子邮件地址<br>
+            <input type="text" size="20" value="" class="input" id="user_login" name="log"></label>
+        </p>
+        <p>
+            <label for="user_pass">密码<br>
+            <input type="password" size="20" value="" class="input" id="user_pass" name="pwd"></label>
+        </p>
+            <p class="forgetmenot">
+                <label for="rememberme">
+                    <input type="checkbox" value="forever" id="rememberme" name="rememberme"> 记住我的登录信息
+                </label>
+            </p>
+        <p class="submit">
+            <input type="submit" value="登录" class="button button-primary button-large" id="wp-submit" name="wp-submit">
+            <input type="hidden" value="http://localhost/NewWordpress/wp-admin/" name="redirect_to">
+            <input type="hidden" value="1" name="testcookie">
+        </p>
+    </form>
+
+    <p id="nav">
+        <a href="./register.html">注册</a> |
+        <a href="lostpassword.html">忘记密码？</a>
+    </p>
+
+</block>
+
+<block name="login_js">
+    <script type="text/javascript">
+        function wp_attempt_focus(){
+            setTimeout( function(){ try{
+                d = document.getElementById('user_login');
+                d.focus();
+                d.select();
+            } catch(e){}
+            }, 200);
+        }
+
+        wp_attempt_focus();
+        if(typeof wpOnload=='function')wpOnload();
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/js/Admin/login.js?v=20160104"></script>
+</block>

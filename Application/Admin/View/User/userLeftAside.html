@@ -1,0 +1,46 @@
+<div class="col-md-3 user-profile-sidebar m-bottom-md">
+    <div class="row">
+        <div class="col-sm-4 col-md-12">
+            <div class="user-profile-pic">
+                <notempty name = "add">
+                    <img src="__PUBLIC__/Uploads/profile/default.jpg" alt="">
+                </notempty>
+                <notempty name = "the">
+                    <img src="__PUBLIC__/Uploads/profile/{$theUserInfo.img}" alt="">
+                </notempty>
+                <div class="ribbon-wrapper">
+                    <div class="ribbon-inner shadow-pulse bg-success">
+                        Elite
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-12">
+            <div class="user-name m-top-sm">{$theUserInfo.username}<i class="fa fa-circle text-success m-left-xs font-14"></i></div>
+
+            <div class="m-top-sm">
+
+                <div class="m-top-xs">
+                    <i class="fa fa-briefcase user-profile-icon"></i>
+                    部门：<strong style="color: #2baab1">{$thisDept}</strong>
+                </div>
+
+                <div class="m-top-xs">
+                    <i class="fa fa-external-link user-profile-icon"></i>
+                    职位：<strong style="color: #2baab1">{$thisAuto}</strong>
+                </div>
+            </div>
+
+            <div class="m-top-sm text-centers">
+                <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>右侧修改</a>
+            </div>
+
+            <h4 class="m-top-md m-bottom-sm">个人说明</h4>
+            <p class="m-top-sm">
+                {$theUserInfo.udi_description}
+            <p>
+
+        </div>
+    </div><!-- ./row -->
+</div>
+
