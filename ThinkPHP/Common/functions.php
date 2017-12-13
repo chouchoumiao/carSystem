@@ -1627,73 +1627,27 @@ function is_mail($mail)
  * 判断传入格式正确性
  * @return int
  */
-function checkForm( $flag ){
+function checkForm(){
 
-
-    if( 'login' == $flag){
-        if(isset($_POST['user_login'])){
-            $user = trim($_POST['user_login']);
-            if('' == $user){
-                return '用户名不能为空';
-            }
-            if(strlen($user) < 6){
-                return '用户名长度不能小于六位';
-            }
-        }else{
+    if(isset($_POST['user_login'])){
+        $user = trim($_POST['user_login']);
+        if('' == $user){
             return '用户名不能为空';
         }
+        if(strlen($user) < 6){
+            return '用户名长度不能小于六位';
+        }
+    }else{
+        return '用户名不能为空';
+    }
 
-        if(isset($_POST['user_pass'])){
-            $pass = trim($_POST['user_pass']);
-            if('' == $pass){
-                return '密码不能为空';
-            }
-        }else{
+    if(isset($_POST['user_pass'])){
+        $pass = trim($_POST['user_pass']);
+        if('' == $pass){
             return '密码不能为空';
         }
-    }
-
-    if( 'reg' == $flag){
-        if(isset($_POST['user_login'])){
-            $user = trim($_POST['user_login']);
-            if('' == $user){
-                return '用户名不能为空';
-            }
-            if(strlen($user) < 6){
-                return '用户名长度不能小于六位';
-            }
-        }
-
-        if(isset($_POST['user_email'])){
-            $email = trim($_POST['user_email']);
-            if('' == $email){
-                return '邮箱地址不能为空';
-            }
-            if(!is_mail($email)){
-                return '邮箱格式错误';
-            }
-        }
-    }
-
-    if( 'lostpass' == $flag ){
-
-        if(isset($_POST['user_login'])){
-
-            $userLogin = I('post.user_login');
-
-            if(!is_mail($userLogin)){
-
-                if('' == $userLogin){
-                    return '用户名不能为空';
-                }
-                if(strlen($userLogin) < 6){
-                    return '用户名长度不能小于六位';
-                }
-                return 'username';
-            }else{
-                return 'email';
-            }
-        }
+    }else{
+        return '密码不能为空';
     }
 
     return '';

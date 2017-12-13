@@ -439,82 +439,34 @@ function wp_shake_js(){
  * 验证表单内容
  * @returns {*}
  */
-function checkForm( flag ){
+function checkForm(){
 
     //登录
-    if( 'login' == flag){
-        var user  = $('#user_login');
-        var pass = $('#user_pass');
+    var user  = $('#user_login');
+    var pass = $('#user_pass');
 
-        if( user.length > 0){
+    if( user.length > 0){
 
-            userval = user.val();
+        var userval = user.val();
 
-            if( isNull( userval ) ){
-                return '用户名不能为空！';
-            }
-
-            if( userval.length < 6){
-                return '用户名必须大于等于6位！';
-            }
+        if( isNull( userval ) ){
+            return '用户名不能为空！';
         }
 
-        if( pass.length > 0){
-
-            passval = pass.val();
-
-            if( (isNull( passval )) || ('' == cTrim(passval,0)) ){
-                return '密码不能为空！';
-            }
+        if( userval.length < 6){
+            return '用户名必须大于等于6位！';
         }
-        return '';
-    }
-    //注册
-    if( 'reg' == flag){
-        var user  = $('#user_login');
-        var email = $('#user_email');
-
-        if( user.length > 0){
-
-            userval = user.val();
-
-            if( isNull( userval ) ){
-                return '用户名不能为空！';
-            }
-
-            if( userval.length < 6){
-                return '用户名必须大于等于6位！';
-            }
-        }
-
-        if( email.length > 0){
-
-            emailval = email.val();
-
-            if( (isNull( emailval )) || ('' == cTrim(emailval,0)) ){
-                return '邮箱地址不能为空！';
-            }
-            if( !isEmail( emailval ) ){
-                return '请输入正确的邮箱地址！';
-            }
-        }
-        return '';
-    }
-    if( 'lostpass' == flag ){
-        var userORemail  = $('#user_login').val();
-
-        if( (isNull( userORemail )) || ('' == userORemail) ){
-            return '用户名或电子邮件地址不能为空！';
-        }
-
-         if( !isEmail( userORemail ) ){
-            if( userORemail.length < 6){
-                return '用户名必须大于等于6位！';
-            }
-        }
-        return '';
     }
 
+    if( pass.length > 0){
+
+        var passval = pass.val();
+
+        if( (isNull( passval )) || ('' == cTrim(passval,0)) ){
+            return '密码不能为空！';
+        }
+    }
+    return '';
 }
 
 /**

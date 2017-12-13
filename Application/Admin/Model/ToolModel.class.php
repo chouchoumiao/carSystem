@@ -154,8 +154,8 @@ namespace Admin\Model;
                     unset($_SESSION['newImg']);
                 }
 
-                if(isset($_SESSION['editImg'])){
-                    unset($_SESSION['editImg']);
+                if(isset($_SESSION['carSystemImg'])){
+                    unset($_SESSION['carSystemImg']);
                 }
 
                 if(isset($_SESSION['currentUrl'])){

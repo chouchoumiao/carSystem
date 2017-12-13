@@ -84,7 +84,7 @@ class UserController extends CommonController {
                 case 'update':
                     $this->updateUser();
                     break;
-                case 'editimg':
+                case 'carSystemimg':
                     //图片上传设置
                     $config = array(
                         'maxSize'    =>    C('FILE_SIZE'),
@@ -97,7 +97,7 @@ class UserController extends CommonController {
                     );
 
                     echo $this->upload($config);
-                    $_SESSION['editImg'] = $this->uploadImgName;
+                    $_SESSION['carSystemImg'] = $this->uploadImgName;
                     exit;
                     break;
                 default:

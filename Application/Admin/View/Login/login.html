@@ -1,10 +1,9 @@
 <extend name="login_layout" />
 <block name="login_title"><title>登录</title></block>
 <block name="login_content">
-
     <form method="post" action="__APP__/Admin/Login/login" id="loginform" name="loginform">
         <p>
-            <label for="user_login">用户名或电子邮件地址<br>
+            <label for="user_login">用户名<br>
             <input type="text" size="20" value="" class="input" id="user_login" name="log"></label>
         </p>
         <p>
@@ -22,12 +21,6 @@
             <input type="hidden" value="1" name="testcookie">
         </p>
     </form>
-
-    <p id="nav">
-        <a href="./register.html">注册</a> |
-        <a href="lostpassword.html">忘记密码？</a>
-    </p>
-
 </block>
 
 <block name="login_js">
@@ -44,5 +37,5 @@
         wp_attempt_focus();
         if(typeof wpOnload=='function')wpOnload();
     </script>
-    <script type="text/javascript" src="__PUBLIC__/js/Admin/login.js?v=20160104"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/Admin/login.js?v=20171213"></script>
 </block>

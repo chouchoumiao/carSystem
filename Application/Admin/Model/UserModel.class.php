@@ -5,8 +5,6 @@
  */
 namespace Admin\Model;
 
-	use Think\Log;
-
     class UserModel {
 
 		private $id;
@@ -208,12 +206,12 @@ namespace Admin\Model;
 
             //$this->description = I('post.description');
 
-            if((isset($_SESSION['editImg'])) && ( '' != $_SESSION['editImg'])){
-                $this->img = $_SESSION['editImg'];
+            if((isset($_SESSION['carSystemImg'])) && ( '' != $_SESSION['carSystemImg'])){
+                $this->img = $_SESSION['carSystemImg'];
 
                 //然后将session清空
-                $_SESSION['editImg'] = '';
-                unset($_SESSION['editImg']);
+                $_SESSION['carSystemImg'] = '';
+                unset($_SESSION['carSystemImg']);
 
 
             }else{
@@ -706,8 +704,8 @@ namespace Admin\Model;
 			//邮件主体内容
 
 			$emailContent = "亲爱的".$this->username."：<br/>感谢您在我站注册了新帐号。<br/>请点击链接激活您的帐号。<br/>
-    <a href='http://".MY_SITE."/edit/index.php/Admin/Login/activeEamil/verify/".$this->token."' target=
-'_blank'>http://".MY_SITE."/edit/index.php/Admin/Login/activeEamil/verify/".$this->token."</a><br/>
+    <a href='http://".MY_SITE."/carSystem/index.php/Admin/Login/activeEamil/verify/".$this->token."' target=
+'_blank'>http://".MY_SITE."/carSystem/index.php/Admin/Login/activeEamil/verify/".$this->token."</a><br/>
     如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接一周内有效。";
 
 			return SendMail($this->email,$emailTitle,$emailContent)?  true: false;

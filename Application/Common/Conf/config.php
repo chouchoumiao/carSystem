@@ -6,16 +6,16 @@ define(MY_SITE, $_SERVER['SERVER_NAME']);   //发送邮件附带地址的时候�
 
 define(DOCUMENT_ROOT,$_SERVER['DOCUMENT_ROOT']);
 
-define(PUBLIC_PATH,$_SERVER['DOCUMENT_ROOT'].'/edit/Public');
+define(PUBLIC_PATH,$_SERVER['DOCUMENT_ROOT'].'/carSystem/Public');
 
 //头像文件夹地址
-define(PROFILE_PATH,$_SERVER['DOCUMENT_ROOT'].'/edit/Public/Uploads/profile');
+define(PROFILE_PATH,$_SERVER['DOCUMENT_ROOT'].'/carSystem/Public/Uploads/profile');
 //文章图片文件夹路径
-define(POST_PATH,$_SERVER['DOCUMENT_ROOT'].'/edit/Public/Uploads/post');
+define(POST_PATH,$_SERVER['DOCUMENT_ROOT'].'/carSystem/Public/Uploads/post');
 //文章附件文件夹路径
-define(POST_ATTACHMENT_PATH,$_SERVER['DOCUMENT_ROOT'].'/edit/Public/Uploads/postAttachment');
+define(POST_ATTACHMENT_PATH,$_SERVER['DOCUMENT_ROOT'].'/carSystem/Public/Uploads/postAttachment');
 //资源库文件夹路径
-define(MEDIA_PATH,$_SERVER['DOCUMENT_ROOT'].'/edit/Public/Uploads/Media');
+define(MEDIA_PATH,$_SERVER['DOCUMENT_ROOT'].'/carSystem/Public/Uploads/Media');
 
 define(CURRENT_URL,'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
