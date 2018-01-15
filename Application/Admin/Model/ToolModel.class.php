@@ -7,6 +7,15 @@ namespace Admin\Model;
 
     class ToolModel {
 
+        static function getIntCount($count){
+
+            if( false !== $count){
+                $count =  intval($count);
+            }
+
+            return $count;
+        }
+
         /**
          * 解决中文多字符问题，改方式将中文认为一个字符
          * @param $str

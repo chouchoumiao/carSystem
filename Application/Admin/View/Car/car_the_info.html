@@ -1,0 +1,80 @@
+<extend name="car_layout" />
+<block name="car_content">
+    <div class="col-md-12">
+        <div class="smart-widget">
+            <div class="smart-widget-inner">
+
+                <div class="smart-widget-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active">
+                            <h4 class="header-text m-top-md">编辑车辆信息</h4>
+                            <form class="form-horizontal m-top-md" action="__ROOT__/Admin/Car/doAction/action/update" method="post">
+
+                                <input type="hidden" value={$data.id} name="id" id="id">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="car_no">车牌号</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="car_no" id="car_no" value={$data.car_no}>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="car_driver1">驾驶员1</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control"  name="car_driver1" id="car_driver1" value="{$data.car_driver1}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="car_driver2">驾驶员2</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control"  name="car_driver2" id="car_driver2" value="{$data.car_driver2}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="car_driver3">驾驶员3</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control"  name="car_driver3" id="car_driver3" value="{$data.car_driver3}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="car_insurance_expires">车险过期日期</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control" name="car_insurance_expires" id="car_insurance_expires" value={$data.car_insurance_expires}>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="insert_time">该车辆信息创建时间</label>
+                                    <div class="col-sm-9">
+                                        <textarea disabled type="text" class="form-control" name="insert_time" id="insert_time" >{$data.insert_time}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="edit_time">最近更新时间</label>
+                                    <div class="col-sm-9">
+                                        <textarea disabled type="text" class="form-control" name="edit_time" id="edit_time" >{$data.edit_time}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-top-lg">
+                                    <label class="col-sm-12  control-label"></label>
+                                    <div class="col-sm-3 col-sm-offset-3" >
+                                        <input type="submit" class="btn btn-info btn-block" value="提交" name="send">
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <input type="reset" class="btn  btn-default m-left-xs btn-block" value="重置">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div><!-- ./tab-pane -->
+                    </div><!-- ./tab-content -->
+                </div><!-- ./smart-widget-body -->
+            </div><!-- ./smart-widget-inner -->
+        </div><!-- ./smart-widget -->
+    </div>
+</block>
