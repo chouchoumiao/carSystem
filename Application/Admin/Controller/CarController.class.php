@@ -10,6 +10,7 @@
 namespace Admin\Controller;
 
 use Admin\Model\ToolModel;
+use Admin\Model\ValidateModel;
 use Think\Controller;
 
 class CarController extends Controller{
@@ -37,15 +38,94 @@ class CarController extends Controller{
                 case 'del':
                     $this->del();
                     break;
+                case 'addShow':
+                    $this->addShow();
+                    break;
+                case 'add':
+                    $this->add();
+                    break;
+
             }
         }
 
     }
 
     /**
+     * 检查正确性
+     * @param $data
+     * @return string
+     */
+    private function checkCarInfo($data){
+
+        $msg = '';
+
+        //为空判断
+        if(!ValidateModel::isEmpty($data['car_no'])){
+            return $msg = '车牌号不能为空';
+        }
+
+        if( (ToolModel::getStrLen($data['car_no']) > 10 ) || (ToolModel::getStrLen($data['car_no']) < 7) ){
+            return $msg = '车牌号位数必须在7到10之间';
+        }
+
+        if(!ValidateModel::isEmpty($data['car_driver1'])){
+            return $msg = '驾驶员1姓名不能为空，驾驶员2与3可以为空';
+        }
+
+        if( (ToolModel::getStrLen($data['car_driver1']) > 5) || (ToolModel::getStrLen($data['car_driver1']) < 2) ){
+            return $msg = '驾驶员1姓名位数只能是2到5位';
+        }
+
+        if( (ToolModel::getStrLen($data['car_driver2']) > 5) || (ToolModel::getStrLen($data['car_driver2']) < 2) ){
+            return $msg = '驾驶员2姓名位数只能是2到5位';
+        }
+
+        if( (ToolModel::getStrLen($data['car_driver3']) > 5) || (ToolModel::getStrLen($data['car_driver3']) < 2) ){
+            return $msg = '驾驶员3姓名位数只能是2到5位';
+        }
+
+        if(!(ValidateModel::checkDate($data['car_insurance_expires']))){
+            return $msg = '日期格式错误';
+        }
+
+        return $msg;
+    }
+
+    /**
+     * 显示添加画面
+     */
+    private function addShow(){
+        //显示添加页面
+        $this->display('car_add_info');
+    }
+    /**
+     * 追加新车辆信息
+     */
+    private function add(){
+
+        if($_POST['send'] == '新添加' ){
+
+            //判断传入数据是否符合要求
+            $msg = $this->checkCarInfo($_POST);
+            if( '' != $msg){
+                ToolModel::goBack($msg);
+            }
+
+            //判断是否一行更更改
+            if(false !== $this->_model->addCarInfo()){
+                ToolModel::goToUrl('新增车辆信息成功','all');
+            }else{
+                ToolModel::goBack('新增车辆信息出错');
+            }
+        }else{
+            ToolModel::goToUrl('未获取到新增车辆的信息','all');
+        }
+    }
+
+    /**
      * Json传递ID过来删除指定车辆数据
      */
-    public function del(){
+    private function del(){
         if(isset($_POST['id']) && (intval($_POST['id']) >= 0) ){
             //判断是否一行更更改
             if( 1 == $this->_model->deleteTheCarInfo(I('post.id',0))){
@@ -65,6 +145,13 @@ class CarController extends Controller{
     private function update(){
 
         if(isset($_POST['id']) && (intval($_POST['id']) > 0) ){
+
+            //判断传入数据是否符合要求
+            $msg = $this->checkCarInfo($_POST);
+            if( '' != $msg){
+                ToolModel::goBack($msg);
+            }
+
             //判断是否一行更更改
             if( 1 == $this->_model->updateTheCarInfo()){
                 ToolModel::goToUrl('修改车辆信息成功','all');
@@ -116,10 +203,9 @@ class CarController extends Controller{
 
             $this->assign('data', $carInfo); //用户信息注入模板
             $this->assign('page', $show);    //赋值分页输出
-
-            $this->display('car_info_show');
-
         }
+
+        $this->display('car_info_show');
 
     }
 

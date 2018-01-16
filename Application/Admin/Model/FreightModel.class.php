@@ -5,24 +5,24 @@
  * User: Administrator
  * Date: 2018/01/15
  * Time: 20:49
- * 车辆管理类
+ * 货运管理类
  *
  */
 namespace Admin\Model;
 
-    class CarModel {
+    class FreightModel {
 
         private $_model;
 
         public function __construct(){
-            $this->_model = M('car_info');
+            $this->_model = M('freight');
         }
 
         /**
          * @return mixed
-         * 取得所有车辆信息
+         * 取得所有货运信息
          */
-        public function getCarInfo(){
+        public function getFreightInfo(){
 
             return $this->_model->select();
 
@@ -30,9 +30,9 @@ namespace Admin\Model;
 
         /**
          * @return mixed
-         * 取得所有车辆的数量
+         * 取得所有货运的数量
          */
-        public function getCarCount(){
+        public function getFreightCount(){
 
             return ToolModel::getIntCount($this->_model->count());
 
@@ -43,25 +43,25 @@ namespace Admin\Model;
          * @param $limit
          * @return mixed
          */
-        public function getPageCarInfo($limit){
+        public function getPageFreightInfo($limit){
 
             return $this->_model->order('id')->limit($limit)->select();
 
         }
 
         /**
-         * 取得指定车辆信息
+         * 取得指定货运信息
          * @param $id
          * @return mixed
          */
-        public function getTheCarInfo($id){
+        public function getTheFreightInfo($id){
             return $this->_model->find($id);
         }
 
         /**
-         * 更新对应的车辆信息
+         * 更新对应的货运信息
          */
-        public function updateTheCarInfo(){
+        public function updateTheFreightInfo(){
             //追加更新时间
             $_POST['edit_time'] = date('Y-m-d H:i:s', time());
 
@@ -70,11 +70,11 @@ namespace Admin\Model;
         }
 
         /**
-         * 根据传入的ID进行删除该车辆信息
+         * 根据传入的ID进行删除该货运信息
          * @param $id
          * @return mixed
          */
-        public function deleteTheCarInfo($id){
+        public function deleteTheFreightInfo($id){
 
             $where['id'] = $id;
 
@@ -83,10 +83,10 @@ namespace Admin\Model;
         }
 
         /**
-         * 新追加车辆信息
+         * 新追加货运信息
          * @return mixed
          */
-        public function addCarInfo(){
+        public function addFreightInfo(){
 
             //追加更新时间
             $_POST['insert_time'] = date('Y-m-d H:i:s', time());
@@ -111,31 +111,31 @@ namespace Admin\Model;
     SET time_zone = "+00:00";
 
     --
-    -- Database: `carSystem`
+    -- Database: `FreightSystem`
     --
 
     -- --------------------------------------------------------
 
     --
-    -- 表的结构 `ccm_car_info`
+    -- 表的结构 `ccm_Freight_info`
     --
 
-    CREATE TABLE `ccm_car_info` (
+    CREATE TABLE `ccm_Freight_info` (
     `id` int(8) unsigned NOT NULL,
-    `car_no` char(20) NOT NULL,
-    `car_driver1` char(10) NOT NULL,
-    `car_driver2` char(10) NOT NULL,
-    `car_driver3` char(10) NOT NULL,
-    `car_insurance_expires` date NOT NULL,
+    `Freight_no` char(20) NOT NULL,
+    `Freight_driver1` char(10) NOT NULL,
+    `Freight_driver2` char(10) NOT NULL,
+    `Freight_driver3` char(10) NOT NULL,
+    `Freight_insurance_expires` date NOT NULL,
     `insert_time` datetime NOT NULL,
     `edit_time` datetime NOT NULL
     ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
     --
-    -- 转存表中的数据 `ccm_car_info`
+    -- 转存表中的数据 `ccm_Freight_info`
     --
 
-    INSERT INTO `ccm_car_info` (`id`, `car_no`, `car_driver1`, `car_driver2`, `car_driver3`, `car_insurance_expires`, `insert_time`, `edit_time`) VALUES
+    INSERT INTO `ccm_Freight_info` (`id`, `Freight_no`, `Freight_driver1`, `Freight_driver2`, `Freight_driver3`, `Freight_insurance_expires`, `insert_time`, `edit_time`) VALUES
     (12, '22', '22', '22', '22', '2018-01-18', '2018-01-23 00:00:00', '2018-01-26 00:00:00'),
     (13, '11', '11', '11', '11', '2018-01-02', '2018-01-09 00:00:00', '2018-01-18 00:00:00'),
     (14, '22', '22', '22', '22', '2018-01-18', '2018-01-23 00:00:00', '2018-01-26 00:00:00'),
@@ -232,9 +232,9 @@ namespace Admin\Model;
     --
 
     --
-    -- Indexes for table `ccm_car_info`
+    -- Indexes for table `ccm_Freight_info`
     --
-    ALTER TABLE `ccm_car_info`
+    ALTER TABLE `ccm_Freight_info`
     ADD PRIMARY KEY (`id`);
 
     --
@@ -260,9 +260,9 @@ namespace Admin\Model;
     --
 
     --
-    -- AUTO_INCREMENT for table `ccm_car_info`
+    -- AUTO_INCREMENT for table `ccm_Freight_info`
     --
-    ALTER TABLE `ccm_car_info`
+    ALTER TABLE `ccm_Freight_info`
     MODIFY `id` int(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
     --
     -- AUTO_INCREMENT for table `ccm_login`
