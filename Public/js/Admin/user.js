@@ -307,50 +307,50 @@ $(function(){
 
 //判断用户输入信息
 
-/**
- * 显示验证失败时候应该要显示的样式
- * @param $parent
- * @param msg
- */
-function doError($parent,msg,idname) {
-
-    //判断原来是否已经有校验成功过,有的话则删除原来的样式
-    if($('#showOK'+idname).length > 0 ){
-        $('#showOK'+idname).remove();
-        $parent.removeClass('has-success has-feedback');
-    }
-
-    //追加失败的样式
-    $parent.addClass('has-error has-feedback');
-
-    //如果已经增加过失败样式,则不追加,避免多次追加
-    if($('#showError'+idname).length <= 0 ){
-        $parent.append('<span id="showError'+idname+'" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-        $parent.append('<p id="msg'+idname+'"  class="showMsg text-danger">'+msg+'</p>');
-    }
-}
-
-/**
- * 显示验证成功时候应该要显示的样式
- * @param $parent
- */
-function doOK($parent,idname) {
-    //判断原来是否已经有校验失败过,有的话则删除原来的样式
-    if($('#showError'+idname).length > 0){
-
-        $('#showError'+idname).remove();
-        $('#msg'+idname).remove();
-        $parent.removeClass('has-error has-feedback');
-    }
-
-    //追加成功的样式
-    $parent.addClass('has-success has-feedback');
-
-    //如果已经增加过成功样式,则不追加,避免多次追加
-    if($('#showOK'+idname).length <= 0){
-        $parent.append('<span id="showOK'+idname+'" class="glyphicon glyphicon-ok form-control-feedback""></span>');
-    }
-}
+// /**
+//  * 显示验证失败时候应该要显示的样式
+//  * @param $parent
+//  * @param msg
+//  */
+// function doError($parent,msg,idname) {
+//
+//     //判断原来是否已经有校验成功过,有的话则删除原来的样式
+//     if($('#showOK'+idname).length > 0 ){
+//         $('#showOK'+idname).remove();
+//         $parent.removeClass('has-success has-feedback');
+//     }
+//
+//     //追加失败的样式
+//     $parent.addClass('has-error has-feedback');
+//
+//     //如果已经增加过失败样式,则不追加,避免多次追加
+//     if($('#showError'+idname).length <= 0 ){
+//         $parent.append('<span id="showError'+idname+'" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//         $parent.append('<p id="msg'+idname+'"  class="showMsg text-danger">'+msg+'</p>');
+//     }
+// }
+//
+// /**
+//  * 显示验证成功时候应该要显示的样式
+//  * @param $parent
+//  */
+// function doOK($parent,idname) {
+//     //判断原来是否已经有校验失败过,有的话则删除原来的样式
+//     if($('#showError'+idname).length > 0){
+//
+//         $('#showError'+idname).remove();
+//         $('#msg'+idname).remove();
+//         $parent.removeClass('has-error has-feedback');
+//     }
+//
+//     //追加成功的样式
+//     $parent.addClass('has-success has-feedback');
+//
+//     //如果已经增加过成功样式,则不追加,避免多次追加
+//     if($('#showOK'+idname).length <= 0){
+//         $parent.append('<span id="showOK'+idname+'" class="glyphicon glyphicon-ok form-control-feedback""></span>');
+//     }
+// }
 
 //删除用户
 function delUser(id){
