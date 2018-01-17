@@ -9,6 +9,7 @@
 
 namespace Admin\Controller;
 
+use Admin\Model\ExcelModel;
 use Admin\Model\ToolModel;
 use Admin\Model\ValidateModel;
 use Think\Controller;
@@ -56,49 +57,7 @@ class CarController extends Controller{
      * 测试PHPExcel
      */
     private function test(){
-
-        import("Org.Util.PHPExcel");
-        import("Org.Util.PHPExcel.IOFactory");
-
-        $objPHPExcel = new \PHPExcel();                     //实例化一个PHPExcel()对象
-        $objSheet = $objPHPExcel->getActiveSheet();        //选取当前的sheet对象
-        $objSheet->setTitle('helen');                      //对当前sheet对象命名
-        //取巧模式：利用fromArray()填充数据
-        $array = array(
-            array("","B1","张三"),
-            array("","B2","李四")
-        );
-        $objSheet->fromArray($array);  //利用fromArray()直接一次性填充数据
-        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');   //设定写入excel的类型
-        $objWriter->save(PUBLIC_PATH.'/excel/test11.xlsx');
-
-
-//        $file_name= PUBLIC_PATH.'/excel/test.xls';
-//
-//        $fileTypeArr = explode('.',$file_name);
-//
-//        $fileType = $fileTypeArr[count($fileTypeArr) -1];
-//
-//        import("Org.Util.PHPExcel");
-//        import("Org.Util.PHPExcel.IOFactory");
-//
-//        if( 'xls' == $fileType){
-//            $excelType = 'Excel5';
-//        }elseif ('xlsx' == $fileType){
-//            $excelType = 'Excel2007';
-//        }
-//
-//        //xls : Excel5  xlsx:Excel2007
-//        $objReader = \PHPExcel_IOFactory::createReader($excelType);
-//
-//        $objPHPExcel = $objReader->load($file_name,$encode='utf-8');
-//        $sheet = $objPHPExcel->getSheet(0);
-//        $highestRow = $sheet->getHighestRow(); // 取得总行数
-//        $highestColumn = $sheet->getHighestColumn(); // 取得总列数
-//
-//        $s = $objPHPExcel->getActiveSheet()->getCell("A3")->getValue();
-//
-//        echo $s;exit;
+        ExcelModel::outputExcelFreightInfo('货运全数据',PUBLIC_PATH.'/excel/test11.xlsx');
     }
     /**
      * 检查正确性

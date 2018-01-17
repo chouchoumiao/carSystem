@@ -30,6 +30,20 @@ namespace Admin\Model;
 
         /**
          * @return mixed
+         * 取得所有货运信息
+         */
+        public function getFreightExcelInfo(){
+
+
+
+            return $this->_model
+                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount')
+                ->select();
+
+        }
+
+        /**
+         * @return mixed
          * 取得所有货运的数量
          */
         public function getFreightCount(){
