@@ -1,5 +1,8 @@
 $(function(){
 
+    /**
+     * 自动验证
+     */
     if($('#updateForm').length > 0) {
         //文本框失去焦点后
         $('form :input').blur(function(){
