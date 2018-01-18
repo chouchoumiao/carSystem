@@ -9,7 +9,6 @@
 
 namespace Admin\Controller;
 
-use Admin\Model\ExcelModel;
 use Admin\Model\ToolModel;
 use Admin\Model\ValidateModel;
 use Think\Controller;
@@ -53,12 +52,6 @@ class CarController extends Controller{
 
     }
 
-    /**
-     * 测试PHPExcel
-     */
-    private function test(){
-        ExcelModel::outputExcelFreightInfo('货运全数据',PUBLIC_PATH.'/excel/test11.xlsx');
-    }
     /**
      * 检查正确性
      * @param $data
