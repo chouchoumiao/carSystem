@@ -106,8 +106,8 @@ namespace Admin\Model;
             //追加更新时间
             $_POST['car_month'] = substr($_POST['car_date'],0,7);
 
-            $_POST['insert_time'] = date('Y-m-d H:i:s', time());
-            $_POST['edit_time'] = date('Y-m-d H:i:s', time());
+            $_POST['insert_time'] = ToolModel::getNowTime();
+            $_POST['edit_time'] = ToolModel::getNowTime();
 
             return $this->_model->add($_POST);
         }

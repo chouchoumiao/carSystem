@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <include file='./head_layout' />
+</head>
+
+<body class="overflow-hidden">
+<div class="wrapper preload">
+    <!-- 导入 nav-->
+    <include file='./header' />
+
+    <!-- 导入左边栏-->
+    <include file='./aside'/>
+
+    <div class="main-container">
+
+        <!--加入通知模态框-->
+        <include file='./noticeModel'/>
+
+        <div class="col-md-12">
+            <div class="smart-widget">
+                <div class="smart-widget-inner">
+
+                    <div class="smart-widget-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active">
+                                <h4 class="header-text m-top-md">添加货运信息</h4>
+                                <form method="post" action="__ROOT__/Admin/Report/doAction/action/uploadFreight/" enctype="multipart/form-data">
+                                    <h3>导入Excel表：</h3><input  type="file" name="file_stu" />
+                                    <input type="submit"  value="导入" />
+                                </form>
+                            </div><!-- ./tab-pane -->
+                        </div><!-- ./tab-content -->
+                    </div><!-- ./smart-widget-body -->
+                </div><!-- ./smart-widget-inner -->
+            </div><!-- ./smart-widget -->
+        </div>
+
+    <!-- 导入footer -->
+    <include file = './footer'/>
+
+</div>
+
+<include file = './js_layout'/>
+
+</body>
+</html>

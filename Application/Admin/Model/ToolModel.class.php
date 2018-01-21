@@ -219,5 +219,14 @@ namespace Admin\Model;
             }
         }
 
+        /**
+         * 返回当前时间
+         * @return false|string
+         */
+        static function getNowTime(){
+
+            return date('Y-m-d H:i:s', time());
+        }
+
 
     }
