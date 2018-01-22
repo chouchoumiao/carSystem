@@ -65,8 +65,26 @@ class ReportController extends Controller{
         import("Org.Util.PHPExcel");
         import("Org.Util.PHPExcel.IOFactory");
 
+        if (! empty ( $_FILES ['file_stu'] ['name'] )) {
+            $tmp_file = $_FILES ['file_stu'] ['tmp_name'];
+            $file_types = explode(".", $_FILES ['file_stu']['name']);
+            $file_type = $file_types [count($file_types) - 1];
+            /*判别是不是.xls文件，判别是不是excel文件*/
+            if (strtolower($file_type) != "xls") {
+                $this->error('不是Excel文件，重新上传');
+            }
+            /*设置上传路径*/
+            $savePath = PUBLIC_PATH . '/excel/';
+            /*以时间来命名上传的文件*/
+            $str = date('Ymdhis');
+            $file_name = $str . "." . $file_type;
+            /*是否上传成功*/
+            if (!copy($tmp_file, $savePath . $file_name)) {
+                $this->error('上传失败');
+            }
+        }
 
-        $file_path = PUBLIC_PATH.'/excel/11111.xls';
+        $file_path = $savePath . $file_name;
 
         if (!file_exists($file_path)) {
             die('no file!');
@@ -96,88 +114,114 @@ class ReportController extends Controller{
                 }else{
                     $str .= $objPHPExcel->getActiveSheet()->getCell("$k$j")->getValue(). '\\';
                 }
-
-//                $str .= $objPHPExcel->getActiveSheet()->getCell("$k$j")->getValue() . '\\';//读取单元格
             }
 
+            $isAllNull = 0;
             $strs = explode("\\", $str);
 
 
             if($objPHPExcel->getActiveSheet()->getCell("A3") == '日期'){
                 $add_data['car_date'] = $strs[0];
+                $add_data['car_month'] = substr($strs[0],0,7);
+                if( '' == $strs[0]){
+                    $isAllNull = $isAllNull + 1;
+                }
+
             }else{
                 ToolModel::goBack('第一列名称必须是日期');
             }
 
-            $add_data['car_month'] = substr($strs[0],0,7);
-            $add_data['car_no'] = $strs[1];
-            $add_data['car_driver'] = $strs[2];
-            $add_data['goods_name'] = $strs[3];
-            $add_data['loading_place'] = $strs[4];
-            $add_data['unloading_place'] = $strs[5];
-            $add_data['loading_tonnage'] = $strs[6];
-            $add_data['unloading_tonnage'] = $strs[7];
-            $add_data['ticket_number'] = $strs[8];
-            $add_data['amount'] = $strs[9];
+            if($objPHPExcel->getActiveSheet()->getCell("B3") == '车号'){
+                $add_data['car_no'] = $strs[1];
+                if( '' == $strs[1]){
+                    $isAllNull = $isAllNull + 1;
+                }
+            }else{
+                ToolModel::goBack('第二列名称必须是车号');
+            }
+
+            if($objPHPExcel->getActiveSheet()->getCell("C3") == '货物名称'){
+                $add_data['goods_name'] = $strs[2];
+                if( '' == $strs[2]){
+                    $isAllNull = $isAllNull + 1;
+                }
+            }else{
+                ToolModel::goBack('第三列名称必须是货物名称');
+            }
+
+            if($objPHPExcel->getActiveSheet()->getCell("D3") == '装货地'){
+                $add_data['loading_place'] = $strs[3];
+                if( '' == $strs[3]){
+                    $isAllNull = $isAllNull + 1;
+                }
+            }else{
+                ToolModel::goBack('第四列名称必须是装货地');
+            }
+
+            if($objPHPExcel->getActiveSheet()->getCell("E3") == '卸货地'){
+                $add_data['unloading_place'] = $strs[4];
+                if( '' == $strs[4]){
+                    $isAllNull = $isAllNull + 1;
+                }
+            }else{
+                ToolModel::goBack('第五列名称必须是卸货地');
+            }
+
+            if($objPHPExcel->getActiveSheet()->getCell("F3") == '发货吨位'){
+                if( '' == $strs[5]){
+                    $isAllNull = $isAllNull + 1;
+                }
+                $add_data['loading_tonnage'] = $strs[5];
+            }else{
+                ToolModel::goBack('第六列名称必须是发货吨位');
+            }
+
+            if($objPHPExcel->getActiveSheet()->getCell("G3") == '收货吨位'){
+                if( '' == $strs[6]){
+                    $isAllNull = $isAllNull + 1;
+                }
+                $add_data['unloading_tonnage'] = $strs[6];
+            }else{
+                ToolModel::goBack('第七列名称必须是收货吨位');
+            }
+
+            if($objPHPExcel->getActiveSheet()->getCell("H3") == '票号'){
+                if( '' == $strs[7]){
+                    $isAllNull = $isAllNull + 1;
+                }
+                $add_data['ticket_number'] = $strs[7];
+            }else{
+                ToolModel::goBack('第八列名称必须是金额');
+            }
+
+            if($objPHPExcel->getActiveSheet()->getCell("I3") == '金额'){
+                $add_data['amount'] = $strs[8];
+                if( '' == $strs[8]){
+                    $isAllNull = $isAllNull + 1;
+                }
+            }else{
+                ToolModel::goBack('第九列名称必须是金额');
+            }
+
             $add_data['insert_time'] = ToolModel::getNowTime();
-            $add_data['insert_time'] = ToolModel::getNowTime();
+            $add_data['edit_time'] = ToolModel::getNowTime();
             $data[]=$add_data;
-            $num++;
+
+            //如果渠取到最后一行都为空，则丢弃这一行并且下面的都不进行获取
+            if( 8 == $isAllNull){
+                array_pop($data);
+                break;
+            }else{
+                $num++;
+            }
         }
 
-        dump($data);
-        exit;
+        if( false !== D('Freight')->addFreightInfo($data)){
+            ToolModel::goBack('导入成功');
+        }else {
+            ToolModel::goBack('导入失败');
+        }
 
-//        if (! empty ( $_FILES ['file_stu'] ['name'] ))
-//        {
-//            $tmp_file = $_FILES ['file_stu'] ['tmp_name'];
-//            $file_types = explode ( ".", $_FILES ['file_stu'] ['name'] );
-//            $file_type = $file_types [count ( $file_types ) - 1];
-//            /*判别是不是.xls文件，判别是不是excel文件*/
-//            if (strtolower ( $file_type ) != "xls")
-//            {
-//                $this->error ( '不是Excel文件，重新上传' );
-//            }
-//            /*设置上传路径*/
-//            $savePath = PUBLIC_PATH . '/excel/';
-//            /*以时间来命名上传的文件*/
-//            $str = date ( 'Ymdhis' );
-//            $file_name = $str . "." . $file_type;
-//            /*是否上传成功*/
-//            if (! copy ( $tmp_file, $savePath . $file_name ))
-//            {
-//                $this->error ( '上传失败' );
-//            }
-//            /*
-//               *对上传的Excel数据进行处理生成编程数据,这个函数会在下面第三步的ExcelToArray类中
-//              注意：这里调用执行了第三步类里面的read函数，把Excel转化为数组并返回给$res,再进行数据库写入
-//            */
-//            $res = Service ( 'ExcelToArray' )->read ( $savePath . $file_name );
-//
-//            dump($res);exit;
-//            /*
-//                 重要代码 解决Thinkphp M、D方法不能调用的问题
-//                 如果在thinkphp中遇到M 、D方法失效时就加入下面一句代码
-//             */
-//            //spl_autoload_register ( array ('Think', 'autoload' ) );
-//            /*对生成的数组进行数据库的写入*/
-//            foreach ( $res as $k => $v )
-//            {
-//                if ($k != 0)
-//                {
-//                    $data ['uid'] = $v [0];
-//                    $data ['password'] = sha1 ( '111111' );
-//                    $data ['email'] = $v [1];
-//                    $data ['uname'] = $v [3];
-//                    $data ['institute'] = $v [4];
-//                    $result = M ( 'user' )->add ( $data );
-//                    if (! $result)
-//                    {
-//                        $this->error ( '导入数据库失败' );
-//                    }
-//                }
-//            }
-//        }
     }
 
 
