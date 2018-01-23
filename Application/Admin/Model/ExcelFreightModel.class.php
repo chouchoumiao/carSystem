@@ -13,6 +13,68 @@ namespace Admin\Model;
 	class ExcelFreightModel {
 
         /**
+         * 导入货运excel表
+         * @return array
+         */
+        static function uploadFreight(){
+
+            import("Org.Util.PHPExcel");
+            import("Org.Util.PHPExcel.IOFactory");
+
+            if (! empty ( $_FILES ['file_stu'] ['name'] )) {
+                $tmp_file = $_FILES ['file_stu'] ['tmp_name'];
+                $file_types = explode(".", $_FILES ['file_stu']['name']);
+                $file_type = $file_types [count($file_types) - 1];
+                /*判别是不是.xls文件，判别是不是excel文件*/
+                if (strtolower($file_type) != "xls") {
+                    ToolModel::goBack('不是Excel文件，重新上传');
+                }
+                /*设置上传路径*/
+                $savePath = PUBLIC_PATH . '/excel/';
+                /*以时间来命名上传的文件*/
+                $str = date('Ymdhis');
+                $file_name = $str . "." . $file_type;
+                /*是否上传成功*/
+                if (!copy($tmp_file, $savePath . $file_name)) {
+                    ToolModel::goBack('上传失败');
+                }
+            }
+
+            $file_path = $savePath . $file_name;
+
+            if (!file_exists($file_path)) {
+                die('上传路径错误!');
+            }
+
+            //文件的扩展名
+            $ext = strtolower(pathinfo($file_path,PATHINFO_EXTENSION));
+
+            if($ext == 'xlsx'){
+                $objReader=\PHPExcel_IOFactory::createReader('Excel2007');
+                $objPHPExcel = $objReader->load($file_path,'utf-8');
+            }elseif($ext == 'xls'){
+                $objReader=\PHPExcel_IOFactory::createReader('Excel5');
+                $objPHPExcel = $objReader->load($file_path,'utf-8');
+            }
+
+            //获取工作表的数目
+            $sheetCount = $objPHPExcel->getSheetCount();
+
+            for ( $i = 0; $i < $sheetCount; $i++ ) {
+
+                if( 1 !=self::getAllSheetSData($i,$objPHPExcel)){
+                    unlink($file_path);
+                    return false;
+                }
+
+            }
+
+            unlink($file_path);
+            return true;
+
+        }
+
+        /**
          ** 输出所有的货运信息
          * @param string $sheetName
          * @param $path
@@ -277,6 +339,141 @@ namespace Admin\Model;
                 $objWriter->save($path);
             }
 
+        }
+
+        /**
+         * 导入货运信息
+         * @param $i
+         * @param $objPHPExcel
+         * @return int
+         */
+        private function getAllSheetSData($i,&$objPHPExcel){
+
+            $sheet = $objPHPExcel->getSheet( $i ) ;
+
+            $highestRow = $sheet->getHighestRow(); // 取得总行数
+
+            for($j=4;$j<=$highestRow;$j++) {
+                $isAllNull = 0;
+
+                if($objPHPExcel->getActiveSheet()->getCell("A3") == '日期'){
+                    $car_date = $sheet->getCellByColumnAndRow(0, $j)->getValue();
+
+                    if( '' != strval($car_date)){
+                        $add_data['car_date'] = gmdate("Y-m-d", \PHPExcel_Shared_Date::ExcelToPHP($car_date));
+                        $add_data['car_month'] = substr($add_data['car_date'],0,7);
+                    }else{
+                        $add_data['car_date'] = NULL;
+                        $add_data['car_month'] = '';
+                    }
+
+                }else{
+                    ToolModel::goBack('第'.($i + 1).'个Sheet中的第一列名称必须是日期');
+                }
+
+                if($objPHPExcel->getActiveSheet()->getCell("B3") == '车号'){
+                    $car_no = $sheet->getCellByColumnAndRow(1, $j)->getValue();
+                    if(is_object($car_no))  $car_no = $car_no->__toString();
+                    $add_data['car_no'] = $car_no;
+                    if( '' == $car_no){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('第'.($i + 1).'个Sheet中的第二列名称必须是车号');
+                }
+
+                if($objPHPExcel->getActiveSheet()->getCell("C3") == '货物名称'){
+                    $goods_name = $sheet->getCellByColumnAndRow(2, $j)->getValue();
+                    if(is_object($goods_name))  $goods_name = $goods_name->__toString();
+                    $add_data['goods_name'] = $goods_name;
+                    if( '' == $goods_name){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('第'.($i + 1).'个Sheet中的第三列名称必须是货物名称');
+                }
+
+                if($objPHPExcel->getActiveSheet()->getCell("D3") == '装货地'){
+                    $loading_place = $sheet->getCellByColumnAndRow(3, $j)->getValue();
+                    if(is_object($loading_place))  $loading_place = $loading_place->__toString();
+                    $add_data['loading_place'] = $loading_place;
+                    if( '' == $loading_place){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('第'.($i + 1).'个Sheet中的第四列名称必须是装货地');
+                }
+
+                if($objPHPExcel->getActiveSheet()->getCell("E3") == '卸货地'){
+                    $unloading_place = $sheet->getCellByColumnAndRow(4, $j)->getValue();
+                    if(is_object($unloading_place))  $unloading_place = $unloading_place->__toString();
+                    $add_data['unloading_place'] = $unloading_place;
+                    if( '' == $unloading_place){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('第'.($i + 1).'个Sheet中的第五列名称必须是卸货地');
+                }
+
+                if($objPHPExcel->getActiveSheet()->getCell("F3") == '发货吨位'){
+                    $loading_tonnage = $sheet->getCellByColumnAndRow(5, $j)->getValue();
+                    if(is_object($loading_tonnage))  $loading_tonnage = $loading_tonnage->__toString();
+                    $add_data['loading_tonnage'] = $loading_tonnage;
+                    if( '' == $loading_tonnage){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('第'.($i + 1).'个Sheet中的第六列名称必须是发货吨位');
+                }
+
+                if($objPHPExcel->getActiveSheet()->getCell("G3") == '收货吨位'){
+                    $unloading_tonnage = $sheet->getCellByColumnAndRow(6, $j)->getValue();
+                    if(is_object($unloading_tonnage))  $unloading_tonnage = $unloading_tonnage->__toString();
+                    $add_data['unloading_tonnage'] = $unloading_tonnage;
+                    if( '' == $unloading_tonnage){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('第'.($i + 1).'个Sheet中的第七列名称必须是是收货吨位');
+                }
+
+                if($objPHPExcel->getActiveSheet()->getCell("H3") == '票号'){
+                    $ticket_number = $sheet->getCellByColumnAndRow(7, $j)->getValue();
+                    if(is_object($ticket_number))  $ticket_number = $ticket_number->__toString();
+                    $add_data['ticket_number'] = $ticket_number;
+                    if( '' == $ticket_number){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('第'.($i + 1).'个Sheet中的第八列名称必须是票号');
+                }
+
+                if($objPHPExcel->getActiveSheet()->getCell("I3") == '金额'){
+                    $amount = $sheet->getCellByColumnAndRow(8, $j)->getValue();
+                    if(is_object($amount))  $amount = $amount->__toString();
+                    $add_data['amount'] = $amount;
+                    if( '' == $amount){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('第'.($i + 1).'个Sheet中的第九列名称必须是金额');
+                }
+
+                $add_data['insert_time'] = ToolModel::getNowTime();
+                $add_data['edit_time'] = ToolModel::getNowTime();
+                $data[]=$add_data;
+
+                //如果渠取到最后一行都为空，则丢弃这一行并且下面的都不进行获取
+                if( 8 == $isAllNull){
+                    array_pop($data);
+                    break;
+                }
+            }
+            if(false === D('Freight')->addFreightInfo($data)){
+                ToolModel::goBack('第'.($i + 1).'个Sheet中的数据导入失败');
+                exit;
+            }
+            return 1;
         }
 
 	}
