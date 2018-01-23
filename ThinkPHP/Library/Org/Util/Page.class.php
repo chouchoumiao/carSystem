@@ -16,7 +16,7 @@ class Page{
     public $parameter; // 分页跳转时要带的参数
     public $totalRows; // 总行数
     public $totalPages; // 分页总页面数
-    public $rollPage   = 3;// 分页栏每页显示的页数
+    public $rollPage   = ROLLPAGE_6;// 分页栏每页显示的页数
 	public $lastSuffix = false; // 最后一页是否显示总页数  修正后尾页可以出现 wujiayu
 
     private $p       = 'p'; //分页参数名

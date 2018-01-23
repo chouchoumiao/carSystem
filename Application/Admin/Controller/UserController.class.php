@@ -158,7 +158,7 @@ class UserController extends CommonController {
 
                 //如果是默认图片则不删除，否则则删除
                 if( 'default.jpg' != $imgName ){
-                    ToolModel::delImg(PROFILE_PATH.'/'.$imgName);
+                    ToolModel::delFile(PROFILE_PATH.'/'.$imgName);
                 }
 
                 $arr['success'] = 'OK';

@@ -134,7 +134,12 @@ namespace Admin\Model;
          * @return mixed
          */
         public function getInfoByMonth($month){
-            $where['car_month'] = $month;
+
+            if('空' == $month){
+                $where['car_month'] = '';
+            }else{
+                $where['car_month'] = $month;
+            }
 
             return $this->_model
                 ->where($where)

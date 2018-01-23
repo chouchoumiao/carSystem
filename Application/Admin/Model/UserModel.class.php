@@ -273,7 +273,7 @@ namespace Admin\Model;
                 if( '' != $this->img ){
                     if( 'default.jpg' != I('post.oldImg' )){
                         //删除旧图片，防止垃圾数据
-                        ToolModel::delImg(PROFILE_PATH.'/'.I('post.oldImg'));
+                        ToolModel::delFile(PROFILE_PATH.'/'.I('post.oldImg'));
                     }
                 }
                 if( false === M('user_detail_info')->where(array('uid'=>$this->id))->save($detailData)){

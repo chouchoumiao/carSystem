@@ -20,6 +20,7 @@ define(MEDIA_PATH,$_SERVER['DOCUMENT_ROOT'].'/carSystem/Public/Uploads/Media');
 define(CURRENT_URL,'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
 define(PAGE_SHOW_COUNT_10,10);	//每页显示10条记录
+define(ROLLPAGE_6,6);	//rollPage属性设为6
 
 define(JSON_RETURN_OK,1);	//JSON返回值正确
 define(JSON_RETURN_NG,0);	//JSON返回值错误

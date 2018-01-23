@@ -93,13 +93,13 @@ namespace Admin\Model;
 
         /**
          * 删除指定文件
-         * @param $img 绝对路径文件
+         * @param $path 绝对路径文件
          * @return bool
          */
-        static function delImg($img){
-            if(file_exists($img)){
+        static function delFile($path){
+            if(file_exists($path)){
 
-                if(unlink($img)){
+                if(unlink($path)){
                     return 1;
                 }else{
                     return '删除失败';
