@@ -21,46 +21,12 @@ $(function(){
             }
 
             //驾驶员验证
-            if( $(this).is('#car_driver1') ){
-                var idname = 'car_driver1';
+            if( $(this).is('#car_driver') ){
+                var idname = 'car_driver';
                 if( (this.value.length > 5) || (this.value.length < 2) || (this.value == '') ){
-                    var errorMsg = '驾驶员1姓名不能为空，并且位数只能是2到5位,驾驶员2与3可以为空';
+                    var errorMsg = '驾驶员姓名不能为空，并且位数只能是2到5位';
                     doError($parent,errorMsg,idname);
                 }else{
-                    doOK($parent,idname);
-                }
-            }
-
-            //驾驶员2验证
-            if( $(this).is('#car_driver2') ){
-                var idname = 'car_driver2';
-
-                if( this.value.length != 0){
-                    //不为空再验证
-                    if( (this.value.length > 5) || (this.value.length < 2) ){
-                        var errorMsg = '驾驶员2姓名位数只能是2到5位';
-                        doError($parent,errorMsg,idname);
-                    }else{
-                        doOK($parent,idname);
-                    }
-                }else {
-                    doOK($parent,idname);
-                }
-            }
-
-            //驾驶员3验证
-            if( $(this).is('#car_driver3') ){
-                var idname = 'car_driver3';
-
-                if( this.value.length != 0){
-                    //不为空再验证
-                    if( (this.value.length > 5) || (this.value.length < 2) ){
-                        var errorMsg = '驾驶员3姓名位数只能是2到5位';
-                        doError($parent,errorMsg,idname);
-                    }else{
-                        doOK($parent,idname);
-                    }
-                }else {
                     doOK($parent,idname);
                 }
             }
@@ -76,89 +42,22 @@ $(function(){
                 }
             }
 
+            //车险保险公司名称不能为空
+            if( $(this).is('#car_insurance_name') ){
+                var idname = 'car_insurance_name';
+                if( (this.value.length > 25) || (this.value == '') ){
+                    var errorMsg = '保险公司不能为空，并且位数只能小于25位';
+                    doError($parent,errorMsg,idname);
+                }else{
+                    doOK($parent,idname);
+                }
+            }
         }).keyup(function(){
             $(this).triggerHandler("blur");
         }).focus(function(){
             $(this).triggerHandler("blur");
         });//end blur
 
-
-        //提交，最终验证。
-        $('#updateSend').click(function(){
-
-
-            if($('#address').val().length > 200){
-                alert('地址内容不得超过200位');
-                $('#address').focus();
-                return false;
-            }
-
-            //如果是管理员或者超级管理员的时候则不验证部门
-            if($('#isShow').val()){
-
-                //判断部门复选框是否都没有选中
-                if( 0 == ($("input[class='checkbox-purple']:checked").length)){
-                    alert('至少选中一个部门');
-                    return false;
-                }
-            }
-
-            $("form :input.required").trigger('blur');
-
-            //通过判定含有错误class的个数来验证是否都通过
-            var numError = $('.glyphicon-remove').length;
-
-            if(numError){
-                return false;
-            }
-        });
-
-        //管理员审核时。
-        $('#auditSend').click(function(){
-
-            if($('#address').val().length > 200){
-                alert('地址内容不得超过200位');
-                $('#address').focus();
-                return false;
-            }
-
-            //如果是管理员或者超级管理员的时候则不验证部门
-            if($('#isShow').val()){
-
-                //判断部门复选框是否都没有选中
-                if( 0 == ($("input[class='checkbox-purple']:checked").length)){
-                    alert('至少选中一个部门');
-                    return false;
-                }
-            }
-
-            $("form :input.required").trigger('blur');
-
-            //通过判定含有错误class的个数来验证是否都通过
-            var numError = $('.glyphicon-remove').length;
-
-            if(numError){
-                return false;
-            }
-        });
-
-        //管理员审核时。
-        $('#auditNoSend').click(function(){
-
-            location.href = history.back();
-        });
-
-        //重置
-        $('#updateRes').click(function(){
-
-
-            $("div").removeClass('glyphicon');
-            $("div").removeClass('has-success');
-            $("div").removeClass('has-error');
-            $("div").removeClass('has-feedback');
-            $('.glyphicon').remove();
-            $('.showMsg').remove();
-        });
     }
 
 });

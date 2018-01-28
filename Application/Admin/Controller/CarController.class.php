@@ -44,12 +44,36 @@ class CarController extends Controller{
                 case 'add':
                     $this->add();
                     break;
+                case 'getDriver':
+                    $this->getDriver();
+                    break;
                 default:    //测试PHPExcel
                     $this->test();
                     break;
             }
         }
 
+    }
+
+    /**
+     * 根据输入的车牌号自动显示驾驶员姓名
+     */
+    private function getDriver(){
+
+        if (isset($_POST['carNo'])){
+            $car_driver = $this->_model->getDriverInfoBycarNo();
+
+            if( false !== $car_driver){
+                $arr['success'] = JSON_RETURN_OK;
+                $arr['msg'] = $car_driver;
+            }else{
+                $arr['success'] = JSON_RETURN_NG;
+            }
+        }else{
+            $arr['success'] = JSON_RETURN_UNKNOW;
+        }
+
+        echo json_encode($arr);
     }
 
     /**
@@ -70,24 +94,25 @@ class CarController extends Controller{
             return $msg = '车牌号位数必须在7到10之间';
         }
 
-        if(!ValidateModel::isEmpty($data['car_driver1'])){
-            return $msg = '驾驶员1姓名不能为空，驾驶员2与3可以为空';
+        if(!ValidateModel::isEmpty($data['car_driver'])){
+            return $msg = '驾驶员姓名不能为空，驾驶员2与3可以为空';
         }
 
-        if( (ToolModel::getStrLen($data['car_driver1']) > 5) || (ToolModel::getStrLen($data['car_driver1']) < 2) ){
-            return $msg = '驾驶员1姓名位数只能是2到5位';
-        }
-
-        if( (ToolModel::getStrLen($data['car_driver2']) > 5) || (ToolModel::getStrLen($data['car_driver2']) < 2) ){
-            return $msg = '驾驶员2姓名位数只能是2到5位';
-        }
-
-        if( (ToolModel::getStrLen($data['car_driver3']) > 5) || (ToolModel::getStrLen($data['car_driver3']) < 2) ){
-            return $msg = '驾驶员3姓名位数只能是2到5位';
+        if( (ToolModel::getStrLen($data['car_driver']) > 5) || (ToolModel::getStrLen($data['car_driver']) < 2) ){
+            return $msg = '驾驶员姓名位数只能是2到5位';
         }
 
         if(!(ValidateModel::checkDate($data['car_insurance_expires']))){
             return $msg = '日期格式错误';
+        }
+
+        //为空判断
+        if(!ValidateModel::isEmpty($data['car_insurance_name'])){
+            return $msg = '保险公司名称不能为空';
+        }
+
+        if( ToolModel::getStrLen($data['car_insurance_name']) >= 25  ){
+            return $msg = '保险公司名称位数必须小于25位';
         }
 
         return $msg;

@@ -147,4 +147,125 @@ namespace Admin\Model;
                 ->order('car_date')
                 ->select();
         }
+
+        /**
+         * 根据选择的条件进行查询
+         */
+        public function getInfoByCase(){
+
+            $where = self::getCase();
+
+            return $this->_model->where($where)->select();
+
+        }
+
+        /**
+         * 按条件取得分页信息
+         * @param $limit
+         * @return mixed
+         */
+        public function getPageFreightInfoByCase($limit){
+
+            $where = self::getCase();
+            return $this->_model->order('id')->limit($limit)->where($where)->select();
+
+        }
+
+        private function getCase(){
+
+            $where = [];
+
+            if(isset($_SESSION['case']) && (!isset($_POST['searchInfo']))){
+
+                $where = $_SESSION['case'];
+
+            }else {
+
+                if (I('post.car_date', '') != '') {
+                    $where['car_date'] = I('post.car_date', '');
+                }
+                if (I('post.car_no', '') != '') {
+                    $where['car_no'] = I('post.car_no', '');
+                }
+
+                if (I('post.car_driver', '') != '') {
+                    $where['car_driver'] = I('post.car_driver', '');
+                }
+
+                if (I('post.goods_name', '') != '') {
+                    $where['goods_name'] = I('post.goods_name', '');
+                }
+
+                if (I('post.loading_place', '') != '') {
+                    $where['loading_place'] = I('post.loading_place', '');
+                }
+
+                if (I('post.unloading_place', '') != '') {
+                    $where['unloading_place'] = I('post.unloading_place', '');
+                }
+
+                if (I('post.loading_tonnage', '') != '') {
+                    $where['loading_tonnage'] = I('post.loading_tonnage', '');
+                }
+
+                if (I('post.unloading_tonnage', '') != '') {
+                    $where['unloading_tonnage'] = I('post.unloading_tonnage', '');
+                }
+
+                if (I('post.ticket_number', '') != '') {
+                    $where['ticket_number'] = I('post.ticket_number', '');
+                }
+
+                $_SESSION['case'] = $where;
+            }
+            return $where;
+        }
+
+        private function getDateCase(){
+
+            if(isset($_SESSION['dateCase']) && (!isset($_POST['searchInfo']))){
+
+                $where = $_SESSION['dateCase'];
+
+            }else {
+
+                $startDate = I('post.car_start_date', '');
+                $endDate = I('post.car_end_date', '');
+
+                if ( ($startDate != '') && ($endDate != '') ) {
+                    $where = 'car_date BETWEEN \''.$startDate. '\' AND \''.$endDate.'\'';
+                }else{
+                    if(($startDate == '')){
+                        $where = 'car_date <= \''.$endDate.'\'';
+                    }else{
+                        $where = 'car_date >= \''.$startDate.'\'';
+                    }
+                }
+
+                $_SESSION['dateCase'] = $where;
+            }
+            return $where;
+        }
+
+        /**
+         * 按开始与结束日期条件取得所有信息
+         * @return string
+         */
+        public function getInfoByDateSearch(){
+
+            $where = self::getDateCase();
+            return $this->_model->where($where)->select();
+        }
+
+        /**
+         * 按开始与结束日期条件取得分页信息
+         * @param $limit
+         * @return mixed
+         */
+        public function getPageFreightInfoByDateCase($limit){
+
+            $where = self::getDateCase();
+            return $this->_model->order('id')->limit($limit)->where($where)->select();
+
+        }
     }

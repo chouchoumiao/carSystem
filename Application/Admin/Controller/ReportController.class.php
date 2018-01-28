@@ -12,6 +12,7 @@ namespace Admin\Controller;
 use Admin\Model\ToolModel;
 use Think\Controller;
 use Admin\Model\ExcelFreightModel;
+use Admin\Model\ExcelCarInfoModel;
 
 class ReportController extends Controller{
 
@@ -37,6 +38,21 @@ class ReportController extends Controller{
                     $this->uploadFreight();
                     break;
 
+                //车辆信息报表相关
+                case 'car':
+                    $this->car();
+                    break;
+                case 'carAll':
+                    $this->carAll();
+                    break;
+                case 'showInputCar':
+                    $this->showInputCar();
+                    break;
+
+                case 'uploadCarInfo':
+                    $this->uploadCarInfo();
+                    break;
+
 //                //编辑货运信息
 //                case 'the':
 //                    $this->the();
@@ -59,6 +75,54 @@ class ReportController extends Controller{
 
     }
 
+
+    /**
+     * * * * * * * * * * * * * * * * * * * * * * * 车辆信息相关* * * * * * * * * * * * * * * * * * * * * * *
+     * ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+     */
+
+    /**
+     * 导出所有车辆信息报表
+     */
+    private function carAll(){
+        ExcelCarInfoModel::outputExcelCarInfo('车辆信息全数据','');
+    }
+
+    /**
+     * 显示车辆信息页面
+     */
+    private function car(){
+
+        $this->display('carShow');
+    }
+
+    private function showInputCar(){
+        $this->display('car_input_info');
+    }
+
+    private function uploadCarInfo(){
+
+        if( ExcelCarInfoModel::uploadCarInfo() ){
+            ToolModel::goBack('导入成功');
+        }else {
+            ToolModel::goBack('导入失败');
+        }
+
+    }
+
+
+    /**
+     * ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+     * * * * * * * * * * * * * * * * * * * * * * * 车辆信息相关* * * * * * * * * * * * * * * * * * * * * * *
+     */
+
+
+
+
+    /**
+     * * * * * * * * * * * * * * * * * * * * * * * 货运信息相关* * * * * * * * * * * * * * * * * * * * * * *
+     * ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+     */
 
     /**
      * 导入Excel写入数据库
@@ -100,5 +164,9 @@ class ReportController extends Controller{
 
         ExcelFreightModel::outputExcelFreightMonthInfo();
     }
+    /**
+     * ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+     * * * * * * * * * * * * * * * * * * * * * * * 货运信息相关* * * * * * * * * * * * * * * * * * * * * * *
+     */
 
 }

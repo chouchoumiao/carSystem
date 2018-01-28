@@ -24,9 +24,11 @@
                     <div class="smart-widget-body">
                         <div class="tab-content">
                             <div class="tab-pane fade in active">
-                                <h4 class="header-text m-top-md">添加货运信息</h4>
-                                    <div class="alert alert-warning alert-custom">
-                                        <i class="fa fa-warning"></i><span class="m-left-xs">通过Excel表导入货运信息信息数据（按照固定的模板，支持多Sheet）</span>
+                                <h4 class="header-text m-top-md">添加车辆信息</h4>
+                                <form method="post" class="dropzone" action="__ROOT__/Admin/Report/doAction/action/uploadCarInfo/" enctype="multipart/form-data">
+
+                                    <div class="alert alert-info alert-custom">
+                                        <i class="fa fa-info"></i><span class="m-left-xs">通过Excel表导入车辆信息数据（按照固定的模板）</span>
                                     </div>
 
                                     <div class="fallback">
@@ -42,7 +44,7 @@
                                         <div class="form-group m-top-lg">
                                             <label class="col-sm-12  control-label"></label>
                                             <div class="col-sm-3 col-sm-offset-4" >
-                                                <input type="submit" class="btn btn-warning btn-block" value="导入" name="searchInfo" id="searchInfo">
+                                                <input type="submit" class="btn btn-info btn-block" value="导入" name="searchInfo" id="searchInfo">
                                             </div>
                                         </div>
                                         <br/>
@@ -55,7 +57,7 @@
                 </div><!-- ./smart-widget-inner -->
             </div><!-- ./smart-widget -->
         </div>
-    </div>
+
     <!-- 导入footer -->
     <include file = './footer'/>
 

@@ -15,64 +15,21 @@ set_time_limit (0);
  */
 	class ExcelFreightModel {
 
-
-
         /**
          * 导入货运excel表
          * @return array
          */
         static function uploadFreight(){
 
-            import("Org.Util.PHPExcel");
-            import("Org.Util.PHPExcel.IOFactory");
-
-            if (! empty ( $_FILES ['file_stu'] ['name'] )) {
-                $tmp_file = $_FILES ['file_stu'] ['tmp_name'];
-                $file_types = explode(".", $_FILES ['file_stu']['name']);
-                $file_type = $file_types [count($file_types) - 1];
-                /*判别是不是.xls文件，判别是不是excel文件*/
-                if ((strtolower($file_type) != "xls") && (strtolower($file_type) != "xlsx")) {
-                    ToolModel::goBack('不是Excel文件，重新上传');
-                }
-                /*设置上传路径*/
-                $savePath = PUBLIC_PATH . '/excel/';
-                /*以时间来命名上传的文件*/
-                $str = date('Ymdhis');
-                $file_name = $str . "." . $file_type;
-                /*是否上传成功*/
-                if (!copy($tmp_file, $savePath . $file_name)) {
-                    ToolModel::goBack('上传失败');
-                }
-            }
-
-            $file_path = $savePath . $file_name;
-
-            if (!file_exists($file_path)) {
-                die('上传路径错误!');
-            }
-
-            //文件的扩展名
-            $ext = strtolower(pathinfo($file_path,PATHINFO_EXTENSION));
-
-            if($ext == 'xlsx'){
-                $objReader=\PHPExcel_IOFactory::createReader('Excel2007');
-                $objPHPExcel = $objReader->load($file_path,'utf-8');
-            }elseif($ext == 'xls'){
-                $objReader=\PHPExcel_IOFactory::createReader('Excel5');
-                $objPHPExcel = $objReader->load($file_path,'utf-8');
-            }
-
-            //删除临时存放的文件
-            ToolModel::delFile($file_path);
-
-            //获取工作表的名称与数目
+            $objPHPExcel = null;
+            $objPHPExcel = ToolModel::upLoadExcelFile($objPHPExcel);
             $sheetNames = $objPHPExcel->getSheetNames();
             $sheetCount = count($sheetNames);
 
             //多Sheet追加导入
             for ( $i = 0; $i < $sheetCount; $i++ ) {
 
-                if( 1 != self::getAllSheetSData($sheetNames[$i],$objPHPExcel)){
+                if( 1 != self::getAllSheetSFreightData($sheetNames[$i],$objPHPExcel)){
                     return false;
                 }
             }
@@ -88,21 +45,21 @@ set_time_limit (0);
          */
         static function outputExcelFreightInfo($sheetName='sheet',$path){
 
-            $objPHPExcel = self::getObj($objSheet);
+            $objPHPExcel = ToolModel::getObj($objSheet);
 
             $objSheet = $objPHPExcel->getActiveSheet();
 
             //设置sheetName
-            self::setSheetName($objSheet,$sheetName);
+            ToolModel::setSheetName($objSheet,$sheetName);
 
             //设置标题部分
-            self::setTitle($objSheet);
+            self::setFreightTitle($objSheet);
 
             //取得数据并填入到指定位置，并设置样式
             self::setAllData($objSheet);
 
             //输出到指定地方
-            self::outputExcel($objPHPExcel,$path,'Excel2007');
+            ToolModel::outputExcel($objPHPExcel,$path,'Excel2007');
 
             $objPHPExcel->disconnectWorksheets();
             unset($objPHPExcel);
@@ -121,7 +78,7 @@ set_time_limit (0);
             $data = D('Freight')->getFreightExcelInfo();
 
             //设置具体内容
-            self::setCell($objSheet,$data);
+            ToolModel::setDetailCell($objSheet,$data,'I',13);
 
             return $objSheet;
 
@@ -133,13 +90,13 @@ set_time_limit (0);
          */
         static function outputExcelFreightMonthInfo(){
 
-            $objPHPExcel = self::getObj($objSheet);
+            $objPHPExcel = ToolModel::getObj($objSheet);
 
             //取得数据并填入到指定位置，并设置样式
             self::setMonthData($objPHPExcel);
 
             //输出到指定地方
-            self::outputExcel($objPHPExcel,'','Excel2007');
+            ToolModel::outputExcel($objPHPExcel,'','Excel2007');
 
             $objPHPExcel->disconnectWorksheets();
             unset($objPHPExcel);
@@ -175,10 +132,10 @@ set_time_limit (0);
                 $objSheet = $objPHPExcel->getActiveSheet($k);
 
                 //设置标题部分
-                self::setTitle($objSheet);
+                self::setFreightTitle($objSheet);
 
                 //设置具体内容
-                self::setCell($objSheet,$data);
+                ToolModel::setDetailCell($objSheet,$data,'I',13);
             }
 
             return $objPHPExcel;
@@ -203,7 +160,7 @@ set_time_limit (0);
             $objSheet = $objPHPExcel->getActiveSheet($k);
 
             /** 设置工作表名称 */
-            $objSheet->setTitle($sheetName);
+            ToolModel::setSheetName($objSheet,$sheetName);
 
             return $objPHPExcel;
 
@@ -215,12 +172,12 @@ set_time_limit (0);
          * @param $objSheet
          * @return mixed
          */
-        private function setTitle(&$objSheet){
+        private function setFreightTitle(&$objSheet){
 
             //设置每列格式
 
             //A为日期格式
-            $objSheet->getStyle('F')->getNumberFormat()
+            $objSheet->getStyle('A')->getNumberFormat()
                 ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD);
 
             //发货吨位为保留两位小数
@@ -234,14 +191,7 @@ set_time_limit (0);
             $objSheet->getStyle('I')->getNumberFormat()
                 ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
 
-
-            //设置第一行样式
-            $objSheet->setCellValue('A1', '嵊州市锡锋物流运输公司');
-
-            $objSheet->mergeCells('A1:I2');
-            $objSheet->getStyle('A1')->getFont()->setName('宋体');
-            $objSheet->getStyle('A1')->getFont()->setSize(24);
-            $objSheet->getStyle('A1')->getFont()->setBold(true);
+            $objSheet = ToolModel::setTitle($objSheet,'I');
 
             //设置项目样式
             $objSheet->setCellValue('A3', '日期');
@@ -254,100 +204,7 @@ set_time_limit (0);
             $objSheet->setCellValue('H3', '票号');
             $objSheet->setCellValue('I3', '金额');
 
-            $objSheet->getStyle('A3:I3')->getFont()->setName('宋体');
-            $objSheet->getStyle('A3:I3')->getFont()->setSize(12);
-            $objSheet->getStyle('A3:I3')->getFont()->setBold(true);
-
             return $objSheet;
-
-        }
-
-        /**
-         * 设置sheet名称    => 通用
-         * @param $objSheet
-         * @param $sheetName
-         * @return mixed
-         */
-        private function setSheetName(&$objSheet,$sheetName){
-
-            $objSheet->setTitle($sheetName);
-            return $objSheet;
-        }
-
-        /**
-         * 获得PHPExcel对象  => 通用
-         * @param $objSheet
-         * @return \PHPExcel
-         */
-        private function getObj(&$objSheet){
-
-            import("Org.Util.PHPExcel");
-            import("Org.Util.PHPExcel.IOFactory");
-
-            return $objSheet = new \PHPExcel();                     //实例化一个PHPExcel()对象
-
-        }
-
-        /**
-         * 输出具体数据并设置格式  => 通用
-         * @param $objSheet
-         * @param $data
-         * @return mixed
-         */
-        private function setCell(&$objSheet,$data){
-            $objSheet->fromArray($data,null, 'A4');  //利用fromArray()直接一次性填充数据
-            //算出最后一行的列数，用来算范围，加边框
-            $count = count($data) + 3;
-
-            $styleThinBlackBorderOutline = array(
-                'borders' => array (
-                    'outline' => array (
-                        'style' => \PHPExcel_Style_Border::BORDER_THIN,   //设置border样式
-                    ),
-                ),
-            );
-
-            //循环将所有单元格的字段都加边框
-            for($i=1;$i<=$count;$i++){
-                $objSheet->getStyle( 'A'.$i.':I'.$i)->applyFromArray($styleThinBlackBorderOutline);
-                $objSheet->getStyle('A'.$i.':I'.$i )->getBorders()->getAllBorders()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
-            }
-
-            //所有单元格都设置垂直居中显示
-            $objStyleA = $objSheet->getStyle('A1:I'.$count);
-            $objAlignA = $objStyleA->getAlignment();
-            $objAlignA->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);    //左右居中
-            $objAlignA->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);  //上下居中
-
-            //设置单元格长度
-            $objSheet->getDefaultColumnDimension()->setWidth(13);
-
-            return $objSheet;
-        }
-
-        /**
-         * 输出到指定位置   => 通用
-         * @param $objPHPExcel
-         * @param $path
-         * @param string $type
-         */
-        private function outputExcel(&$objPHPExcel,$path,$type = 'Excel2007'){
-            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel,$type);   //设定写入excel的类型
-
-            if( '' == $path ){
-                header("Content-Type: application/force-download");
-                header("Content-Type: application/octet-stream");
-                header("Content-Type: application/download");
-                header('Content-Disposition:inline;filename="output.xlsx"');
-                header("Content-Transfer-Encoding: binary");
-                header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-                header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                header("Pragma: no-cache");
-                $objWriter->save('php://output');
-            }else{
-                $objWriter->save($path);
-            }
 
         }
 
@@ -357,7 +214,7 @@ set_time_limit (0);
          * @param $objPHPExcel
          * @return int
          */
-        private function getAllSheetSData($sheetName,&$objPHPExcel){
+        private function getAllSheetSFreightData($sheetName,&$objPHPExcel){
 
             $sheet = $objPHPExcel->getSheetByName($sheetName);
 

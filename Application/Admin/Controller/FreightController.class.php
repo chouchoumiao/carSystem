@@ -44,12 +44,142 @@ class FreightController extends Controller{
                 case 'add':
                     $this->add();
                     break;
-
+                //按条件查询
+                case 'freightByCase':
+                    $this->freightByCase();
+                    break;
+                case 'freightByCaseGetInfo':
+                    $this->freightByCaseGetInfo();
+                    break;
+                case 'freightByDateShow':
+                    $this->freightByDateShow();
+                    break;
+                case 'freightByDateSearch':
+                    $this->freightByDateSearch();
+                    break;
             }
         }
 
     }
 
+    private function freightByDateSearch(){
+
+        if(isset($_POST['searchDateInfo']) && ('查询') == I('searchDateInfo','') ){
+
+            //第一次进来先清空session中的
+            unset($_SESSION['dateCase']);
+            $data = $this->_model->getInfoByDateSearch();
+
+            if(false === $data){
+                ToolModel::goBack('查询错误');
+            }else{
+                if(count($data) == 0){
+                    ToolModel::goBack('该组合条件查询没有结果，请确认条件是否有误');
+                }else{
+
+                    self::getDateCaseInfoWithPage();
+
+                }
+            }
+        }else{
+
+            if(isset($_GET['p'])){
+
+                self::getDateCaseInfoWithPage();
+            }
+        }
+    }
+
+    private function getDateCaseInfoWithPage(){
+
+        $data = $this->_model->getInfoByDateSearch();
+
+        //分页
+        import('ORG.Util.Page');// 导入分页类
+        $Page = new \Org\Util\Page(count($data), PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
+        $limit = $Page->firstRow . ',' . $Page->listRows;
+
+        //取得分分页信息
+        $freighInfo = $this->_model->getPageFreightInfoByDateCase($limit);
+
+        $show = $Page->show();// 分页显示输出
+
+        $this->assign('data', $freighInfo); //用户信息注入模板
+        $this->assign('page', $show);    //赋值分页输出
+        $this->display('freight_info_show');
+    }
+
+    /**
+     * 显示日期条件查询画面
+     */
+    private function freightByDateShow(){
+        $this->display('freight_date_search');
+    }
+
+    /**
+     * 根据条件来取得数据
+     */
+    private function freightByCase(){
+
+        $this->display('freight_by_case');
+
+    }
+
+    /**
+     * 根据条件查询对应的值，并分页
+     */
+    private function freightByCaseGetInfo(){
+
+        if(isset($_POST['searchInfo']) && (I('post.searchInfo','') == '查询') ){
+
+            //第一次进来先清空session中的
+            unset($_SESSION['case']);
+            $data = $this->_model->getInfoByCase();
+
+            if(false === $data){
+                ToolModel::goBack('查询错误');
+            }else{
+                if(count($data) == 0){
+                    ToolModel::goBack('该组合条件查询没有结果，请确认条件是否有误');
+                }else{
+                    //分页
+                    import('ORG.Util.Page');// 导入分页类
+                    $Page = new \Org\Util\Page(count($data), PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
+                    $limit = $Page->firstRow . ',' . $Page->listRows;
+
+                    //取得分分页信息
+                    $freighInfo = $this->_model->getPageFreightInfoByCase($limit);
+
+                    $show = $Page->show();// 分页显示输出
+
+                    $this->assign('data', $freighInfo); //用户信息注入模板
+                    $this->assign('page', $show);    //赋值分页输出
+                    $this->display('freight_info_show');
+                }
+            }
+        }else{
+
+            if(isset($_GET['p'])){
+
+                $data = $this->_model->getInfoByCase();
+
+                //分页
+                import('ORG.Util.Page');// 导入分页类
+                $Page = new \Org\Util\Page(count($data), PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
+                $limit = $Page->firstRow . ',' . $Page->listRows;
+
+                //取得分分页信息
+                $freighInfo = $this->_model->getPageFreightInfoByCase($limit);
+
+                $show = $Page->show();// 分页显示输出
+
+                $this->assign('data', $freighInfo); //用户信息注入模板
+                $this->assign('page', $show);    //赋值分页输出
+                $this->display('freight_info_show');
+            }
+        }
+
+    }
 
     /**
      * 根据ID来获得需要编辑修改的车辆信息

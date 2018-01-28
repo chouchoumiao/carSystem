@@ -39,12 +39,10 @@
                     <table class="table table-hover center table-responsive">
                         <thead style="text-align: center">
                         <tr>
-                            <th>No</th>
                             <th>车牌</th>
-                            <th>驾驶员1</th>
-                            <th>驾驶员2</th>
-                            <th>驾驶员3</th>
+                            <th>驾驶员</th>
                             <th>车险到期日期</th>
+                            <th>保险公司名称</th>
                             <th>创建时间</th>
                             <th>更新时间</th>
                             <th>操作</th>
@@ -54,12 +52,10 @@
                             <notempty name="data">
                                 <foreach name="data" item="vo" key ="k">
                                     <tr>
-                                        <td>{$vo.id}</td>
                                         <td>{$vo.car_no}</td>
-                                        <td>{$vo.car_driver1}</td>
-                                        <td>{$vo.car_driver2}</td>
-                                        <td>{$vo.car_driver3}</td>
+                                        <td>{$vo.car_driver}</td>
                                         <td>{$vo.car_insurance_expires}</td>
+                                        <td>{$vo.car_insurance_name}</td>
                                         <td>{$vo.insert_time}</td>
                                         <td>{$vo.edit_time}</td>
                                         <td>

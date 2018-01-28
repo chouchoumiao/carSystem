@@ -17,7 +17,7 @@ class Page{
     public $totalRows; // 总行数
     public $totalPages; // 分页总页面数
     public $rollPage   = 11;// 分页栏每页显示的页数
-	public $lastSuffix = true; // 最后一页是否显示总页数
+	public $lastSuffix = false; // 最后一页是否显示总页数  wujiayu
 
     private $p       = 'p'; //分页参数名
     private $url     = ''; //当前链接URL

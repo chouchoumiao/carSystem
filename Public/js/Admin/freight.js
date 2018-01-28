@@ -27,6 +27,8 @@ $(function(){
                     var errorMsg = '车牌位数不能为空并且只能在7到10位之间';
                     doError($parent,errorMsg,idname);
                 }else{
+
+                    getDriverInfo(this.value);
                     doOK($parent,idname);
                 }
             }
@@ -131,86 +133,29 @@ $(function(){
             $(this).triggerHandler("blur");
         });//end blur
 
-
-        //提交，最终验证。
-        $('#updateSend').click(function(){
-
-
-            if($('#address').val().length > 200){
-                alert('地址内容不得超过200位');
-                $('#address').focus();
-                return false;
-            }
-
-            //如果是管理员或者超级管理员的时候则不验证部门
-            if($('#isShow').val()){
-
-                //判断部门复选框是否都没有选中
-                if( 0 == ($("input[class='checkbox-purple']:checked").length)){
-                    alert('至少选中一个部门');
-                    return false;
-                }
-            }
-
-            $("form :input.required").trigger('blur');
-
-            //通过判定含有错误class的个数来验证是否都通过
-            var numError = $('.glyphicon-remove').length;
-
-            if(numError){
-                return false;
-            }
-        });
-
-        //管理员审核时。
-        $('#auditSend').click(function(){
-
-            if($('#address').val().length > 200){
-                alert('地址内容不得超过200位');
-                $('#address').focus();
-                return false;
-            }
-
-            //如果是管理员或者超级管理员的时候则不验证部门
-            if($('#isShow').val()){
-
-                //判断部门复选框是否都没有选中
-                if( 0 == ($("input[class='checkbox-purple']:checked").length)){
-                    alert('至少选中一个部门');
-                    return false;
-                }
-            }
-
-            $("form :input.required").trigger('blur');
-
-            //通过判定含有错误class的个数来验证是否都通过
-            var numError = $('.glyphicon-remove').length;
-
-            if(numError){
-                return false;
-            }
-        });
-
-        //管理员审核时。
-        $('#auditNoSend').click(function(){
-
-            location.href = history.back();
-        });
-
-        //重置
-        $('#updateRes').click(function(){
-
-
-            $("div").removeClass('glyphicon');
-            $("div").removeClass('has-success');
-            $("div").removeClass('has-error');
-            $("div").removeClass('has-feedback');
-            $('.glyphicon').remove();
-            $('.showMsg').remove();
-        });
     }
 
 });
+
+//删除指定车辆信息
+function getDriverInfo(carNo){
+
+    $.ajax({
+        url:ROOT+"/Admin/Car/doAction/action/getDriver"//改为你的动态页
+        ,type:"POST"
+        ,data:{
+            'carNo':carNo
+        }
+        ,dataType: "json"
+        ,success:function(json){
+            if(json.success == 1){
+                $('#car_driver').val(json.msg);
+
+            }
+        }
+        ,error:function(xhr){alert('PHP页面有错误！'+xhr.responseText);}
+    });
+}
 
 //删除指定车辆信息
 function delFreightInfo(id){
@@ -292,4 +237,11 @@ function doOK($parent,idname) {
     }
 
     $('#edit').removeAttr("disabled");
+}
+
+function showItem(item) {
+
+    $('#line').show();
+    $('#'+item).show();
+
 }
