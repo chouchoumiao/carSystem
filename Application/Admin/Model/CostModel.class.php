@@ -5,17 +5,17 @@
  * User: Administrator
  * Date: 2018/01/15
  * Time: 20:49
- * 货运管理类
+ * 费用管理类
  *
  */
 namespace Admin\Model;
 
-    class FreightModel {
+    class CostModel {
 
         private $_model;
 
         public function __construct(){
-            $this->_model = M('freight');
+            $this->_model = M('cost');
         }
 
         /**
@@ -42,9 +42,9 @@ namespace Admin\Model;
 
         /**
          * @return mixed
-         * 取得所有货运的数量
+         * 取得所有费用的数量
          */
-        public function getFreightCount(){
+        public function getCostCount(){
 
             return ToolModel::getIntCount($this->_model->count());
 
@@ -55,27 +55,27 @@ namespace Admin\Model;
          * @param $limit
          * @return mixed
          */
-        public function getPageFreightInfo($limit){
+        public function getPageCostInfo($limit){
 
             return $this->_model->order('id')->limit($limit)->select();
 
         }
 
         /**
-         * 取得指定货运信息
+         * 取得指定费用信息
          * @param $id
          * @return mixed
          */
-        public function getTheFreightInfo($id){
+        public function getTheCostInfo($id){
             return $this->_model->find($id);
         }
 
         /**
-         * 更新对应的货运信息
+         * 更新对应的费用信息
          */
-        public function updateTheFreightInfo(){
+        public function updateTheCostInfo(){
 
-            $_POST['car_month'] = substr($_POST['car_date'],0,7);
+            $_POST['cost_month'] = substr($_POST['car_date'],0,7);
 
             //追加更新时间
             $_POST['edit_time'] = date('Y-m-d H:i:s', time());
@@ -89,7 +89,7 @@ namespace Admin\Model;
          * @param $id
          * @return mixed
          */
-        public function deleteTheFreightInfo($id){
+        public function deleteTheCostInfo($id){
 
             $where['id'] = $id;
 
@@ -98,15 +98,15 @@ namespace Admin\Model;
         }
 
         /**
-         * 新追加货运信息
+         * 新追费用运信息
          * @param string $data
          * @return mixed
          */
-        public function addFreightInfo($data = ''){
+        public function addCostInfo($data = ''){
 
             if('' == $data){
                 //追加更新时间
-                $_POST['car_month'] = substr($_POST['car_date'],0,7);
+                $_POST['cost_month'] = substr($_POST['cost_date'],0,7);
 
                 $_POST['insert_time'] = ToolModel::getNowTime();
                 $_POST['edit_time'] = ToolModel::getNowTime();
@@ -164,7 +164,7 @@ namespace Admin\Model;
          * @param $limit
          * @return mixed
          */
-        public function getPageFreightInfoByCase($limit){
+        public function getPageCostInfoByCase($limit){
 
             $where = self::getCase();
             return $this->_model->order('id')->limit($limit)->where($where)->select();
@@ -175,17 +175,17 @@ namespace Admin\Model;
 
             $where = [];
 
-            if(isset($_SESSION['case']) && (!isset($_POST['searchInfo']))){
+            if(isset($_SESSION['costCase']) && (!isset($_POST['searchInfo']))){
 
-                $where = $_SESSION['case'];
+                $where = $_SESSION['costCase'];
 
             }else {
 
-                if (I('post.car_date', '') != '') {
-                    $where['car_date'] = I('post.car_date', '');
+                if (I('post.cost_date', '') != '') {
+                    $where['cost_date'] = I('post.cost_date', '');
                 }
-                if (I('post.car_month', '') != '') {
-                    $where['car_month'] = I('post.car_month', '');
+                if (I('post.cost_month', '') != '') {
+                    $where['cost_month'] = I('post.cost_month', '');
                 }
                 if (I('post.car_no', '') != '') {
                     $where['car_no'] = I('post.car_no', '');
@@ -195,40 +195,20 @@ namespace Admin\Model;
                     $where['car_driver'] = I('post.car_driver', '');
                 }
 
-                if (I('post.goods_name', '') != '') {
-                    $where['goods_name'] = I('post.goods_name', '');
+                if (I('post.cost_name', '') != '') {
+                    $where['cost_name'] = I('post.cost_name', '');
                 }
 
-                if (I('post.loading_place', '') != '') {
-                    $where['loading_place'] = I('post.loading_place', '');
-                }
-
-                if (I('post.unloading_place', '') != '') {
-                    $where['unloading_place'] = I('post.unloading_place', '');
-                }
-
-                if (I('post.loading_tonnage', '') != '') {
-                    $where['loading_tonnage'] = I('post.loading_tonnage', '');
-                }
-
-                if (I('post.unloading_tonnage', '') != '') {
-                    $where['unloading_tonnage'] = I('post.unloading_tonnage', '');
-                }
-
-                if (I('post.ticket_number', '') != '') {
-                    $where['ticket_number'] = I('post.ticket_number', '');
-                }
-
-                $_SESSION['case'] = $where;
+                $_SESSION['costCase'] = $where;
             }
             return $where;
         }
 
         private function getDateCase(){
 
-            if(isset($_SESSION['dateCase']) && (!isset($_POST['searchInfo']))){
+            if(isset($_SESSION['costDateCase']) && (!isset($_POST['searchInfo']))){
 
-                $where = $_SESSION['dateCase'];
+                $where = $_SESSION['costDateCase'];
 
             }else {
 
@@ -245,7 +225,7 @@ namespace Admin\Model;
                     }
                 }
 
-                $_SESSION['dateCase'] = $where;
+                $_SESSION['costDateCase'] = $where;
             }
             return $where;
         }

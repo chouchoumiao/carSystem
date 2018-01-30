@@ -31,6 +31,9 @@ class ReportController extends Controller{
                 case 'freightMonth':
                     $this->freightMonth();
                     break;
+                case 'freightDateSerach':
+                    $this->freightDateSerach();
+                    break;
                 case 'showInputFreight':
                     $this->showInputFreight();
                     break;
@@ -163,6 +166,13 @@ class ReportController extends Controller{
     private function freightMonth(){
 
         ExcelFreightModel::outputExcelFreightMonthInfo();
+    }
+
+    /**
+     * 导出按开始日期与结束日期的查询数据
+     */
+    private function freightDateSerach(){
+
     }
     /**
      * ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑

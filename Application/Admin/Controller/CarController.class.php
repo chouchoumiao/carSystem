@@ -230,6 +230,12 @@ class CarController extends Controller{
 
             $this->assign('data', $carInfo); //用户信息注入模板
             $this->assign('page', $show);    //赋值分页输出
+
+            if($_GET['p'] > 1){
+                $No = intval($_GET['p'] - 1)*10;
+                $this->assign('no', $No);    //赋值分页输
+            }
+
         }
 
         $this->display('car_info_show');

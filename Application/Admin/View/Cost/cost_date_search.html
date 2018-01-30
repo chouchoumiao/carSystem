@@ -1,0 +1,70 @@
+<extend name="cost_layout" />
+<block name="cost_content">
+    <div class="col-md-12">
+        <div class="smart-widget">
+            <div class="smart-widget-inner">
+
+                <div class="smart-widget-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active">
+                            <h4 class="header-text m-top-md">按条件查询货运信息</h4>
+                            <form class="form-horizontal m-top-md" id="searchInfoForm" action="__ROOT__/Admin/Freight/doAction/action/freightByDateSearch" method="post">
+
+                                <div class="alert alert-danger alert-custom">
+                                    <i class="fa fa-danger"></i><span class="m-left-xs">选择条件后，直接点击可添加该条件</span>
+                                </div>
+
+                                <br/>
+
+                                <div class="form-group">
+
+                                    <div class="btn-group col-sm-12 col-sm-offset-3">
+
+                                        <button type="button" class="btn btn-warning dropdown-toggle col-sm-6" data-toggle="dropdown">
+                                            请选择
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu border-right">
+                                            <li><a href="javascript:void(0)" onclick="showItem('div_car_start_date')">开始日期</a></li>
+                                            <li><a href="javascript:void(0)" onclick="showItem('div_car_end_date')">结束日期</a></li>
+                                        </ul>
+                                    </div>
+                                </div><!-- /form-group -->
+
+                                <h2 class="header-text m-bottom-md" style="display: none" id="line"></h2>
+
+                                <div class="form-group" style="display: none" id="div_car_start_date">
+                                    <label class="col-sm-2 control-label" for="car_start_date">开始日期(包含)</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control" name="car_start_date" id="car_start_date" value="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="display: none" id="div_car_end_date">
+                                    <label class="col-sm-2 control-label" for="car_end_date">结束日期(包含)</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control" name="car_end_date" id="car_end_date" value="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-top-lg">
+                                    <label class="col-sm-12  control-label"></label>
+                                    <div class="col-sm-3 col-sm-offset-1" >
+                                        <input type="submit" class="btn btn-info btn-block" value="查询" name="searchDateInfo" id="searchDateInfo">
+                                    </div>
+                                    <div class="col-sm-3" >
+                                        <input type="submit" class="btn btn-success btn-block" value="导出" name="exportDateInfo" id="exportDateInfo">
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <input type="reset" class="btn  btn-default m-left-xs btn-block" value="重置">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div><!-- ./tab-pane -->
+                    </div><!-- ./tab-content -->
+                </div><!-- ./smart-widget-body -->
+            </div><!-- ./smart-widget-inner -->
+        </div><!-- ./smart-widget -->
+    </div>
+</block>

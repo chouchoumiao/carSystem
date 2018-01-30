@@ -39,6 +39,7 @@
                     <table class="table table-hover center table-responsive">
                         <thead style="text-align: center">
                         <tr>
+                            <th>No.</th>
                             <th>日期</th>
                             <th>车牌号</th>
                             <th>驾驶员</th>
@@ -58,6 +59,7 @@
                         <notempty name="data">
                             <foreach name="data" item="vo" key ="k">
                                 <tr>
+                                    <td>{$no + $k + 1}</td>
                                     <td>{$vo.car_date}</td>
                                     <td>{$vo.car_no}</td>
                                     <td>{$vo.car_driver}</td>

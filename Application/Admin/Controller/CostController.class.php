@@ -14,7 +14,7 @@ use Admin\Model\ToolModel;
 use Admin\Model\ValidateModel;
 use Admin\Model\ExcelFreightModel;
 
-class FreightController extends Controller{
+class CostController extends Controller{
 
     private $_model;
 
@@ -22,14 +22,14 @@ class FreightController extends Controller{
 
         $action = $_GET['action'];
         if( isset($action) && '' != $action ){
-            $this->_model = D('Freight');
+            $this->_model = D('Cost');
 
             switch($action){
                 //取得所有车辆信息(分页)
                 case 'all':
                     $this->all();
                     break;
-                //编辑货运信息
+                //编辑费用信息
                 case 'the':
                     $this->the();
                     break;
@@ -46,29 +46,29 @@ class FreightController extends Controller{
                     $this->add();
                     break;
                 //按条件查询
-                case 'freightByCase':
-                    $this->freightByCase();
+                case 'costByCase':
+                    $this->costByCase();
                     break;
-                case 'freightByCaseGetInfo':
-                    $this->freightByCaseGetInfo();
+                case 'costByCaseGetInfo':
+                    $this->costByCaseGetInfo();
                     break;
-                case 'freightByDateShow':
-                    $this->freightByDateShow();
+                case 'costByDateShow':
+                    $this->costByDateShow();
                     break;
-                case 'freightByDateSearch':
-                    $this->freightByDateSearch();
+                case 'costByDateSearch':
+                    $this->costByDateSearch();
                     break;
             }
         }
 
     }
 
-    private function freightByDateSearch(){
+    private function costByDateSearch(){
 
         if(isset($_POST['searchDateInfo']) && ('查询') == I('searchDateInfo','') ){
 
             //第一次进来先清空session中的
-            unset($_SESSION['dateCase']);
+            unset($_SESSION['costDateCase']);
             $data = $this->_model->getInfoByDateSearch();
 
             if(false === $data){
@@ -108,11 +108,11 @@ class FreightController extends Controller{
             $limit = $Page->firstRow . ',' . $Page->listRows;
 
             //取得分分页信息
-            $freighInfo = $this->_model->getPageFreightInfoByDateCase($limit);
+            $costInfo = $this->_model->getPageFreightInfoByDateCase($limit);
 
             $show = $Page->show();// 分页显示输出
 
-            $this->assign('data', $freighInfo); //用户信息注入模板
+            $this->assign('data', $costInfo); //用户信息注入模板
             $this->assign('page', $show);    //赋值分页输
 
 
@@ -129,55 +129,38 @@ class FreightController extends Controller{
     /**
      * 显示日期条件查询画面
      */
-    private function freightByDateShow(){
+    private function costByDateShow(){
         $this->display('freight_date_search');
     }
 
     /**
      * 根据条件来取得数据
      */
-    private function freightByCase(){
+    private function costByCase(){
 
-        $this->display('freight_by_case');
+        $this->display('cost_by_case');
 
     }
 
     /**
      * 根据条件查询对应的值，并分页
      */
-    private function freightByCaseGetInfo(){
+    private function costByCaseGetInfo(){
 
         if(isset($_POST['searchInfo']) && (I('post.searchInfo','') == '查询') ){
 
             //第一次进来先清空session中的
-            unset($_SESSION['case']);
+            unset($_SESSION['costCase']);
             $data = $this->_model->getInfoByCase();
 
             if(false === $data){
                 ToolModel::goBack('查询错误');
             }else{
-                if(count($data) == 0){
+                $count = count($data);
+                if($count == 0){
                     ToolModel::goBack('该组合条件查询没有结果，请确认条件是否有误');
                 }else{
-                    //分页
-                    import('ORG.Util.Page');// 导入分页类
-                    $Page = new \Org\Util\Page(count($data), PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
-                    $limit = $Page->firstRow . ',' . $Page->listRows;
-
-                    //取得分分页信息
-                    $freighInfo = $this->_model->getPageFreightInfoByCase($limit);
-
-                    $show = $Page->show();// 分页显示输出
-
-                    $this->assign('data', $freighInfo); //用户信息注入模板
-                    $this->assign('page', $show);    //赋值分页输出
-
-                    if($_GET['p'] > 1){
-                        $No = intval($_GET['p'] - 1)*10;
-                        $this->assign('no', $No);    //赋值分页输
-                    }
-
-                    $this->display('freight_info_show');
+                    self::doPageDate($count);
                 }
             }
         }else{
@@ -185,26 +168,9 @@ class FreightController extends Controller{
             if(isset($_GET['p'])){
 
                 $data = $this->_model->getInfoByCase();
+                $count = count($data);
 
-                //分页
-                import('ORG.Util.Page');// 导入分页类
-                $Page = new \Org\Util\Page(count($data), PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
-                $limit = $Page->firstRow . ',' . $Page->listRows;
-
-                //取得分分页信息
-                $freighInfo = $this->_model->getPageFreightInfoByCase($limit);
-
-                $show = $Page->show();// 分页显示输出
-
-                $this->assign('data', $freighInfo); //用户信息注入模板
-                $this->assign('page', $show);    //赋值分页输出
-
-                if($_GET['p'] > 1){
-                    $No = intval($_GET['p'] - 1)*10;
-                    $this->assign('no', $No);    //赋值分页输
-                }
-
-                $this->display('freight_info_show');
+                self::doPageDate($count);
             }
         }
 
@@ -218,24 +184,24 @@ class FreightController extends Controller{
         if(isset($_POST['id']) && (intval($_POST['id']) > 0) ){
 
             //判断传入数据是否符合要求
-            $msg = $this->checkFreightInfo($_POST);
+            $msg = $this->checkCostInfo($_POST);
             if( '' != $msg){
                 ToolModel::goBack($msg);
             }
 
             //判断是否一行更更改
-            if( 1 == $this->_model->updateTheFreightInfo()){
-                ToolModel::goToUrl('修改货运信息成功','all');
+            if( 1 == $this->_model->updateTheCostInfo()){
+                ToolModel::goToUrl('修改费用信息成功','all');
             }else{
-                ToolModel::goBack('修改货运信息出错');
+                ToolModel::goBack('修改费用信息出错');
             }
         }else{
-            ToolModel::goToUrl('未获取到修改货运的信息','all');
+            ToolModel::goToUrl('未获取到修改费用的信息','all');
         }
     }
 
     /**
-     * 取得传过来ID对应的货运信息
+     * 取得传过来ID对应的费用信息
      */
     private function the(){
         //如果有传值过来用查询传值的用户
@@ -243,22 +209,22 @@ class FreightController extends Controller{
             $id = I('get.id');
         }
 
-        $data = $this->_model->getTheFreightInfo($id);
+        $data = $this->_model->getTheCostInfo($id);
 
         if(false !== $data){
             $this->assign('the',true);
             $this->assign('data',$data);
-            $this->display('freight_the_info');
+            $this->display('cost_the_info');
         }
     }
 
     /**
-     * Json传递ID过来删除指定货运数据
+     * Json传递ID过来删除指定费用数据
      */
     private function del(){
         if(isset($_POST['id']) && (intval($_POST['id']) >= 0) ){
             //判断是否一行更更改
-            if( 1 == $this->_model->deleteTheFreightInfo(I('post.id',0))){
+            if( 1 == $this->_model->deleteTheCostInfo(I('post.id',0))){
                 $arr['success'] = JSON_RETURN_OK;
             }else{
                 $arr['success'] = JSON_RETURN_NG;
@@ -272,7 +238,7 @@ class FreightController extends Controller{
 
     private function all(){
 
-        $count = $this->_model->getFreightCount();
+        $count = $this->_model->getCostCount();
 
         //无数据
         if($count > 0) {
@@ -283,11 +249,11 @@ class FreightController extends Controller{
             $limit = $Page->firstRow . ',' . $Page->listRows;
 
             //取得分分页信息
-            $freighInfo = $this->_model->getPageFreightInfo($limit);
+            $costInfo = $this->_model->getPageCostInfo($limit);
 
             $show = $Page->show();// 分页显示输出
 
-            $this->assign('data', $freighInfo); //用户信息注入模板
+            $this->assign('data', $costInfo); //用户信息注入模板
             $this->assign('page', $show);    //赋值分页输出
 
             if($_GET['p'] > 1){
@@ -297,7 +263,7 @@ class FreightController extends Controller{
 
 
         }
-        $this->display('freight_info_show');
+        $this->display('cost_info_show');
 
     }
 
@@ -306,11 +272,11 @@ class FreightController extends Controller{
      * @param $data
      * @return string
      */
-    private function checkFreightInfo($data){
+    private function checkCostInfo($data){
 
         $msg = '';
 
-        if(!(ValidateModel::checkDate($data['car_date']))){
+        if(!(ValidateModel::checkDate($data['cost_date']))){
             return $msg = '日期格式错误';
         }
 
@@ -329,61 +295,28 @@ class FreightController extends Controller{
             return $msg = '驾驶员姓名位数只能是2到5位';
         }
 
-        if(!ValidateModel::isEmpty($data['goods_name'])){
-            return $msg = '货物名称不能为空';
+        if(!ValidateModel::isEmpty($data['cost_name'])){
+            return $msg = '报销内容不能为空';
         }
-        if( ToolModel::getStrLen($data['goods_name']) > 100){
-            return $msg = '货物名称不能超过100位';
-        }
-
-        if(!ValidateModel::isEmpty($data['loading_place'])){
-            return $msg = '装货地名称不能为空';
-        }
-        if( ToolModel::getStrLen($data['loading_place']) > 100){
-            return $msg = '装货地不能超过100位';
-        }
-
-        if(!ValidateModel::isEmpty($data['unloading_place'])){
-            return $msg = '卸货地名称不能为空';
-        }
-        if( ToolModel::getStrLen($data['unloading_place']) > 100){
-            return $msg = '卸货地不能超过100位';
-        }
-
-        if(!is_numeric($data['loading_tonnage']) || (!ValidateModel::isEmpty($data['loading_tonnage']))){
-            return $msg = '发货吨位为空或者不是数字';
-        }
-
-        if(!is_numeric($data['unloading_tonnage']) || (!ValidateModel::isEmpty($data['unloading_tonnage']))){
-            return $msg = '收货吨位为空或者不是数字';
-        }
-
-        if(ValidateModel::isEmpty($data['ticket_number'])){
-
-            //不为空的时候判断是不是都是都是数字
-            if(!ValidateModel::isNum($data['ticket_number'],'int')){
-                return $msg = '输入的票号必须是纯数字';
-            }
-
-            if( ToolModel::getStrLen($data['ticket_number']) > 8){
-                return $msg = '输入的票号不能大于8位';
-            }
+        if( ToolModel::getStrLen($data['cost_name']) > 100){
+            return $msg = '报销内容不能超过100位';
         }
 
         //不能使用ValidateModel::isNum进行判断会浮点型数据判断不对
-        if(!is_numeric($data['amount']) || (!ValidateModel::isEmpty($data['amount']))){
-            return $msg = '金额为空或者不是数字';
+        if(!is_numeric($data['cost_amount']) || (!ValidateModel::isEmpty($data['cost_amount']))){
+            return $msg = '报销金额为空或者不是数字';
         }
 
         return $msg;
     }
 
+    /**
+     * 显示新增画面
+     */
     private function addShow(){
-
-        $this->assign('today',date("Y-m-d") );
-
         //显示添加页面
-        $this->display('freight_add_info');
+        $this->assign('today',date("Y-m-d") );
+        $this->display('cost_add_info');
     }
     /**
      * 输入运费数据
@@ -392,20 +325,44 @@ class FreightController extends Controller{
         if($_POST['send'] == '新添加' ){
 
             //判断传入数据是否符合要求
-            $msg = $this->checkFreightInfo($_POST);
+            $msg = $this->checkCostInfo($_POST);
             if( '' != $msg){
                 ToolModel::goBack($msg);
             }
 
             //判断是否一行更更改
-            if(false !== $this->_model->addFreightInfo()){
-                ToolModel::goToUrl('新增货运信息成功','all');
+            if(false !== $this->_model->addCostInfo()){
+                ToolModel::goToUrl('新增费用信息成功','all');
             }else{
-                ToolModel::goBack('新增货运信息出错');
+                ToolModel::goBack('新增费用信息出错');
             }
         }else{
-            ToolModel::goToUrl('未获取到新增货运的信息','all');
+            ToolModel::goToUrl('未获取到新增费用的信息','all');
         }
+
+    }
+
+    private function doPageDate($count){
+
+        //分页
+        import('ORG.Util.Page');// 导入分页类
+        $Page = new \Org\Util\Page($count, PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
+        $limit = $Page->firstRow . ',' . $Page->listRows;
+
+        //取得分分页信息
+        $costInfo = $this->_model->getPageCostInfoByCase($limit);
+
+        $show = $Page->show();// 分页显示输出
+
+        $this->assign('data', $costInfo); //用户信息注入模板
+        $this->assign('page', $show);    //赋值分页输出
+
+        if($_GET['p'] > 1){
+            $No = intval($_GET['p'] - 1)*10;
+            $this->assign('no', $No);    //赋值分页输
+        }
+
+        $this->display('cost_info_show');
 
     }
 

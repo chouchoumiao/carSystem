@@ -1,13 +1,13 @@
-<extend name="car_layout" />
-<block name="car_content">
+<extend name="cost_layout" />
+<block name="cost_content">
     <div class="col-md-12 col-xs-12">
         <ul class="breadcrumb">
-            <li>车辆</li>
-            <li>车辆一览表</li>
+            <li>费用</li>
+            <li>费用一览表</li>
         </ul>
         <div class="smart-widget">
             <div class="smart-widget-header smart-widget-header-user">
-                车辆 信息
+                费用 信息
                 <span class="smart-widget-option">
                     <span class="refresh-icon-animated">
                         <i class="fa fa-circle-o-notch fa-spin"></i>
@@ -40,41 +40,43 @@
                         <thead style="text-align: center">
                         <tr>
                             <th>No.</th>
-                            <th>车牌</th>
+                            <th>日期</th>
+                            <th>车牌号</th>
                             <th>驾驶员</th>
-                            <th>车险到期日期</th>
-                            <th>保险公司名称</th>
+                            <th>费用内容</th>
+                            <th>费用金额</th>
                             <th>创建时间</th>
                             <th>更新时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody style="text-align: center">
-                            <notempty name="data">
-                                <foreach name="data" item="vo" key ="k">
-                                    <tr>
-                                        <td>{$no + $k + 1}</td>
-                                        <td>{$vo.car_no}</td>
-                                        <td>{$vo.car_driver}</td>
-                                        <td>{$vo.car_insurance_expires}</td>
-                                        <td>{$vo.car_insurance_name}</td>
-                                        <td>{$vo.insert_time}</td>
-                                        <td>{$vo.edit_time}</td>
-                                        <td>
-                                            <a href="__ROOT__/Admin/Car/doAction/action/the/id/{$vo.id}">
-                                                <i class="fa fa-edit"></i>编辑
-                                            </a>
-                                            <a href="javascript:delCarInfo({$vo.id});">
-                                                &nbsp <i class="fa fa-trash">删除</i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </foreach>
-                            <else />
+                        <notempty name="data">
+                            <foreach name="data" item="vo" key ="k">
                                 <tr>
-                                    <td colspan=8>没有数据</td>
+                                    <td>{$no + $k + 1}</td>
+                                    <td>{$vo.cost_date}</td>
+                                    <td>{$vo.car_no}</td>
+                                    <td>{$vo.car_driver}</td>
+                                    <td>{$vo.cost_name}</td>
+                                    <td>{$vo.cost_amount}</td>
+                                    <td>{$vo.insert_time}</td>
+                                    <td>{$vo.edit_time}</td>
+                                    <td>
+                                        <a href="__ROOT__/Admin/Cost/doAction/action/the/id/{$vo.id}">
+                                            <i class="fa fa-edit"></i>编辑
+                                        </a>
+                                        <a href="javascript:delCostInfo({$vo.id});">
+                                            &nbsp <i class="fa fa-trash">删除</i>
+                                        </a>
+                                    </td>
                                 </tr>
-                            </notempty>
+                            </foreach>
+                            <else />
+                            <tr>
+                                <td colspan=8>没有数据</td>
+                            </tr>
+                        </notempty>
                         </tbody>
                     </table>
                     <div>{$page}</div>

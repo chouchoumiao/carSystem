@@ -26,6 +26,7 @@
                                         </button>
                                         <ul class="dropdown-menu border-right">
                                             <li><a href="javascript:void(0)" onclick="showItem('div_car_date')">日期</a></li>
+                                            <li><a href="javascript:void(0)" onclick="showItem('div_car_month')">月份</a></li>
                                             <li><a href="javascript:void(0)" onclick="showItem('div_car_no')">车牌号</a></li>
                                             <li><a href="javascript:void(0)" onclick="showItem('div_car_driver')">驾驶员</a></li>
                                             <li><a href="javascript:void(0)" onclick="showItem('div_goods_name')">货物名称</a></li>
@@ -44,6 +45,12 @@
                                     <label class="col-sm-2 control-label" for="car_date">日期</label>
                                     <div class="col-sm-9">
                                         <input type="date" class="form-control" name="car_date" id="car_date" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: none" id="div_car_month">
+                                    <label class="col-sm-2 control-label" for="car_month">月份</label>
+                                    <div class="col-sm-9">
+                                        <input type="month" class="form-control" name="car_month" id="car_month" value="">
                                     </div>
                                 </div>
 

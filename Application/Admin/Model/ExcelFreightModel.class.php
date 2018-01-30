@@ -84,6 +84,25 @@ set_time_limit (0);
 
         }
 
+        /**
+         * 取得选择的开始与结束日期的数据并写入到Excel
+         * @param $objSheet
+         * @return mixed
+         */
+        private function setDateSerachData(&$objSheet){
+
+            //填入数据
+            //取得数据
+            $data = D('Freight')->getInfoByDateSearchForExport();
+
+            //设置具体内容
+            ToolModel::setDetailCell($objSheet,$data,'I',13);
+
+            return $objSheet;
+
+        }
+
+
 
         /**
          * 取得月份别的货运信息（多个Sheet）
@@ -101,6 +120,32 @@ set_time_limit (0);
             $objPHPExcel->disconnectWorksheets();
             unset($objPHPExcel);
 
+        }
+
+        /**
+         * 按照选择的开始于结束日期导出对应数据
+         * @param string $sheetName
+         * @param $path
+         */
+        static function OutputExcelFreightDateSerachData($sheetName='sheet',$path=''){
+            $objPHPExcel = ToolModel::getObj($objSheet);
+
+            $objSheet = $objPHPExcel->getActiveSheet();
+
+            //设置sheetName
+            ToolModel::setSheetName($objSheet,$sheetName);
+
+            //设置标题部分
+            self::setFreightTitle($objSheet);
+
+            //取得数据并填入到指定位置，并设置样式
+            self::setDateSerachData($objSheet);
+
+            //输出到指定地方
+            ToolModel::outputExcel($objPHPExcel,$path,'Excel2007');
+
+            $objPHPExcel->disconnectWorksheets();
+            unset($objPHPExcel);
         }
 
         /**
