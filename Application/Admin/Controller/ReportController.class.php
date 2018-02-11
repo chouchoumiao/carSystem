@@ -56,27 +56,29 @@ class ReportController extends Controller{
                     $this->uploadCarInfo();
                     break;
 
-//                //编辑货运信息
-//                case 'the':
-//                    $this->the();
-//                    break;
-//                case 'update':
-//                    $this->update();
-//                    break;
-//                case 'del':
-//                    $this->del();
-//                    break;
-//                case 'addShow':
-//                    $this->addShow();
-//                    break;
-//                case 'add':
-//                    $this->add();
-//                    break;
-
+                //利润报表相关
+                case 'income':
+                    $this->income();
+                    break;
             }
         }
 
     }
+
+    /**
+     * * * * * * * * * * * * * * * * * * * * * * * 利润报表相关* * * * * * * * * * * * * * * * * * * * * * *
+     * ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+     */
+
+    private function income(){
+
+        $this->display('incomeShow');
+    }
+
+    /**
+     * ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+     * * * * * * * * * * * * * * * * * * * * * * * 利润报表相关* * * * * * * * * * * * * * * * * * * * * * *
+     */
 
 
     /**

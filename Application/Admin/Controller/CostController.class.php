@@ -45,6 +45,14 @@ class CostController extends Controller{
                 case 'add':
                     $this->add();
                     break;
+                //固定费用输入
+                case 'fixedShow':
+                    $this->fixedShow();
+                    break;
+                case 'addFixed':
+                    $this->addFixed();
+                    break;
+
                 //按条件查询
                 case 'costByCase':
                     $this->costByCase();
@@ -212,6 +220,16 @@ class CostController extends Controller{
         $data = $this->_model->getTheCostInfo($id);
 
         if(false !== $data){
+
+            switch ($data['cost_name']){
+                case '冲油':
+                case '工资':
+                case '轮胎':
+                case '补胎':
+                $this->assign('fixed',true);
+                $this->assign('fixedName',$data['cost_name']);
+            }
+
             $this->assign('the',true);
             $this->assign('data',$data);
             $this->display('cost_the_info');
@@ -318,6 +336,41 @@ class CostController extends Controller{
         $this->assign('today',date("Y-m-d") );
         $this->display('cost_add_info');
     }
+
+    /**
+     * 显示固定费用画面
+     */
+    private function fixedShow(){
+        //显示添加页面
+//        $this->assign('today',date("Y-m-d") );
+        $this->display('cost_fexedAdd_info');
+    }
+
+    /**
+     * 输入固定运费数据
+     */
+    private function addFixed(){
+
+        if($_POST['send'] == '新添加' ){
+
+            //判断传入数据是否符合要求
+            $msg = $this->checkCostInfo($_POST);
+            if( '' != $msg){
+                ToolModel::goBack($msg);
+            }
+
+            //判断是否一行更更改
+            if(false !== $this->_model->addCostInfo()){
+                ToolModel::goToUrl('新增固定费用信息成功','all');
+            }else{
+                ToolModel::goBack('新增固定费用信息出错');
+            }
+        }else{
+            ToolModel::goToUrl('未获取到新增固定费用的信息','all');
+        }
+
+    }
+
     /**
      * 输入运费数据
      */

@@ -7,8 +7,8 @@
                 <div class="smart-widget-body">
                     <div class="tab-content">
                         <div class="tab-pane fade in active">
-                            <h4 class="header-text m-top-md">新增费用信息</h4>
-                            <form class="form-horizontal m-top-md" id="updateForm" action="__ROOT__/Admin/Cost/doAction/action/add" method="post">
+                            <h4 class="header-text m-top-md">新增固定费用信息</h4>
+                            <form class="form-horizontal m-top-md" id="updateForm" action="__ROOT__/Admin/Cost/doAction/action/addFixed" method="post">
 
                                 <input type="hidden" value={$data.id} name="id" id="id">
                                 <div class="form-group">
@@ -31,20 +31,22 @@
                                         <input type="text" class="form-control"  name="car_driver" id="car_driver" value="">
                                     </div>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="cost_name">报销内容</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control"  name="cost_name" id="cost_name" value="">
-                                    </div>
-                                </div>
+                                    <label class="col-lg-2 control-label">固定内容</label>
+                                    <div class="col-lg-2">
+                                        <select class="form-control" name="cost_name">
+                                            <option>冲油</option>
+                                            <option>工资</option>
+                                            <option>轮胎</option>
+                                            <option>补胎</option>
+                                            <option>其他</option>
+                                        </select>
+                                    </div><!-- /.col -->
+                                    <div class="col-lg-7">
+                                        <input type="text" placeholder="费用金额" class="form-control"  name="cost_amount" id="cost_amount" value="">
 
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="cost_amount">报销金额</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control"  name="cost_amount" id="cost_amount" value="">
                                     </div>
-                                </div>
+                                </div><!-- /form-group -->
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="cost_note">备注</label>

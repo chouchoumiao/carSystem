@@ -45,6 +45,7 @@
                             <th>驾驶员</th>
                             <th>费用内容</th>
                             <th>费用金额</th>
+                            <th>备注</th>
                             <th>创建时间</th>
                             <th>更新时间</th>
                             <th>操作</th>
@@ -60,6 +61,7 @@
                                     <td>{$vo.car_driver}</td>
                                     <td>{$vo.cost_name}</td>
                                     <td>{$vo.cost_amount}</td>
+                                    <td><textarea  class="form-control" disabled rows='1' cols='12'>{$vo.cost_note}</textarea></td>
                                     <td>{$vo.insert_time}</td>
                                     <td>{$vo.edit_time}</td>
                                     <td>
@@ -74,7 +76,7 @@
                             </foreach>
                             <else />
                             <tr>
-                                <td colspan=8>没有数据</td>
+                                <td colspan=9>没有数据</td>
                             </tr>
                         </notempty>
                         </tbody>

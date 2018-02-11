@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  	<head>
+        <include file='./head_layout' />
+  	</head>
+
+  	<body class="overflow-hidden">
+		<div class="wrapper preload">
+			<!-- 导入 nav-->
+			<include file='./header' />
+
+			<!-- 导入左边栏-->
+			<include file='./aside'/>
+			
+			<div class="main-container">
+
+                <!--加入通知模态框-->
+                <include file='./noticeModel'/>
+
+
+                <div class="padding-md">
+                    <div class="row m-top-md">
+                        <a href="__ROOT__/Admin/Report/doAction/action/carAll">
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="statistic-box bg-info m-bottom-md">
+                                    <div class="statistic-value">
+                                        月度报表
+                                    </div>
+
+                                    <div class="statistic-title">
+                                        (按输入先后排列)
+                                    </div>
+
+                                    <div class="statistic-icon-background">
+                                        <i class="ion-document-text"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="__ROOT__/Admin/Report/doAction/action/showInputCar">
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="statistic-box bg-warning m-bottom-md">
+
+                                    <div class="statistic-value">
+                                        导入Excel
+                                    </div>
+
+                                    <!--<div class="statistic-title">-->
+                                        <!---->
+                                    <!--</div>-->
+
+                                    <div class="statistic-icon-background">
+                                        <i class="ion-document-text"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
+                </div><!-- ./padding-md -->
+			</div><!-- /main-container -->
+
+			<!-- 导入footer -->
+            <include file = './footer'/>
+
+		</div>
+
+        <include file = './js_layout'/>
+
+  	</body>
+</html>
