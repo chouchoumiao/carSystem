@@ -106,37 +106,48 @@ set_time_limit (0);
                     ToolModel::goBack('Sheet名【'.$sheetName.'】中的A列名称必须是车号');
                 }
 
-                if($sheet->getCell("B1") == '驾驶员'){
-                    $car_driver = $sheet->getCellByColumnAndRow(1, $j)->getValue();
-                    if(is_object($car_driver))  $car_driver = $car_driver->__toString();
-                    $add_data['car_driver'] = $car_driver;
-                    if( '' == $car_driver){
+                if($sheet->getCell("B1") == '车架号'){
+                    $car_frame = $sheet->getCellByColumnAndRow(1, $j)->getValue();
+                    if(is_object($car_frame))  $car_frame = $car_frame->__toString();
+                    $add_data['car_frame'] = $car_frame;
+                    if( '' == $car_frame){
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的B列名称必须是驾驶员');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的B列名称必须是车架号');
                 }
 
-                if($sheet->getCell("C1") == '保单到期日'){
-                    $car_insurance_expires = $sheet->getCellByColumnAndRow(2, $j)->getValue();
+                if($sheet->getCell("C1") == '车主'){
+                    $car_owner = $sheet->getCellByColumnAndRow(2, $j)->getValue();
+                    if(is_object($car_owner))  $car_owner = $car_owner->__toString();
+                    $add_data['car_owner'] = $car_owner;
+                    if( '' == $car_owner){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的C列名称必须是车主');
+                }
+
+                if($sheet->getCell("D1") == '保单到期日'){
+                    $car_insurance_expires = $sheet->getCellByColumnAndRow(3, $j)->getValue();
                     if(is_object($car_insurance_expires))  $car_insurance_expires = $car_insurance_expires->__toString();
                     $add_data['car_insurance_expires'] = $car_insurance_expires;
                     if( '' == $car_insurance_expires){
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的C列名称必须是保单到期日');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的D列名称必须是保单到期日');
                 }
 
-                if($sheet->getCell("D1") == '保险公司'){
-                    $car_insurance_name = $sheet->getCellByColumnAndRow(3, $j)->getValue();
+                if($sheet->getCell("E1") == '保险公司'){
+                    $car_insurance_name = $sheet->getCellByColumnAndRow(4, $j)->getValue();
                     if(is_object($car_insurance_name))  $car_insurance_name = $car_insurance_name->__toString();
                     $add_data['car_insurance_name'] = $car_insurance_name;
                     if( '' == $car_insurance_name){
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的D列名称必须是保险公司');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的E列名称必须是保险公司');
                 }
 
                 $add_data['insert_time'] = ToolModel::getNowTime();
@@ -144,7 +155,7 @@ set_time_limit (0);
                 $data[]=$add_data;
 
                 //如果渠取到最后一行都为空，则丢弃这一行并且下面的都不进行获取
-                if( 4 == $isAllNull){
+                if( 5 == $isAllNull){
                     array_pop($data);
                     break;
                 }

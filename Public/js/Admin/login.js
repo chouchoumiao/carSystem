@@ -44,14 +44,7 @@ $(function(){
             ,success:function(json){
                 if(json.success == "NG"){
 
-                    if(json.emailErr){
-                        var msg = json.msg;
-                    }else {
-                        var msg = json.msg+"<a href='lostpassword.html'>忘记密码？</a>";
-                    }
-
-
-                    showError( msg );
+                    showError( json.msg );
                     wp_shake_js();
                     $("#wp-submit").val('登录');
                     $("#wp-submit").attr('disabled',false); //恢复按钮

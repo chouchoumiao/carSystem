@@ -38,12 +38,18 @@
                                     <div class="col-sm-9">
                                         <input type="date" class="form-control" name="car_start_date" id="car_start_date" value="">
                                     </div>
+                                    <div class="col-sm-1">
+                                        <span onclick="delItem('car_start_date')" class="glyphicon glyphicon-remove" style="position:absolute;top:10px;right:50px;z-index:10"></span>
+                                    </div>
                                 </div>
 
                                 <div class="form-group" style="display: none" id="div_car_end_date">
                                     <label class="col-sm-2 control-label" for="car_end_date">结束日期(包含)</label>
                                     <div class="col-sm-9">
                                         <input type="date" class="form-control" name="car_end_date" id="car_end_date" value="">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <span onclick="delItem('car_end_date')" class="glyphicon glyphicon-remove" style="position:absolute;top:10px;right:50px;z-index:10"></span>
                                     </div>
                                 </div>
 

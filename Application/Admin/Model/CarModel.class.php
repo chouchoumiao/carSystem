@@ -109,7 +109,7 @@ namespace Admin\Model;
         public function getCarExcelInfo(){
 
             return $this->_model
-                ->field('car_no,car_driver,car_insurance_expires,car_insurance_name')
+                ->field('car_no,car_frame,car_owner,car_insurance_expires,car_insurance_name')
                 ->order('id')
                 ->select();
         }

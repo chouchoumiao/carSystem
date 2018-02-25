@@ -1634,8 +1634,8 @@ function checkForm(){
         if('' == $user){
             return '用户名不能为空';
         }
-        if(strlen($user) < 6){
-            return '用户名长度不能小于六位';
+        if(strlen($user) < 2){
+            return '用户名长度不能小于2位';
         }
     }else{
         return '用户名不能为空';

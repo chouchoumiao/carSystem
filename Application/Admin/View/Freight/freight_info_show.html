@@ -42,7 +42,7 @@
                             <th>No.</th>
                             <th>日期</th>
                             <th>车牌号</th>
-                            <th>驾驶员</th>
+                            <!--<th>驾驶员</th>-->
                             <th>货物名称</th>
                             <th>装货地</th>
                             <th>卸货地</th>
@@ -50,6 +50,7 @@
                             <th>收货吨位</th>
                             <th>票号</th>
                             <th>金额</th>
+                            <th>客户名称</th>
                             <th>创建时间</th>
                             <th>更新时间</th>
                             <th>操作</th>
@@ -62,7 +63,7 @@
                                     <td>{$no + $k + 1}</td>
                                     <td>{$vo.car_date}</td>
                                     <td>{$vo.car_no}</td>
-                                    <td>{$vo.car_driver}</td>
+                                    <!--<td>{$vo.car_driver}</td>-->
                                     <td>{$vo.goods_name}</td>
                                     <td>{$vo.loading_place}</td>
                                     <td>{$vo.unloading_place}</td>
@@ -70,6 +71,7 @@
                                     <td>{$vo.unloading_tonnage}</td>
                                     <td>{$vo.ticket_number}</td>
                                     <td>{$vo.amount}</td>
+                                    <td>{$vo.customer}</td>
                                     <td>{$vo.insert_time}</td>
                                     <td>{$vo.edit_time}</td>
                                     <td>
@@ -84,7 +86,7 @@
                             </foreach>
                             <else />
                             <tr>
-                                <td colspan=12>没有数据</td>
+                                <td colspan=13>没有数据</td>
                             </tr>
                         </notempty>
                         </tbody>

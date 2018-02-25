@@ -28,21 +28,21 @@ $(function(){
                     doError($parent,errorMsg,idname);
                 }else{
 
-                    getDriverInfo(this.value);
+                    //getDriverInfo(this.value);  去除自动显示驾驶员姓名，因为车与驾驶员不绑定
                     doOK($parent,idname);
                 }
             }
 
-            //驾驶员验证
-            if( $(this).is('#car_driver') ){
-                var idname = 'car_driver';
-                if( (this.value.length > 5) || (this.value.length < 2) || (this.value == '') ){
-                    var errorMsg = '驾驶员姓名不能为空，并且位数只能是2到5位';
-                    doError($parent,errorMsg,idname);
-                }else{
-                    doOK($parent,idname);
-                }
-            }
+            // //驾驶员验证
+            // if( $(this).is('#car_driver') ){
+            //     var idname = 'car_driver';
+            //     if( (this.value.length > 5) || (this.value.length < 2) || (this.value == '') ){
+            //         var errorMsg = '驾驶员姓名不能为空，并且位数只能是2到5位';
+            //         doError($parent,errorMsg,idname);
+            //     }else{
+            //         doOK($parent,idname);
+            //     }
+            // }
 
             //货物名称验证
             if( $(this).is('#goods_name') ){
@@ -137,25 +137,25 @@ $(function(){
 
 });
 
-//通过Ajax获取车牌对应的驾驶员信息并填入
-function getDriverInfo(carNo){
-
-    $.ajax({
-        url:ROOT+"/Admin/Car/doAction/action/getDriver"//改为你的动态页
-        ,type:"POST"
-        ,data:{
-            'carNo':carNo
-        }
-        ,dataType: "json"
-        ,success:function(json){
-            if(json.success == 1){
-                $('#car_driver').val(json.msg);
-
-            }
-        }
-        ,error:function(xhr){alert('PHP页面有错误！'+xhr.responseText);}
-    });
-}
+//通过Ajax获取车牌对应的驾驶员信息并填入  去除自动显示驾驶员姓名，因为车与驾驶员不绑定
+// function getDriverInfo(carNo){
+//
+//     $.ajax({
+//         url:ROOT+"/Admin/Car/doAction/action/getDriver"//改为你的动态页
+//         ,type:"POST"
+//         ,data:{
+//             'carNo':carNo
+//         }
+//         ,dataType: "json"
+//         ,success:function(json){
+//             if(json.success == 1){
+//                 $('#car_driver').val(json.msg);
+//
+//             }
+//         }
+//         ,error:function(xhr){alert('PHP页面有错误！'+xhr.responseText);}
+//     });
+// }
 
 //删除指定车辆信息
 function delFreightInfo(id){
@@ -239,9 +239,17 @@ function doOK($parent,idname) {
     $('#edit').removeAttr("disabled");
 }
 
+//显示输入框
 function showItem(item) {
 
     $('#line').show();
     $('#'+item).show();
+
+}
+
+//清空输入框
+function delItem(divName) {
+    $('#'+divName).val("");
+    $('#div_'+divName).css('display','none');
 
 }

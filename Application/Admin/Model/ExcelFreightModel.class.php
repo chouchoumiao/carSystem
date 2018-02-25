@@ -102,6 +102,24 @@ set_time_limit (0);
 
         }
 
+        /**
+         * 根据条件取得数据并写入到Excel
+         * @param $objSheet
+         * @return mixed
+         */
+        private function setDateByCaseData(&$objSheet){
+
+            //填入数据
+            //取得数据
+            $data = D('Freight')->getInfoByCaseForExport();
+
+            //设置具体内容
+            ToolModel::setDetailCell($objSheet,$data,'I',13);
+
+            return $objSheet;
+
+        }
+
 
 
         /**
@@ -138,8 +156,21 @@ set_time_limit (0);
             //设置标题部分
             self::setFreightTitle($objSheet);
 
-            //取得数据并填入到指定位置，并设置样式
-            self::setDateSerachData($objSheet);
+            //取数据并填入到指定位置，并设置样式
+            if(isset($_POST['freightExport'])){     //是自由选择条件处过来的导出的Excel
+
+                self::setDateByCaseData($objSheet);
+
+            }else if(isset($_POST['exportDateInfo'])){      //是选择开始与结束日期的条件处过来的导出的Excel
+
+                self::setDateSerachData($objSheet);
+
+            }else{
+
+                ToolModel::goBack('传递参数错误');
+                exit;
+
+            }
 
             //输出到指定地方
             ToolModel::outputExcel($objPHPExcel,$path,'Excel2007');
@@ -280,7 +311,7 @@ set_time_limit (0);
                     }
 
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的A列名称必须是日期');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的A列名称必须是[日期]');
                 }
 
                 if($sheet->getCell("B3") == '车号'){
@@ -291,7 +322,7 @@ set_time_limit (0);
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的B列名称必须是车号');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的B列名称必须是[车号]');
                 }
 
                 if($sheet->getCell("C3") == '货物名称'){
@@ -302,7 +333,7 @@ set_time_limit (0);
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的C列名称必须是货物名称');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的C列名称必须是[货物名称]');
                 }
 
                 if($sheet->getCell("D3") == '装货地'){
@@ -313,7 +344,7 @@ set_time_limit (0);
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的D列名称必须是装货地');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的D列名称必须是[装货地]');
                 }
 
                 if($sheet->getCell("E3") == '卸货地'){
@@ -324,7 +355,7 @@ set_time_limit (0);
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的E列名称必须是卸货地');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的E列名称必须是[卸货地]');
                 }
 
                 if($sheet->getCell("F3") == '发货吨位'){
@@ -335,7 +366,7 @@ set_time_limit (0);
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的F列名称必须是发货吨位');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的F列名称必须是[发货吨位]');
                 }
 
                 if($sheet->getCell("G3") == '收货吨位'){
@@ -346,7 +377,7 @@ set_time_limit (0);
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的G列名称必须是是收货吨位');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的G列名称必须是是[收货吨位]');
                 }
 
                 if($sheet->getCell("H3") == '票号'){
@@ -357,7 +388,7 @@ set_time_limit (0);
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的H列名称必须是票号');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的H列名称必须是[票号]');
                 }
 
                 if($sheet->getCell("I3") == '金额'){
@@ -368,7 +399,18 @@ set_time_limit (0);
                         $isAllNull = $isAllNull + 1;
                     }
                 }else{
-                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的I列名称必须是金额');
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的I列名称必须是[金额]');
+                }
+                //新增加客户名称
+                if($sheet->getCell("J3") == '客户名称'){
+                    $customer = $sheet->getCellByColumnAndRow(9, $j)->getValue();
+                    if(is_object($customer))  $customer = $customer->__toString();
+                    $add_data['customer'] = $customer;
+                    if( '' == $customer){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的J列名称必须是[客户名称]');
                 }
 
                 $add_data['insert_time'] = ToolModel::getNowTime();

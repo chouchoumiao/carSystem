@@ -75,7 +75,7 @@ class FreightController extends Controller{
                 ToolModel::goBack('查询错误');
             }else{
                 if(count($data) == 0){
-                    ToolModel::goBack('该组合条件查询没有结果，请确认条件是否有误');
+                    ToolModel::goBackAndFlash('该组合条件查询没有结果，请确认条件是否有误');
                 }else{
 
                     self::getDateCaseInfoWithPage();
@@ -107,7 +107,7 @@ class FreightController extends Controller{
             $Page = new \Org\Util\Page(count($data), PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
             $limit = $Page->firstRow . ',' . $Page->listRows;
 
-            //取得分分页信息
+            //取得分页信息
             $freighInfo = $this->_model->getPageFreightInfoByDateCase($limit);
 
             $show = $Page->show();// 分页显示输出
@@ -157,7 +157,7 @@ class FreightController extends Controller{
                 ToolModel::goBack('查询错误');
             }else{
                 if(count($data) == 0){
-                    ToolModel::goBack('该组合条件查询没有结果，请确认条件是否有误');
+                    ToolModel::goBackAndFlash('该组合条件查询没有结果，请确认条件是否有误');
                 }else{
                     //分页
                     import('ORG.Util.Page');// 导入分页类
@@ -180,6 +180,9 @@ class FreightController extends Controller{
                     $this->display('freight_info_show');
                 }
             }
+        }else if(isset($_POST['freightExport']) && ('导出') == I('freightExport','') ){
+            self::exportDataCaseData();
+
         }else{
 
             if(isset($_GET['p'])){
@@ -322,12 +325,12 @@ class FreightController extends Controller{
             return $msg = '车牌号位数必须在7到10之间';
         }
 
-        if(!ValidateModel::isEmpty($data['car_driver'])){
-            return $msg = '驾驶员姓名不能为空';
-        }
-        if( (ToolModel::getStrLen($data['car_driver']) > 5) || (ToolModel::getStrLen($data['car_driver']) < 2) ){
-            return $msg = '驾驶员姓名位数只能是2到5位';
-        }
+//        if(!ValidateModel::isEmpty($data['car_driver'])){
+//            return $msg = '驾驶员姓名不能为空';
+//        }
+//        if( (ToolModel::getStrLen($data['car_driver']) > 5) || (ToolModel::getStrLen($data['car_driver']) < 2) ){
+//            return $msg = '驾驶员姓名位数只能是2到5位';
+//        }
 
         if(!ValidateModel::isEmpty($data['goods_name'])){
             return $msg = '货物名称不能为空';

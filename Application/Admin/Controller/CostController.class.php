@@ -83,7 +83,7 @@ class CostController extends Controller{
                 ToolModel::goBack('查询错误');
             }else{
                 if(count($data) == 0){
-                    ToolModel::goBack('该组合条件查询没有结果，请确认条件是否有误');
+                    ToolModel::goBackAndFlash('该组合条件查询没有结果，请确认条件是否有误1');
                 }else{
 
                     self::getDateCaseInfoWithPage();
@@ -166,7 +166,7 @@ class CostController extends Controller{
             }else{
                 $count = count($data);
                 if($count == 0){
-                    ToolModel::goBack('该组合条件查询没有结果，请确认条件是否有误');
+                    ToolModel::goBackAndFlash('该组合条件查询没有结果，请确认条件是否有误');
                 }else{
                     self::doPageDate($count);
                 }

@@ -191,9 +191,9 @@ namespace Admin\Model;
                     $where['car_no'] = I('post.car_no', '');
                 }
 
-                if (I('post.car_driver', '') != '') {
-                    $where['car_driver'] = I('post.car_driver', '');
-                }
+//                if (I('post.car_driver', '') != '') {
+//                    $where['car_driver'] = I('post.car_driver', '');
+//                }
 
                 if (I('post.goods_name', '') != '') {
                     $where['goods_name'] = I('post.goods_name', '');
@@ -219,6 +219,10 @@ namespace Admin\Model;
                     $where['ticket_number'] = I('post.ticket_number', '');
                 }
 
+                if (I('post.customer', '') != '') {
+                    $where['customer'] = I('post.customer', '');
+                }
+
                 $_SESSION['case'] = $where;
             }
             return $where;
@@ -226,7 +230,7 @@ namespace Admin\Model;
 
         private function getDateCase(){
 
-            if(isset($_SESSION['dateCase']) && (!isset($_POST['searchInfo']))){
+            if(isset($_SESSION['dateCase']) && (!isset($_POST['searchDateInfo']))){
 
                 $where = $_SESSION['dateCase'];
 
@@ -267,6 +271,21 @@ namespace Admin\Model;
         public function getInfoByDateSearchForExport(){
 
             $where = self::getDateCase();
+
+            return $this->_model
+                ->where($where)
+                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount')
+                ->order('car_date')
+                ->select();
+        }
+
+        /**
+         * 按选择的条件取得所有信息
+         * @return string
+         */
+        public function getInfoByCaseForExport(){
+
+            $where = self::getCase();
 
             return $this->_model
                 ->where($where)

@@ -220,6 +220,17 @@ namespace Admin\Model;
         }
 
         /**
+         * 错误返回并刷新页面
+         * @param $msg
+         */
+		static function goBackAndFlash($msg){
+
+            echo "<script>alert('$msg');window.location.href=document.referrer;</script>";
+
+            exit;
+        }
+
+        /**
          * 错误返回
          * @param $msg
          */

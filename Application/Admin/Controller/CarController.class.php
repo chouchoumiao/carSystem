@@ -44,9 +44,9 @@ class CarController extends Controller{
                 case 'add':
                     $this->add();
                     break;
-                case 'getDriver':
-                    $this->getDriver();
-                    break;
+//                case 'getDriver':         去除自动显示驾驶员姓名，因为车与驾驶员不绑定
+//                    $this->getDriver();
+//                    break;
                 default:    //测试PHPExcel
                     $this->test();
                     break;
@@ -55,26 +55,27 @@ class CarController extends Controller{
 
     }
 
-    /**
-     * 根据输入的车牌号自动显示驾驶员姓名
-     */
-    private function getDriver(){
-
-        if (isset($_POST['carNo'])){
-            $car_driver = $this->_model->getDriverInfoBycarNo();
-
-            if( false !== $car_driver){
-                $arr['success'] = JSON_RETURN_OK;
-                $arr['msg'] = $car_driver;
-            }else{
-                $arr['success'] = JSON_RETURN_NG;
-            }
-        }else{
-            $arr['success'] = JSON_RETURN_UNKNOW;
-        }
-
-        echo json_encode($arr);
-    }
+//    去除自动显示驾驶员姓名，因为车与驾驶员不绑定
+//    /**
+//     * 根据输入的车牌号自动显示驾驶员姓名
+//     */
+//    private function getDriver(){
+//
+//        if (isset($_POST['carNo'])){
+//            $car_driver = $this->_model->getDriverInfoBycarNo();
+//
+//            if( false !== $car_driver){
+//                $arr['success'] = JSON_RETURN_OK;
+//                $arr['msg'] = $car_driver;
+//            }else{
+//                $arr['success'] = JSON_RETURN_NG;
+//            }
+//        }else{
+//            $arr['success'] = JSON_RETURN_UNKNOW;
+//        }
+//
+//        echo json_encode($arr);
+//    }
 
     /**
      * 检查正确性
@@ -94,12 +95,20 @@ class CarController extends Controller{
             return $msg = '车牌号位数必须在7到10之间';
         }
 
-        if(!ValidateModel::isEmpty($data['car_driver'])){
-            return $msg = '驾驶员姓名不能为空，驾驶员2与3可以为空';
+        if(!ValidateModel::isEmpty($data['car_frame'])){
+            return $msg = '车架号不能为空';
         }
 
-        if( (ToolModel::getStrLen($data['car_driver']) > 5) || (ToolModel::getStrLen($data['car_driver']) < 2) ){
-            return $msg = '驾驶员姓名位数只能是2到5位';
+        if(ToolModel::getStrLen($data['car_frame']) > 18){
+            return $msg = '车架号位数不能大于18位';
+        }
+
+        if(!ValidateModel::isEmpty($data['car_owner'])){
+            return $msg = '车主不能为空';
+        }
+
+        if( (ToolModel::getStrLen($data['car_owner']) > 25) || (ToolModel::getStrLen($data['car_owner']) < 2) ){
+            return $msg = '车主位数只能是2到25位';
         }
 
         if(!(ValidateModel::checkDate($data['car_insurance_expires']))){
@@ -227,6 +236,19 @@ class CarController extends Controller{
             $carInfo = D('Car')->getPageCarInfo($limit);
 
             $show = $Page->show();// 分页显示输出
+
+            $d1 = strtotime(date("Y-m-d"));
+
+            for ($i=0;$i<count($carInfo);$i++){
+
+
+                $d2 = strtotime($carInfo[$i]['car_insurance_expires']);
+
+                $Days = round(($d2-$d1)/3600/24);
+                if($Days <= 90){
+                    $carInfo[$i]['car_insurance_expires'] = '<font color="red">'.$carInfo[$i]['car_insurance_expires'].'</font>';
+                }
+            }
 
             $this->assign('data', $carInfo); //用户信息注入模板
             $this->assign('page', $show);    //赋值分页输出

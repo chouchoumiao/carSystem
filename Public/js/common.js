@@ -453,8 +453,8 @@ function checkForm(){
             return '用户名不能为空！';
         }
 
-        if( userval.length < 6){
-            return '用户名必须大于等于6位！';
+        if( userval.length < 2){
+            return '用户名必须大于等于2位！';
         }
     }
 

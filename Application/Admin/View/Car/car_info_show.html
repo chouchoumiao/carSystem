@@ -3,7 +3,7 @@
     <div class="col-md-12 col-xs-12">
         <ul class="breadcrumb">
             <li>车辆</li>
-            <li>车辆一览表</li>
+            <li>车辆一览表(如果三个月之内车险将到期，则车险到期日期字体为红色，请尽快处理)</li>
         </ul>
         <div class="smart-widget">
             <div class="smart-widget-header smart-widget-header-user">
@@ -41,7 +41,8 @@
                         <tr>
                             <th>No.</th>
                             <th>车牌</th>
-                            <th>驾驶员</th>
+                            <th>车架号</th>
+                            <th>车主</th>
                             <th>车险到期日期</th>
                             <th>保险公司名称</th>
                             <th>创建时间</th>
@@ -55,7 +56,8 @@
                                     <tr>
                                         <td>{$no + $k + 1}</td>
                                         <td>{$vo.car_no}</td>
-                                        <td>{$vo.car_driver}</td>
+                                        <td>{$vo.car_frame}</td>
+                                        <td>{$vo.car_owner}</td>
                                         <td>{$vo.car_insurance_expires}</td>
                                         <td>{$vo.car_insurance_name}</td>
                                         <td>{$vo.insert_time}</td>
@@ -72,7 +74,7 @@
                                 </foreach>
                             <else />
                                 <tr>
-                                    <td colspan=8>没有数据</td>
+                                    <td colspan=9>没有数据</td>
                                 </tr>
                             </notempty>
                         </tbody>

@@ -20,11 +20,22 @@ $(function(){
                 }
             }
 
-            //驾驶员验证
-            if( $(this).is('#car_driver') ){
-                var idname = 'car_driver';
-                if( (this.value.length > 5) || (this.value.length < 2) || (this.value == '') ){
-                    var errorMsg = '驾驶员姓名不能为空，并且位数只能是2到5位';
+            //车架号验证
+            if( $(this).is('#car_frame') ){
+                var idname = 'car_frame';
+                if( (this.value.length > 18) || (this.value.length < 2) || (this.value == '') ){
+                    var errorMsg = '车架号不能为空，并且位数只能是2到18位';
+                    doError($parent,errorMsg,idname);
+                }else{
+                    doOK($parent,idname);
+                }
+            }
+
+            //车主验证
+            if( $(this).is('#car_owner') ){
+                var idname = 'car_owner';
+                if( (this.value.length > 25) || (this.value.length < 2) || (this.value == '') ){
+                    var errorMsg = '车主不能为空，并且位数只能是2到25位';
                     doError($parent,errorMsg,idname);
                 }else{
                     doOK($parent,idname);
