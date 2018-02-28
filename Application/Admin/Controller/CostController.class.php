@@ -9,10 +9,10 @@
 
 namespace Admin\Controller;
 
+use Admin\Model\ExcelCostModel;
 use Think\Controller;
 use Admin\Model\ToolModel;
 use Admin\Model\ValidateModel;
-use Admin\Model\ExcelFreightModel;
 
 class CostController extends Controller{
 
@@ -60,85 +60,26 @@ class CostController extends Controller{
                 case 'costByCaseGetInfo':
                     $this->costByCaseGetInfo();
                     break;
-                case 'costByDateShow':
-                    $this->costByDateShow();
-                    break;
-                case 'costByDateSearch':
-                    $this->costByDateSearch();
+                //导出查询的结果
+                case 'outPutSerachCostResult':
+                    $this->outPutSerachCostResult();
                     break;
             }
         }
 
-    }
-
-    private function costByDateSearch(){
-
-        if(isset($_POST['searchDateInfo']) && ('查询') == I('searchDateInfo','') ){
-
-            //第一次进来先清空session中的
-            unset($_SESSION['costDateCase']);
-            $data = $this->_model->getInfoByDateSearch();
-
-            if(false === $data){
-                ToolModel::goBack('查询错误');
-            }else{
-                if(count($data) == 0){
-                    ToolModel::goBackAndFlash('该组合条件查询没有结果，请确认条件是否有误1');
-                }else{
-
-                    self::getDateCaseInfoWithPage();
-
-                }
-            }
-        }else if(isset($_POST['exportDateInfo']) && ('导出') == I('exportDateInfo','') ){
-            self::exportDataCaseData();
-
-        }else{
-            if(isset($_GET['p'])){
-
-                self::getDateCaseInfoWithPage();
-            }
-        }
-    }
-
-    private function exportDataCaseData(){
-        ExcelFreightModel::OutputExcelFreightDateSerachData();
-    }
-
-    private function getDateCaseInfoWithPage(){
-
-        $data = $this->_model->getInfoByDateSearch();
-
-        if(false !== $data){
-            //分页
-            import('ORG.Util.Page');// 导入分页类
-            $Page = new \Org\Util\Page(count($data), PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
-            $limit = $Page->firstRow . ',' . $Page->listRows;
-
-            //取得分分页信息
-            $costInfo = $this->_model->getPageFreightInfoByDateCase($limit);
-
-            $show = $Page->show();// 分页显示输出
-
-            $this->assign('data', $costInfo); //用户信息注入模板
-            $this->assign('page', $show);    //赋值分页输
-
-
-            if($_GET['p'] > 1){
-                $No = intval($_GET['p'] - 1)*10;
-                $this->assign('no', $No);    //赋值分页输
-            }
-
-        }
-
-        $this->display('freight_info_show');
     }
 
     /**
-     * 显示日期条件查询画面
+     * 导出查询的结果
      */
-    private function costByDateShow(){
-        $this->display('freight_date_search');
+    private function outPutSerachCostResult(){
+
+        if(!isset($_SESSION['costSerachData'])){
+            ToolModel::goBack('导出失败，请重新点击查询后再导出');
+        }else{
+            ExcelCostModel::outputExcelCostInfo('费用查询结果','');
+        }
+
     }
 
     /**
@@ -158,7 +99,15 @@ class CostController extends Controller{
         if(isset($_POST['searchInfo']) && (I('post.searchInfo','') == '查询') ){
 
             //第一次进来先清空session中的
-            unset($_SESSION['costCase']);
+            if(isset($_SESSION['costCase'])){
+
+                unset($_SESSION['costCase']);
+            }
+
+            if(isset($_SESSION['costSerachData'])){
+
+                unset($_SESSION['costSerachData']);
+            }
             $data = $this->_model->getInfoByCase();
 
             if(false === $data){
@@ -168,6 +117,20 @@ class CostController extends Controller{
                 if($count == 0){
                     ToolModel::goBackAndFlash('该组合条件查询没有结果，请确认条件是否有误');
                 }else{
+
+                    if (!isset($_SESSION['costSerachData'])) {
+
+                        //为了能导出方便，将数据存入Session中
+                        for ($i = 0; $i < count($data); $i++) {
+                            $_SESSION['costSerachData'][$i]['car_no'] = $data[$i]['car_no'];
+                            $_SESSION['costSerachData'][$i]['cost_date'] = $data[$i]['cost_date'];
+                            $_SESSION['costSerachData'][$i]['car_driver'] = $data[$i]['car_driver'];
+                            $_SESSION['costSerachData'][$i]['cost_name'] = $data[$i]['cost_name'];
+                            $_SESSION['costSerachData'][$i]['cost_amount'] = $data[$i]['cost_amount'];
+                            $_SESSION['costSerachData'][$i]['cost_note'] = $data[$i]['cost_note'];
+                        }
+                    }
+
                     self::doPageDate($count);
                 }
             }
@@ -395,6 +358,9 @@ class CostController extends Controller{
 
     }
 
+    /**
+     * @param $count
+     */
     private function doPageDate($count){
 
         //分页
@@ -407,6 +373,7 @@ class CostController extends Controller{
 
         $show = $Page->show();// 分页显示输出
 
+        $this->assign('case', true); //是查询得到的结果，可以显示查出按钮
         $this->assign('data', $costInfo); //用户信息注入模板
         $this->assign('page', $show);    //赋值分页输出
 
