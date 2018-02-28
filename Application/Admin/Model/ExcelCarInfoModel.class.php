@@ -51,7 +51,7 @@ set_time_limit (0);
             $data = D('Car')->getCarExcelInfo();
 
             //设置具体内容
-            ToolModel::setDetailCell($objSheet,$data,'D',15);
+            ToolModel::setDetailCell($objSheet,$data,'E',15);
 
             return $objSheet;
 
@@ -178,16 +178,17 @@ set_time_limit (0);
             //设置每列格式
 
             //C为日期格式
-            $objSheet->getStyle('C')->getNumberFormat()
+            $objSheet->getStyle('D')->getNumberFormat()
                 ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD);
 
-            $objSheet = ToolModel::setTitle($objSheet,'D');
+            $objSheet = ToolModel::setTitle($objSheet,'E');
 
             //设置项目样式
             $objSheet->setCellValue('A3', '车号');
-            $objSheet->setCellValue('B3', '驾驶员');
-            $objSheet->setCellValue('C3', '保单到期日');
-            $objSheet->setCellValue('D3', '保险公司');
+            $objSheet->setCellValue('B3', '车架号');
+            $objSheet->setCellValue('C3', '车主');
+            $objSheet->setCellValue('D3', '保单到期日');
+            $objSheet->setCellValue('E3', '保险公司');
 
             return $objSheet;
 
