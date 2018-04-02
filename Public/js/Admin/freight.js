@@ -33,16 +33,16 @@ $(function(){
                 }
             }
 
-            // //驾驶员验证
-            // if( $(this).is('#car_driver') ){
-            //     var idname = 'car_driver';
-            //     if( (this.value.length > 5) || (this.value.length < 2) || (this.value == '') ){
-            //         var errorMsg = '驾驶员姓名不能为空，并且位数只能是2到5位';
-            //         doError($parent,errorMsg,idname);
-            //     }else{
-            //         doOK($parent,idname);
-            //     }
-            // }
+            //驾驶员验证
+            if( $(this).is('#car_driver') ){
+                var idname = 'car_driver';
+                if( (this.value.length > 5) || (this.value.length < 2) || (this.value == '') ){
+                    var errorMsg = '驾驶员姓名不能为空，并且位数只能是2到5位';
+                    doError($parent,errorMsg,idname);
+                }else{
+                    doOK($parent,idname);
+                }
+            }
 
             //货物名称验证
             if( $(this).is('#goods_name') ){

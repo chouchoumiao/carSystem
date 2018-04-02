@@ -325,12 +325,12 @@ class FreightController extends Controller{
             return $msg = '车牌号位数必须在7到10之间';
         }
 
-//        if(!ValidateModel::isEmpty($data['car_driver'])){
-//            return $msg = '驾驶员姓名不能为空';
-//        }
-//        if( (ToolModel::getStrLen($data['car_driver']) > 5) || (ToolModel::getStrLen($data['car_driver']) < 2) ){
-//            return $msg = '驾驶员姓名位数只能是2到5位';
-//        }
+        if(!ValidateModel::isEmpty($data['car_driver'])){
+            return $msg = '驾驶员姓名不能为空';
+        }
+        if( (ToolModel::getStrLen($data['car_driver']) > 5) || (ToolModel::getStrLen($data['car_driver']) < 2) ){
+            return $msg = '驾驶员姓名位数只能是2到5位';
+        }
 
         if(!ValidateModel::isEmpty($data['goods_name'])){
             return $msg = '货物名称不能为空';

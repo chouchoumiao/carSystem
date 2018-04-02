@@ -191,9 +191,9 @@ namespace Admin\Model;
                     $where['car_no'] = I('post.car_no', '');
                 }
 
-//                if (I('post.car_driver', '') != '') {
-//                    $where['car_driver'] = I('post.car_driver', '');
-//                }
+                if (I('post.car_driver', '') != '') {
+                    $where['car_driver'] = I('post.car_driver', '');
+                }
 
                 if (I('post.goods_name', '') != '') {
                     $where['goods_name'] = I('post.goods_name', '');

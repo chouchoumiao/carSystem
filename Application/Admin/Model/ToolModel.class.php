@@ -134,7 +134,7 @@ namespace Admin\Model;
                 $file_name = $str . "." . $file_type;
                 /*是否上传成功*/
                 if (!copy($tmp_file, $savePath . $file_name)) {
-                    self::goBack('上传失败');
+                    self::goBack('上传失败11');
                 }
             }
 
