@@ -44,87 +44,87 @@ $(function(){
                 }
             }
 
-            //货物名称验证
-            if( $(this).is('#goods_name') ){
-                var idname = 'goods_name';
-                if( (this.value.length > 100) || (this.value == '') ){
-                    var errorMsg = '货物名称不能为空，并且位数不能超过100位';
-                    doError($parent,errorMsg,idname);
-                }else{
-                    doOK($parent,idname);
-                }
-            }
-
-            //装货地名验证
-            if( $(this).is('#loading_place') ){
-                var idname = 'loading_place';
-                if( (this.value.length > 100) || (this.value == '') ){
-                    var errorMsg = '装货地名称不能为空，并且位数不能超过100位';
-                    doError($parent,errorMsg,idname);
-                }else{
-                    doOK($parent,idname);
-                }
-            }
-
-            //卸货地名称验证
-            if( $(this).is('#unloading_place') ){
-                var idname = 'unloading_place';
-                if( (this.value.length > 100) || (this.value == '') ){
-                    var errorMsg = '卸货地名称不能为空，并且位数不能超过100位';
-                    doError($parent,errorMsg,idname);
-                }else{
-                    doOK($parent,idname);
-                }
-            }
-
-            //发货吨位验证
-            if( $(this).is('#loading_tonnage') ){
-                var idname = 'loading_tonnage';
-                if( (!isDecimal(this.value)) || (this.value == '') ){
-                    var errorMsg = '发货吨位不能空，并且必须是数字';
-                    doError($parent,errorMsg,idname);
-                }else{
-                    doOK($parent,idname);
-                }
-            }
-
-            //收货吨位验证
-            if( $(this).is('#unloading_tonnage') ){
-                var idname = 'unloading_tonnage';
-                if( (!isDecimal(this.value)) || (this.value == '') ){
-                    var errorMsg = '收货吨位不能空，并且必须是数字';
-                    doError($parent,errorMsg,idname);
-                }else{
-                    doOK($parent,idname);
-                }
-            }
-
-            //票号验证
-            if( $(this).is('#ticket_number') ){
-                var idname = 'ticket_number';
-                if( this.value.length != 0){
-                    //不为空再验证
-                    if( (this.value.length > 8) || (!isNumber(this.value))){
-                        var errorMsg = '票号必须是纯数字，并且位数小于8位';
-                        doError($parent,errorMsg,idname);
-                    }else{
-                        doOK($parent,idname);
-                    }
-                }else {
-                    doOK($parent,idname);
-                }
-            }
-
-            //金额验证
-            if( $(this).is('#amount') ){
-                var idname = 'amount';
-                if( (!isDecimal(this.value)) || (this.value == '') ){
-                    var errorMsg = '金额不能空，并且必须是数字';
-                    doError($parent,errorMsg,idname);
-                }else{
-                    doOK($parent,idname);
-                }
-            }
+            // //货物名称验证
+            // if( $(this).is('#goods_name') ){
+            //     var idname = 'goods_name';
+            //     if( (this.value.length > 100) || (this.value == '') ){
+            //         var errorMsg = '货物名称不能为空，并且位数不能超过100位';
+            //         doError($parent,errorMsg,idname);
+            //     }else{
+            //         doOK($parent,idname);
+            //     }
+            // }
+            //
+            // //装货地名验证
+            // if( $(this).is('#loading_place') ){
+            //     var idname = 'loading_place';
+            //     if( (this.value.length > 100) || (this.value == '') ){
+            //         var errorMsg = '装货地名称不能为空，并且位数不能超过100位';
+            //         doError($parent,errorMsg,idname);
+            //     }else{
+            //         doOK($parent,idname);
+            //     }
+            // }
+            //
+            // //卸货地名称验证
+            // if( $(this).is('#unloading_place') ){
+            //     var idname = 'unloading_place';
+            //     if( (this.value.length > 100) || (this.value == '') ){
+            //         var errorMsg = '卸货地名称不能为空，并且位数不能超过100位';
+            //         doError($parent,errorMsg,idname);
+            //     }else{
+            //         doOK($parent,idname);
+            //     }
+            // }
+            //
+            // //发货吨位验证
+            // if( $(this).is('#loading_tonnage') ){
+            //     var idname = 'loading_tonnage';
+            //     if( (!isDecimal(this.value)) || (this.value == '') ){
+            //         var errorMsg = '发货吨位不能空，并且必须是数字';
+            //         doError($parent,errorMsg,idname);
+            //     }else{
+            //         doOK($parent,idname);
+            //     }
+            // }
+            //
+            // //收货吨位验证
+            // if( $(this).is('#unloading_tonnage') ){
+            //     var idname = 'unloading_tonnage';
+            //     if( (!isDecimal(this.value)) || (this.value == '') ){
+            //         var errorMsg = '收货吨位不能空，并且必须是数字';
+            //         doError($parent,errorMsg,idname);
+            //     }else{
+            //         doOK($parent,idname);
+            //     }
+            // }
+            //
+            // //票号验证
+            // if( $(this).is('#ticket_number') ){
+            //     var idname = 'ticket_number';
+            //     if( this.value.length != 0){
+            //         //不为空再验证
+            //         if( (this.value.length > 8) || (!isNumber(this.value))){
+            //             var errorMsg = '票号必须是纯数字，并且位数小于8位';
+            //             doError($parent,errorMsg,idname);
+            //         }else{
+            //             doOK($parent,idname);
+            //         }
+            //     }else {
+            //         doOK($parent,idname);
+            //     }
+            // }
+            //
+            // //金额验证
+            // if( $(this).is('#amount') ){
+            //     var idname = 'amount';
+            //     if( (!isDecimal(this.value)) || (this.value == '') ){
+            //         var errorMsg = '金额不能空，并且必须是数字';
+            //         doError($parent,errorMsg,idname);
+            //     }else{
+            //         doOK($parent,idname);
+            //     }
+            // }
 
 
         }).keyup(function(){

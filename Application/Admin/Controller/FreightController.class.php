@@ -309,7 +309,7 @@ class FreightController extends Controller{
      * @param $data
      * @return string
      */
-    private function checkFreightInfo($data){
+    private function checkFreightInfo(&$data){
 
         $msg = '';
 
@@ -332,50 +332,53 @@ class FreightController extends Controller{
             return $msg = '驾驶员姓名位数只能是2到5位';
         }
 
-        if(!ValidateModel::isEmpty($data['goods_name'])){
-            return $msg = '货物名称不能为空';
-        }
-        if( ToolModel::getStrLen($data['goods_name']) > 100){
-            return $msg = '货物名称不能超过100位';
-        }
-
-        if(!ValidateModel::isEmpty($data['loading_place'])){
-            return $msg = '装货地名称不能为空';
-        }
-        if( ToolModel::getStrLen($data['loading_place']) > 100){
-            return $msg = '装货地不能超过100位';
-        }
-
-        if(!ValidateModel::isEmpty($data['unloading_place'])){
-            return $msg = '卸货地名称不能为空';
-        }
-        if( ToolModel::getStrLen($data['unloading_place']) > 100){
-            return $msg = '卸货地不能超过100位';
-        }
-
+//        if(!ValidateModel::isEmpty($data['goods_name'])){
+//            return $msg = '货物名称不能为空';
+//        }
+//        if( ToolModel::getStrLen($data['goods_name']) > 100){
+//            return $msg = '货物名称不能超过100位';
+//        }
+//
+//        if(!ValidateModel::isEmpty($data['loading_place'])){
+//            return $msg = '装货地名称不能为空';
+//        }
+//        if( ToolModel::getStrLen($data['loading_place']) > 100){
+//            return $msg = '装货地不能超过100位';
+//        }
+//
+//        if(!ValidateModel::isEmpty($data['unloading_place'])){
+//            return $msg = '卸货地名称不能为空';
+//        }
+//        if( ToolModel::getStrLen($data['unloading_place']) > 100){
+//            return $msg = '卸货地不能超过100位';
+//        }
+//
         if(!is_numeric($data['loading_tonnage']) || (!ValidateModel::isEmpty($data['loading_tonnage']))){
-            return $msg = '发货吨位为空或者不是数字';
+            //return $msg = '发货吨位为空或者不是数字';
+            $data['loading_tonnage'] = '0.00';
         }
 
         if(!is_numeric($data['unloading_tonnage']) || (!ValidateModel::isEmpty($data['unloading_tonnage']))){
-            return $msg = '收货吨位为空或者不是数字';
+//            return $msg = '收货吨位为空或者不是数字';
+            $data['unloading_tonnage'] = '0.00';
         }
-
-        if(ValidateModel::isEmpty($data['ticket_number'])){
-
-            //不为空的时候判断是不是都是都是数字
-            if(!ValidateModel::isNum($data['ticket_number'],'int')){
-                return $msg = '输入的票号必须是纯数字';
-            }
-
-            if( ToolModel::getStrLen($data['ticket_number']) > 8){
-                return $msg = '输入的票号不能大于8位';
-            }
-        }
-
+//
+//        if(ValidateModel::isEmpty($data['ticket_number'])){
+//
+//            //不为空的时候判断是不是都是都是数字
+//            if(!ValidateModel::isNum($data['ticket_number'],'int')){
+//                return $msg = '输入的票号必须是纯数字';
+//            }
+//
+//            if( ToolModel::getStrLen($data['ticket_number']) > 8){
+//                return $msg = '输入的票号不能大于8位';
+//            }
+//        }
+//
         //不能使用ValidateModel::isNum进行判断会浮点型数据判断不对
         if(!is_numeric($data['amount']) || (!ValidateModel::isEmpty($data['amount']))){
-            return $msg = '金额为空或者不是数字';
+//            return $msg = '金额为空或者不是数字';
+            $data['amount'] = '0.00';
         }
 
         return $msg;
