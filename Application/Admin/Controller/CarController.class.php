@@ -46,7 +46,10 @@ class CarController extends Controller{
                     break;
 //                case 'getDriver':         去除自动显示驾驶员姓名，因为车与驾驶员不绑定
 //                    $this->getDriver();
-//                    break;
+//                    break;//
+                case 'getCarNo':         //自动取得匹配的车牌号码
+                    $this->getCarNo();
+                    break;
                 default:    //测试PHPExcel
                     $this->test();
                     break;
@@ -76,6 +79,28 @@ class CarController extends Controller{
 //
 //        echo json_encode($arr);
 //    }
+
+    //去除自动显示驾驶员姓名，因为车与驾驶员不绑定
+    /**
+     * 根据输入的车牌号自动显示驾驶员姓名
+     */
+    private function getCarNo(){
+
+        if (isset($_POST['carNo'])){
+            $car_driver = $this->_model->getInfoInfoBycarNo();
+
+            if( false !== $car_driver){
+                $arr['success'] = JSON_RETURN_OK;
+                $arr['msg'] = $car_driver;
+            }else{
+                $arr['success'] = JSON_RETURN_NG;
+            }
+        }else{
+            $arr['success'] = JSON_RETURN_UNKNOW;
+        }
+
+        echo json_encode($arr);
+    }
 
     /**
      * 检查正确性

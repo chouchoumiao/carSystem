@@ -276,17 +276,17 @@ class CostController extends Controller{
             return $msg = '驾驶员姓名位数只能是2到5位';
         }
 
-        if(!ValidateModel::isEmpty($data['cost_name'])){
-            return $msg = '报销内容不能为空';
-        }
-        if( ToolModel::getStrLen($data['cost_name']) > 100){
-            return $msg = '报销内容不能超过100位';
-        }
-
-        //不能使用ValidateModel::isNum进行判断会浮点型数据判断不对
-        if(!is_numeric($data['cost_amount']) || (!ValidateModel::isEmpty($data['cost_amount']))){
-            return $msg = '报销金额为空或者不是数字';
-        }
+//        if(!ValidateModel::isEmpty($data['cost_name'])){
+//            return $msg = '报销内容不能为空';
+//        }
+//        if( ToolModel::getStrLen($data['cost_name']) > 100){
+//            return $msg = '报销内容不能超过100位';
+//        }
+//
+//        //不能使用ValidateModel::isNum进行判断会浮点型数据判断不对
+//        if(!is_numeric($data['cost_amount']) || (!ValidateModel::isEmpty($data['cost_amount']))){
+//            return $msg = '报销金额为空或者不是数字';
+//        }
 
         return $msg;
     }
@@ -305,7 +305,7 @@ class CostController extends Controller{
      */
     private function fixedShow(){
         //显示添加页面
-//        $this->assign('today',date("Y-m-d") );
+        $this->assign('today',date("Y-m-d") );
         $this->display('cost_fexedAdd_info');
     }
 

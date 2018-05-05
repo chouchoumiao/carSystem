@@ -12,6 +12,15 @@ $(function(){
      * 自动验证
      */
     if($('#updateForm').length > 0) {
+
+        $('form :input').keyup(function(){
+
+            if( $(this).is('#car_no') ){
+                getCarNoInfo(this.value);
+            }
+
+        });
+
         //文本框失去焦点后
         $('form :input').blur(function(){
             var $parent = $(this).parent();
@@ -35,6 +44,8 @@ $(function(){
                     var errorMsg = '车牌位数不能为空并且只能在7到10位之间';
                     doError($parent,errorMsg,idname);
                 }else{
+
+                    //getCarNoInfo(this.value);  自动现实匹配的车牌
 
                     //getDriverInfo(this.value);  去除自动显示驾驶员姓名，因为车与驾驶员不绑定
                     doOK($parent,idname);
@@ -92,8 +103,22 @@ $(function(){
             $(this).triggerHandler("blur");
         });//end blur
 
+
+        $('.addCost').click(function () {
+            $('.firstCost').append('<div class="form-group"><label class="col-lg-2 control-label">费用内容</label><div class="col-lg-5"><input type="text" placeholder="请输入费用名称" class="form-control"  name="cost_name[]" value=""> </div><!-- /.col --> <div class="col-lg-2"> <input type="text" placeholder="费用金额" class="form-control"  name="cost_amount[]" value=""> </div> <div class="col-lg-2"> <input type="button" class="delCost btn btn-danger m-left-xs btn-block" value="删除当前行 - "> </div> </div>');
+
+            //删除当前行数据
+            $('.delCost').click(function () {
+                this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
+            });
+        });
+
+
+
     }
 });
+
+
 
 //通过Ajax获取车牌对应的驾驶员信息并填入  去除自动显示驾驶员姓名，因为车与驾驶员不绑定
 // function getDriverInfo(carNo){
@@ -114,6 +139,29 @@ $(function(){
 //         ,error:function(xhr){alert('PHP页面有错误！'+xhr.responseText);}
 //     });
 // }
+//
+function getCarNoInfo(carNo){
+
+    $.ajax({
+        url:ROOT+"/Admin/Car/doAction/action/getCarNo"//改为你的动态页
+        ,type:"POST"
+        ,data:{
+            'carNo':carNo
+        }
+        ,dataType: "json"
+        ,success:function(json){
+            if(json.success == 1){
+
+                $('#wlmslist').empty();
+
+                for (var i=0;i<json.msg.length;i++){
+                    $('#wlmslist').append("<option>"+json.msg[i]+"</option>");            //添加下拉列表
+                }
+            }
+        }
+        ,error:function(xhr){alert('PHP页面有错误！'+xhr.responseText);}
+    });
+}
 
 //删除指定费用信息
 function delCostInfo(id){

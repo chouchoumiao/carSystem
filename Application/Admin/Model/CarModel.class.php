@@ -62,6 +62,7 @@ namespace Admin\Model;
          * 更新对应的车辆信息
          */
         public function updateTheCarInfo(){
+            unset($_SESSION['car_all_no']);
             //追加更新时间
             $_POST['edit_time'] = date('Y-m-d H:i:s', time());
 
@@ -76,6 +77,8 @@ namespace Admin\Model;
          */
         public function deleteTheCarInfo($id){
 
+            unset($_SESSION['car_all_no']);
+
             $where['id'] = $id;
 
             return $this->_model->where($where)->delete();
@@ -89,6 +92,7 @@ namespace Admin\Model;
          */
         public function addCarInfo($data = ''){
 
+            unset($_SESSION['car_all_no']);
 
             if('' == $data){
                 //追加更新时间
@@ -114,10 +118,18 @@ namespace Admin\Model;
                 ->select();
         }
 
-        public function getDriverInfoBycarNo(){
-            $car_no = I('post.carNo','');
-            $where['car_no'] = $car_no;
-            return $this->_model->where($where)->getField('car_driver');
+        //根据输入的车牌号实时显示匹配的数据并显示在网页下拉框中
+        public function getInfoInfoBycarNo(){
+
+            if(!isset($_SESSION['car_all_no'])){
+                $car_no = I('post.carNo','');
+                $where['car_no'] = array('like','%'.$car_no.'%');
+                $rst = $this->_model->where($where)->getField('car_no',true);
+                $_SESSION['car_all_no'] = $rst;
+                return $rst;
+            }else{
+                return $_SESSION['car_all_no'];
+            }
 
         }
     }

@@ -21,7 +21,13 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="car_no">车牌号</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="car_no" id="car_no" value="">
+                                        <input type="text" class="form-control" name="car_no" id="car_no" list="wlmslist">
+                                        <datalist id="wlmslist">
+                                            <!--<c:forEach var="wl" items="${wuliaocp}">-->
+                                                <!--<option value="${wl.maktx }">${wl.maktx }</option>-->
+                                            <!--</c:forEach>-->
+                                        </datalist>
+
                                     </div>
                                 </div>
 
@@ -31,22 +37,21 @@
                                         <input type="text" class="form-control"  name="car_driver" id="car_driver" value="">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label">固定内容</label>
-                                    <div class="col-lg-2">
-                                        <select class="form-control" name="cost_name">
-                                            <option>冲油</option>
-                                            <option>工资</option>
-                                            <option>轮胎</option>
-                                            <option>补胎</option>
-                                            <option>其他</option>
-                                        </select>
-                                    </div><!-- /.col -->
-                                    <div class="col-lg-7">
-                                        <input type="text" placeholder="费用金额" class="form-control"  name="cost_amount" id="cost_amount" value="">
+                                <div class="firstCost">
+                                    <div class="form-group ">
+                                        <label class="col-lg-2 control-label">费用内容</label>
+                                        <div class="col-lg-5">
+                                            <input type="text" placeholder="请输入费用名称" class="form-control"  name="cost_name[]" value="">
+                                        </div><!-- /.col -->
+                                        <div class="col-lg-2">
+                                            <input type="text" placeholder="费用金额" class="form-control"  name="cost_amount[]" value="">
 
-                                    </div>
-                                </div><!-- /form-group -->
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <input type="button" class="addCost btn btn-success m-left-xs btn-block" value="继续添加 + ">
+                                        </div>
+                                    </div><!-- /form-group -->
+                                </div>
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="cost_note">备注</label>

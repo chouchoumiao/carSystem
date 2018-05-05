@@ -105,13 +105,22 @@ namespace Admin\Model;
         public function addCostInfo($data = ''){
 
             if('' == $data){
-                //追加更新时间
-                $_POST['cost_month'] = substr($_POST['cost_date'],0,7);
+                $addData['car_no'] = $_POST['car_no'];
+                $addData['cost_date'] = $_POST['cost_date'];
+                $addData['cost_month'] = substr($_POST['cost_date'],0,7);
+                $addData['car_driver'] = $_POST['car_driver'];
+                $addData['cost_note'] = $_POST['cost_note'];
+                $addData['insert_time'] = ToolModel::getNowTime();
+                $addData['edit_time'] = ToolModel::getNowTime();
 
-                $_POST['insert_time'] = ToolModel::getNowTime();
-                $_POST['edit_time'] = ToolModel::getNowTime();
+                if(is_array($_POST['cost_name'])){
+                    for ($i=0;$i<count($_POST['cost_name']);$i++){
+                        $addData['cost_name'] = $_POST['cost_name'][$i];
+                        $addData['cost_amount'] = $_POST['cost_amount'][$i];
+                        $this->_model->add($addData);
+                    }
+                }
 
-                return $this->_model->add($_POST);
             }else{
                 return $this->_model->addAll($data);
             }
