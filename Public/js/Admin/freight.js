@@ -4,6 +4,26 @@ $(function(){
      * 自动验证
      */
     if($('#updateForm').length > 0) {
+
+        $('form :input').keyup(function(){
+
+            if( $(this).is('#car_no')){
+                if(this.value.length > 3 ){
+                    //alert('5');
+                    getCarNoInfo(this.value);
+                }
+            }
+
+
+            if( $(this).is('#car_driver')){
+                if(this.value.length > 0 ){
+                    getDriverNoInfo(this.value);
+                }
+            }
+
+        });
+
+
         //文本框失去焦点后
         $('form :input').blur(function(){
             var $parent = $(this).parent();
@@ -137,25 +157,62 @@ $(function(){
 
 });
 
-//通过Ajax获取车牌对应的驾驶员信息并填入  去除自动显示驾驶员姓名，因为车与驾驶员不绑定
-// function getDriverInfo(carNo){
-//
-//     $.ajax({
-//         url:ROOT+"/Admin/Car/doAction/action/getDriver"//改为你的动态页
-//         ,type:"POST"
-//         ,data:{
-//             'carNo':carNo
-//         }
-//         ,dataType: "json"
-//         ,success:function(json){
-//             if(json.success == 1){
-//                 $('#car_driver').val(json.msg);
-//
-//             }
-//         }
-//         ,error:function(xhr){alert('PHP页面有错误！'+xhr.responseText);}
-//     });
-// }
+function getCarNoInfo(carNo){
+
+    $.ajax({
+        url:ROOT+"/Admin/Car/doAction/action/getCarNo"//改为你的动态页
+        ,type:"POST"
+        ,data:{
+            'carNo':carNo
+        }
+        ,dataType: "json"
+        ,success:function(json){
+            if(json.success == 1){
+
+                if(json.msg != null){
+                    $('#wlmslist').empty();
+
+                    for (var i=0;i<json.msg.length;i++){
+                        $('#wlmslist').append("<option>"+json.msg[i]+"</option>");            //添加下拉列表
+                    }
+                }else {
+                    return false;
+                }
+
+            }
+        }
+        ,error:function(xhr){alert('PHP页面有错误！'+xhr.responseText);}
+    });
+}
+
+function getDriverNoInfo(driverName){
+
+    $.ajax({
+        url:ROOT+"/Admin/Driver/doAction/action/getDriverName"//改为你的动态页
+        ,type:"POST"
+        ,data:{
+            'driverName':driverName
+        }
+        ,dataType: "json"
+        ,success:function(json){
+            if(json.success == 1){
+
+                if(json.msg != null){
+                    $('#namelist').empty();
+
+                    for (var i=0;i<json.msg.length;i++){
+                        $('#namelist').append("<option>"+json.msg[i]+"</option>");            //添加下拉列表
+                    }
+                }else {
+                    return false;
+                }
+
+
+            }
+        }
+        ,error:function(xhr){alert('PHP页面有错误！'+xhr.responseText);}
+    });
+}
 
 //删除指定车辆信息
 function delFreightInfo(id){

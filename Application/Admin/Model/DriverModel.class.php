@@ -5,24 +5,24 @@
  * User: Administrator
  * Date: 2018/01/15
  * Time: 20:49
- * 车辆管理类
+ * 驾驶员管理类
  *
  */
 namespace Admin\Model;
 
-    class CarModel {
+    class DriverModel {
 
         private $_model;
 
         public function __construct(){
-            $this->_model = M('car_info');
+            $this->_model = M('driver');
         }
 
         /**
          * @return mixed
-         * 取得所有车辆信息
+         * 取得所有驾驶员信息
          */
-        public function getCarInfo(){
+        public function getDriverInfo(){
 
             return $this->_model->select();
 
@@ -30,9 +30,9 @@ namespace Admin\Model;
 
         /**
          * @return mixed
-         * 取得所有车辆的数量
+         * 取得所有驾驶员的数量
          */
-        public function getCarCount(){
+        public function getDriverCount(){
 
             return ToolModel::getIntCount($this->_model->count());
 
@@ -43,26 +43,32 @@ namespace Admin\Model;
          * @param $limit
          * @return mixed
          */
-        public function getPageCarInfo($limit){
+        public function getPageDriverInfo($limit){
 
             return $this->_model->order('id')->limit($limit)->select();
 
         }
 
         /**
-         * 取得指定车辆信息
+         * 取得指定驾驶员信息
          * @param $id
          * @return mixed
          */
-        public function getTheCarInfo($id){
+        public function getTheDriverInfo($id){
             return $this->_model->find($id);
         }
 
         /**
-         * 更新对应的车辆信息
+         * 更新对应的驾驶员信息
          */
-        public function updateTheCarInfo(){
-//            unset($_SESSION['car_all_no']);
+        public function updateTheDriverInfo(){
+//            unset($_SESSION['driver_all_name']);
+
+            if($_POST['driver_is_active'] == '1'){
+                $_POST['driver_leave_date'] = '9999-12-31';
+            }
+
+
             //追加更新时间
             $_POST['edit_time'] = date('Y-m-d H:i:s', time());
 
@@ -71,13 +77,13 @@ namespace Admin\Model;
         }
 
         /**
-         * 根据传入的ID进行删除该车辆信息
+         * 根据传入的ID进行删除该驾驶员信息
          * @param $id
          * @return mixed
          */
-        public function deleteTheCarInfo($id){
+        public function deleteTheDriverInfo($id){
 
-//            unset($_SESSION['car_all_no']);
+//            unset($_SESSION['driver_all_name']);
 
             $where['id'] = $id;
 
@@ -86,15 +92,20 @@ namespace Admin\Model;
         }
 
         /**
-         * 新追加车辆信息
+         * 新追加驾驶员信息
          * @param string $data
          * @return bool|mixed|string
          */
-        public function addCarInfo($data = ''){
+        public function addDriverInfo($data = ''){
 
-//            unset($_SESSION['car_all_no']);
+//            unset($_SESSION['driver_all_name']);
 
             if('' == $data){
+
+                if($_POST['driver_is_active'] == '1'){
+                    $_POST['driver_leave_date'] = '9999-12-31';
+                }
+
                 //追加更新时间
                 $_POST['insert_time'] = ToolModel::getNowTime();
                 $_POST['edit_time'] = ToolModel::getNowTime();
@@ -110,25 +121,25 @@ namespace Admin\Model;
          * @return mixed
          * 取得所有货运信息
          */
-        public function getCarExcelInfo(){
+        public function getDriverExcelInfo(){
 
             return $this->_model
-                ->field('car_no,car_frame,car_owner,car_insurance_expires,car_insurance_name')
+                ->field('driver_name,driver_from_time,driver_is_active,driver_leave_time')
                 ->order('id')
                 ->select();
         }
 
-        //根据输入的车牌号实时显示匹配的数据并显示在网页下拉框中
-        public function getInfoInfoBycarNo(){
+        //根据输入的驾驶员姓名实时显示匹配的数据并显示在网页下拉框中
+        public function getDriverInfoByDriverName(){
 
-//            if(!isset($_SESSION['car_all_no'])){
-                $car_no = I('post.carNo','');
-                $where['car_no'] = array('like','%'.$car_no.'%');
-                $rst = $this->_model->where($where)->getField('car_no',true);
-//                $_SESSION['car_all_no'] = $rst;
+//            if(!isset($_SESSION['driver_all_name'])){
+                $driverName = I('post.driverName','');
+                $where['driver_name'] = array('like','%'.$driverName.'%');
+                $rst = $this->_model->where($where)->getField('driver_name',true);
+//                $_SESSION['driver_all_name'] = $rst;
                 return $rst;
 //            }else{
-//                return $_SESSION['car_all_no'];
+//                return $_SESSION['driver_all_name'];
 //            }
 
         }
