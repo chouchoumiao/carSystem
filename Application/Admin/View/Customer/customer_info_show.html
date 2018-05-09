@@ -1,0 +1,85 @@
+<extend name="customer_layout" />
+<block name="customer_content">
+    <div class="col-md-12 col-xs-12">
+        <ul class="breadcrumb">
+            <li>客户</li>
+            <li>客户一览表</li>
+        </ul>
+        <div class="smart-widget">
+            <div class="smart-widget-header smart-widget-header-user">
+                客户 信息
+                <span class="smart-widget-option">
+                    <span class="refresh-icon-animated">
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                    </span>
+                    <a href="#" class="widget-toggle-hidden-option">
+                        <i class="fa fa-cog"></i>
+                    </a>
+                    <a href="#" class="widget-collapse-option" data-toggle="collapse">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </span>
+            </div>
+            <div class="smart-widget-inner">
+                <div class="smart-widget-hidden-section">
+                    <ul class="widget-color-list clearfix">
+                        <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                        <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                        <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                        <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                        <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                        <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                        <li style="background-color:#e36159;" data-color="widget-red"></li>
+                        <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                        <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                        <li style="background-color:#fff;" data-color="reset"></li>
+                    </ul>
+                </div>
+                <div class="smart-widget-body hidden-xs">
+                    <table class="table table-hover center table-responsive">
+                        <thead style="text-align: center">
+                        <tr>
+                            <th>No.</th>
+                            <th>客户名称</th>
+                            <th>联系人性别</th>
+                            <th>联系人电话</th>
+                            <th>客户地址</th>
+                            <th>创建时间</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody style="text-align: center">
+                        <notempty name="data">
+                            <foreach name="data" item="vo" key ="k">
+                                <tr>
+                                    <td>{$no + $k + 1}</td>
+                                    <td>{$vo.customer_name}</td>
+                                    <td>{$vo.customer_sex}</td>
+                                    <td>{$vo.customer_tel}</td>
+                                    <td>{$vo.customer_address}</td>
+                                    <td>{$vo.insert_time}</td>
+                                    <td>{$vo.edit_time}</td>
+                                    <td>
+                                        <a href="__ROOT__/Admin/Customer/doAction/action/the/id/{$vo.id}">
+                                            <i class="fa fa-edit"></i>编辑
+                                        </a>
+                                        <a href="javascript:delCustomerInfo({$vo.id});">
+                                            &nbsp <i class="fa fa-trash">删除</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </foreach>
+                            <else />
+                            <tr>
+                                <td colspan=8>没有数据</td>
+                            </tr>
+                        </notempty>
+                        </tbody>
+                    </table>
+                    <div>{$page}</div>
+                </div>
+            </div><!-- ./smart-widget-inner -->
+        </div><!-- ./smart-widget -->
+    </div>
+</block>
