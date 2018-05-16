@@ -15,6 +15,36 @@ set_time_limit (0);
  */
 	class ExcelFreightModel {
 
+
+        /**
+         ** 输出所有的费用信息
+         * @param string $sheetName
+         * @param $path
+         */
+        static function outputExcelFreightInfoByCase($sheetName='sheet',$path){
+
+            $objPHPExcel = ToolModel::getObj($objSheet);
+
+            $objSheet = $objPHPExcel->getActiveSheet();
+
+            //设置sheetName
+            ToolModel::setSheetName($objSheet,$sheetName);
+
+            //设置标题部分
+            self::setFreightTitle($objSheet);
+
+            //取得数据并填入到指定位置，并设置样式
+            self::setFreightDataByCase($objSheet);
+
+            //输出到指定地方
+            ToolModel::outputExcel($objPHPExcel,$path,'Excel2007');
+
+            $objPHPExcel->disconnectWorksheets();
+            unset($objPHPExcel);
+
+        }
+
+
         /**
          * 导入货运excel表
          * @return array
@@ -102,25 +132,6 @@ set_time_limit (0);
 
         }
 
-        /**
-         * 根据条件取得数据并写入到Excel
-         * @param $objSheet
-         * @return mixed
-         */
-        private function setDateByCaseData(&$objSheet){
-
-            //填入数据
-            //取得数据
-            $data = D('Freight')->getInfoByCaseForExport();
-
-            //设置具体内容
-            ToolModel::setDetailCell($objSheet,$data,'J',13);
-
-            return $objSheet;
-
-        }
-
-
 
         /**
          * 取得月份别的货运信息（多个Sheet）
@@ -157,11 +168,7 @@ set_time_limit (0);
             self::setFreightTitle($objSheet);
 
             //取数据并填入到指定位置，并设置样式
-            if(isset($_POST['freightExport'])){     //是自由选择条件处过来的导出的Excel
-
-                self::setDateByCaseData($objSheet);
-
-            }else if(isset($_POST['exportDateInfo'])){      //是选择开始与结束日期的条件处过来的导出的Excel
+            if(isset($_POST['exportDateInfo'])){      //是选择开始与结束日期的条件处过来的导出的Excel
 
                 self::setDateSerachData($objSheet);
 
@@ -445,6 +452,19 @@ set_time_limit (0);
                 exit;
             }
             return 1;
+        }
+
+        private function setFreightDataByCase(&$objSheet){
+
+            //填入数据
+            //取得数据
+            $data = $_SESSION['freightSerachData'];
+
+            //设置具体内容
+            ToolModel::setDetailCell($objSheet,$data,'J',13);
+
+            return $objSheet;
+
         }
 
 	}

@@ -58,7 +58,23 @@ class FreightController extends Controller{
                 case 'freightByDateSearch':
                     $this->freightByDateSearch();
                     break;
+                case 'outPutSerachFreightResult':
+                    $this->outPutSerachFreightResult();
+                    break;
             }
+        }
+
+    }
+
+    /**
+     * 导出查询的结果
+     */
+    private function outPutSerachFreightResult(){
+
+        if(!isset($_SESSION['freightSerachData'])){
+            ToolModel::goBack('导出失败，请重新点击查询后再导出');
+        }else{
+            ExcelFreightModel::outputExcelFreightInfoByCase('货运查询结果','');
         }
 
     }
@@ -153,61 +169,47 @@ class FreightController extends Controller{
             unset($_SESSION['case']);
             $data = $this->_model->getInfoByCase();
 
+            if(isset($_SESSION['freightSerachData'])){
+                unset($_SESSION['freightSerachData']);
+            }
+
             if(false === $data){
                 ToolModel::goBack('查询错误');
             }else{
-                if(count($data) == 0){
+                $count = count($data);
+                if($count == 0){
                     ToolModel::goBackAndFlash('该组合条件查询没有结果，请确认条件是否有误');
                 }else{
-                    //分页
-                    import('ORG.Util.Page');// 导入分页类
-                    $Page = new \Org\Util\Page(count($data), PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
-                    $limit = $Page->firstRow . ',' . $Page->listRows;
 
-                    //取得分分页信息
-                    $freighInfo = $this->_model->getPageFreightInfoByCase($limit);
+                    if (!isset($_SESSION['freightSerachData'])) {
 
-                    $show = $Page->show();// 分页显示输出
-
-                    $this->assign('data', $freighInfo); //用户信息注入模板
-                    $this->assign('page', $show);    //赋值分页输出
-
-                    if($_GET['p'] > 1){
-                        $No = intval($_GET['p'] - 1)*10;
-                        $this->assign('no', $No);    //赋值分页输
+                        //为了能导出方便，将数据存入Session中
+                        for ($i = 0; $i < count($data); $i++) {
+                            $_SESSION['freightSerachData'][$i]['car_date'] = $data[$i]['car_date'];
+                            $_SESSION['freightSerachData'][$i]['car_no'] = $data[$i]['car_no'];
+                            $_SESSION['freightSerachData'][$i]['goods_name'] = $data[$i]['goods_name'];
+                            $_SESSION['freightSerachData'][$i]['loading_place'] = $data[$i]['loading_place'];
+                            $_SESSION['freightSerachData'][$i]['unloading_place'] = $data[$i]['unloading_place'];
+                            $_SESSION['freightSerachData'][$i]['loading_tonnage'] = $data[$i]['loading_tonnage'];
+                            $_SESSION['freightSerachData'][$i]['unloading_tonnage'] = $data[$i]['unloading_tonnage'];
+                            $_SESSION['freightSerachData'][$i]['ticket_number'] = $data[$i]['ticket_number'];
+                            $_SESSION['freightSerachData'][$i]['amount'] = $data[$i]['amount'];
+                            $_SESSION['freightSerachData'][$i]['price'] = $data[$i]['price'];
+                        }
                     }
 
-                    $this->display('freight_info_show');
+                    //分页
+                    self::doPageDate($count);
                 }
             }
-        }else if(isset($_POST['freightExport']) && ('导出') == I('freightExport','') ){
-            self::exportDataCaseData();
-
         }else{
 
             if(isset($_GET['p'])){
 
                 $data = $this->_model->getInfoByCase();
+                $count = count($data);
 
-                //分页
-                import('ORG.Util.Page');// 导入分页类
-                $Page = new \Org\Util\Page(count($data), PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
-                $limit = $Page->firstRow . ',' . $Page->listRows;
-
-                //取得分分页信息
-                $freighInfo = $this->_model->getPageFreightInfoByCase($limit);
-
-                $show = $Page->show();// 分页显示输出
-
-                $this->assign('data', $freighInfo); //用户信息注入模板
-                $this->assign('page', $show);    //赋值分页输出
-
-                if($_GET['p'] > 1){
-                    $No = intval($_GET['p'] - 1)*10;
-                    $this->assign('no', $No);    //赋值分页输
-                }
-
-                $this->display('freight_info_show');
+                self::doPageDate($count);
             }
         }
 
@@ -412,6 +414,34 @@ class FreightController extends Controller{
         }else{
             ToolModel::goToUrl('未获取到新增货运的信息','all');
         }
+
+    }
+
+    /**
+     * @param $count
+     */
+    private function doPageDate($count){
+
+        //分页
+        import('ORG.Util.Page');// 导入分页类
+        $Page = new \Org\Util\Page($count, PAGE_SHOW_COUNT_10);                //实例化分页类 传入总记录数
+        $limit = $Page->firstRow . ',' . $Page->listRows;
+
+        //取得分页信息
+        $freighInfo = $this->_model->getPageFreightInfoByCase($limit);
+
+        $show = $Page->show();// 分页显示输出
+
+        $this->assign('case', true); //是查询得到的结果，可以显示查出按钮
+        $this->assign('data', $freighInfo); //用户信息注入模板
+        $this->assign('page', $show);    //赋值分页输出
+
+        if($_GET['p'] > 1){
+            $No = intval($_GET['p'] - 1)*10;
+            $this->assign('no', $No);    //赋值分页输
+        }
+
+        $this->display('freight_info_show');
 
     }
 
