@@ -78,7 +78,7 @@ set_time_limit (0);
             $data = D('Freight')->getFreightExcelInfo();
 
             //设置具体内容
-            ToolModel::setDetailCell($objSheet,$data,'I',13);
+            ToolModel::setDetailCell($objSheet,$data,'J',13);
 
             return $objSheet;
 
@@ -96,7 +96,7 @@ set_time_limit (0);
             $data = D('Freight')->getInfoByDateSearchForExport();
 
             //设置具体内容
-            ToolModel::setDetailCell($objSheet,$data,'I',13);
+            ToolModel::setDetailCell($objSheet,$data,'J',13);
 
             return $objSheet;
 
@@ -114,7 +114,7 @@ set_time_limit (0);
             $data = D('Freight')->getInfoByCaseForExport();
 
             //设置具体内容
-            ToolModel::setDetailCell($objSheet,$data,'I',13);
+            ToolModel::setDetailCell($objSheet,$data,'J',13);
 
             return $objSheet;
 
@@ -211,7 +211,7 @@ set_time_limit (0);
                 self::setFreightTitle($objSheet);
 
                 //设置具体内容
-                ToolModel::setDetailCell($objSheet,$data,'I',13);
+                ToolModel::setDetailCell($objSheet,$data,'J',13);
             }
 
             return $objPHPExcel;
@@ -267,7 +267,12 @@ set_time_limit (0);
             $objSheet->getStyle('I')->getNumberFormat()
                 ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
 
-            $objSheet = ToolModel::setTitle($objSheet,'I');
+            //$objSheet = ToolModel::setTitle($objSheet,'I');//金额为保留两位小数
+            //新增加单价为保留两位小数
+            $objSheet->getStyle('J')->getNumberFormat()
+                ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+
+            $objSheet = ToolModel::setTitle($objSheet,'J');
 
             //设置项目样式
             $objSheet->setCellValue('A3', '日期');
@@ -279,6 +284,7 @@ set_time_limit (0);
             $objSheet->setCellValue('G3', '卸货吨位');
             $objSheet->setCellValue('H3', '票号');
             $objSheet->setCellValue('I3', '金额');
+            $objSheet->setCellValue('J3', '单价');
 
             return $objSheet;
 
@@ -412,13 +418,24 @@ set_time_limit (0);
                 }else{
                     ToolModel::goBack('Sheet名【'.$sheetName.'】中的J列名称必须是[客户名称]');
                 }
+                //新增加单价
+                if($sheet->getCell("K3") == '单价'){
+                    $price = $sheet->getCellByColumnAndRow(10, $j)->getValue();
+                    if(is_object($price))  $price = $price->__toString();
+                    $add_data['price'] = $price;
+                    if( '' == $price){
+                        $isAllNull = $isAllNull + 1;
+                    }
+                }else{
+                    ToolModel::goBack('Sheet名【'.$sheetName.'】中的K列名称必须是[单价]');
+                }
 
                 $add_data['insert_time'] = ToolModel::getNowTime();
                 $add_data['edit_time'] = ToolModel::getNowTime();
                 $data[]=$add_data;
 
                 //如果渠取到最后一行都为空，则丢弃这一行并且下面的都不进行获取
-                if( 8 == $isAllNull){
+                if( 9 == $isAllNull){
                     array_pop($data);
                     break;
                 }

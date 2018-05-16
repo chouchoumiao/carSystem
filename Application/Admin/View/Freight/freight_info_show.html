@@ -54,6 +54,7 @@
                             <th>发货吨位</th>
                             <th>收货吨位</th>
                             <th>票号</th>
+                            <th>单价</th>
                             <th>金额</th>
                             <th>客户名称</th>
                             <th>创建时间</th>
@@ -75,6 +76,7 @@
                                     <td>{$vo.loading_tonnage}</td>
                                     <td>{$vo.unloading_tonnage}</td>
                                     <td>{$vo.ticket_number}</td>
+                                    <td>{$vo.price}</td>
                                     <td>{$vo.amount}</td>
                                     <td>{$vo.customer}</td>
                                     <td>{$vo.insert_time}</td>
@@ -91,7 +93,7 @@
                             </foreach>
                             <else />
                             <tr>
-                                <td colspan=15>没有数据</td>
+                                <td colspan=16>没有数据</td>
                             </tr>
                         </notempty>
                         </tbody>

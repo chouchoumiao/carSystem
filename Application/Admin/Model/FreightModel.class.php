@@ -35,7 +35,7 @@ namespace Admin\Model;
         public function getFreightExcelInfo(){
 
             return $this->_model
-                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount')
+                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount,price')
                 ->order('car_date')
                 ->select();
         }
@@ -143,7 +143,7 @@ namespace Admin\Model;
 
             return $this->_model
                 ->where($where)
-                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount')
+                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount,price')
                 ->order('car_date')
                 ->select();
         }
@@ -219,6 +219,10 @@ namespace Admin\Model;
                     $where['ticket_number'] = I('post.ticket_number', '');
                 }
 
+                if (I('post.price', '') != '') {
+                    $where['price'] = I('post.price', '');
+                }
+
                 if (I('post.customer', '') != '') {
                     $where['customer'] = I('post.customer', '');
                 }
@@ -274,7 +278,7 @@ namespace Admin\Model;
 
             return $this->_model
                 ->where($where)
-                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount')
+                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount,price')
                 ->order('car_date')
                 ->select();
         }
@@ -289,7 +293,7 @@ namespace Admin\Model;
 
             return $this->_model
                 ->where($where)
-                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount')
+                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount,price')
                 ->order('car_date')
                 ->select();
         }

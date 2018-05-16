@@ -35,7 +35,7 @@ namespace Admin\Model;
         public function getFreightExcelInfo(){
 
             return $this->_model
-                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount')
+                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,price,amount')
                 ->order('car_date')
                 ->select();
         }
@@ -152,7 +152,7 @@ namespace Admin\Model;
 
             return $this->_model
                 ->where($where)
-                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount')
+                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,price,amount')
                 ->order('car_date')
                 ->select();
         }
@@ -259,7 +259,7 @@ namespace Admin\Model;
 
             return $this->_model
                 ->where($where)
-                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,amount')
+                ->field('car_date,car_no,goods_name,loading_place,unloading_place,loading_tonnage,unloading_tonnage,ticket_number,price,amount')
                 ->order('car_date')
                 ->select();
         }
