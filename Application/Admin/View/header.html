@@ -52,9 +52,31 @@
 				<!--</li>-->
 			<!--</ul>-->
 			<div class="pull-right m-right-sm">
+                <ul class="nav-notification">
+                    <li class="">
+                        <a href="#" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
+                        <!--<span class="badge badge-danger bounceIn animation-delay5 active">{$_SESSION['activeNoticeCount']}</span>-->
+                        <!--<ul class="dropdown-menu message pull-right">-->
+                        <!--<li><a>您 有 {$_SESSION['activeNoticeCount']} 条 新 通 知</a></li>-->
+                        <!--<foreach name="Think.session.activeNotice" item="vo" key="k">-->
+                        <!--<li>-->
+                        <!--<a class="clearfix gallery-action animation-dalay" href="#" data-toggle="modal" data-target="#noticeModal{$k}">-->
+                        <!--<div class="detail">-->
+                        <!--<strong>{$vo.title}</strong>-->
+                        <!--<small class="text-muted"><i class="fa fa-check text-success"></i>{$vo.time} 发布</small>-->
+                        <!--</div>-->
+                        <!--</a>-->
+                        <!--</li>-->
+                        <!--</foreach>-->
+                        <!--</ul>-->
+                    </li>
+                    <!--<li class="chat-notification">-->
+                        <!--<a href="#"><i class="fa "></i></a>-->
+                    <!--</li>-->
+
+                </ul>
 				<div class="user-block hidden-xs">
 					<a href="#" id="userToggle" data-toggle="dropdown">
-						<!--<img src="__PUBLIC__/Uploads/profile/{$_SESSION['img']}" alt="头像" class="img-circle inline-block user-profile-pic">-->
 						<div class="user-detail inline-block">
 							{$Think.session.username}
 							<i class="fa fa-angle-down"></i>
@@ -77,29 +99,7 @@
 						</div>
 					</div>
 				</div>
-                <ul class="nav-notification">
-                    <li class="">
-                        <a href="#" data-toggle="dropdown"><i class="fa fa-envelope fa-lg"></i></a>
-                        <span class="badge badge-danger bounceIn animation-delay5 active">{$_SESSION['activeNoticeCount']}</span>
-                        <ul class="dropdown-menu message pull-right">
-                            <li><a>您 有 {$_SESSION['activeNoticeCount']} 条 新 通 知</a></li>
-                            <foreach name="Think.session.activeNotice" item="vo" key="k">
-                            <li>
-                                <a class="clearfix gallery-action animation-dalay" href="#" data-toggle="modal" data-target="#noticeModal{$k}">
-                                    <div class="detail">
-                                        <strong>{$vo.title}</strong>
-                                        <small class="text-muted"><i class="fa fa-check text-success"></i>{$vo.time} 发布</small>
-                                    </div>
-                                </a>
-                            </li>
-                            </foreach>
-                        </ul>
-                    </li>
-                    <li class="chat-notification">
-                        <a href="#"><i class="fa "></i></a>
-                    </li>
 
-                </ul>
 			</div>
 
 		</div>

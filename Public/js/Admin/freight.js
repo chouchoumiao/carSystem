@@ -64,6 +64,27 @@ $(function(){
                 }
             }
 
+            //输入单价则乘出结果
+            if( $(this).is('#price') ){
+
+                //单价为有效数字
+                if((this.value != '') && (isDecimal(this.value))){
+
+                    var unloading_tonnage = $('#unloading_tonnage').val();
+
+                    //到货吨位为有效数字
+                    if((unloading_tonnage != '') && (isDecimal(unloading_tonnage))){
+
+                        //自动计算出总金额
+                        var totalAmount = unloading_tonnage * this.value;
+
+                        //显示在金额的input上
+                        $('#amount').val(totalAmount);
+                    }
+                }
+
+            }
+
             // //货物名称验证
             // if( $(this).is('#goods_name') ){
             //     var idname = 'goods_name';
