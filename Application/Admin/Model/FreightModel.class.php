@@ -149,6 +149,46 @@ namespace Admin\Model;
         }
 
         /**
+         * wujiayu
+         * 根据传入的月份取得每月累计的货运总金额
+         * @param $month
+         * @return mixed
+         */
+        public function getIncomeByMonth($month){
+
+            if('空' == $month){
+                $where['car_month'] = '';
+            }else{
+                $where['car_month'] = $month;
+            }
+
+            return $this->_model
+                ->where($where)
+                ->GROUP('car_month,car_no')
+                ->field('car_month,car_no,sum(amount) AS freight_amount')
+                ->order('car_no')
+                ->select();
+        }
+
+        /**
+         * wujiayu 新追加
+         * 根据传入的月份取得对应货运按月累计数据
+         * @param $month
+         * @return mixed
+         */
+        public function getGroupByAmountByMonth($month){
+
+            $where['car_month'] = $month;
+            return $this->_model
+                ->where($where)
+                ->field('car_no, SUM( amount ) AS monthAmount')
+                ->group('car_no')
+                ->order('car_month')
+                ->select();
+        }
+
+
+        /**
          * 根据选择的条件进行查询
          */
         public function getInfoByCase(){

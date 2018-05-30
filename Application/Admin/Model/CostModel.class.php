@@ -18,6 +18,37 @@ namespace Admin\Model;
             $this->_model = M('cost');
         }
 
+
+        /**
+         * wujiayu
+         * 根据传入的月份取得每月累计的费用分类总金额
+         * @return mixed
+         */
+        public function getIncomeCostByName(&$data,$costName){
+
+            for ($i=0;$i<count($data);$i++){
+                $where['cost_month'] = $data[$i]['car_month'];
+                $where['car_no'] = $data[$i]['car_no'];
+                $where['cost_name'] = $costName;
+
+                $rst = $this->_model
+                    ->where($where)
+                    ->field('sum(cost_amount) as amount' )
+                    ->select();
+
+                if($costName == '油'){
+                    $data[$i]['cost_name1'] = $rst[0]['amount'];
+                }elseif ($costName == '过路费'){
+                    $data[$i]['cost_name2'] = $rst[0]['amount'];
+                }elseif ($costName == '其它'){
+                    $data[$i]['cost_name3'] = $rst[0]['amount'];
+                }
+            }
+            return $data;
+        }
+
+
+
         /**
          * @return mixed
          * 取得所有货运信息
@@ -75,7 +106,7 @@ namespace Admin\Model;
          */
         public function updateTheCostInfo(){
 
-            $_POST['cost_month'] = substr($_POST['car_date'],0,7);
+            $_POST['cost_month'] = substr($_POST['cost_date'],0,7); //修正Bug
 
             //追加更新时间
             $_POST['edit_time'] = date('Y-m-d H:i:s', time());

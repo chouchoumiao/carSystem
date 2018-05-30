@@ -9,6 +9,7 @@
 
 namespace Admin\Controller;
 
+use Admin\Model\ExcelIncomeModel;
 use Admin\Model\ToolModel;
 use Think\Controller;
 use Admin\Model\ExcelFreightModel;
@@ -60,6 +61,9 @@ class ReportController extends Controller{
                 case 'income':
                     $this->income();
                     break;
+                case 'incomeMonth': //按月度利润报表
+                    $this->incomeMonth();
+                    break;
             }
         }
 
@@ -73,6 +77,14 @@ class ReportController extends Controller{
     private function income(){
 
         $this->display('incomeShow');
+    }
+
+    /**
+     * 取得按月的利润表
+     */
+    private function incomeMonth(){
+
+        ExcelIncomeModel::outputExcelIncomeMonthInfo();
     }
 
     /**
