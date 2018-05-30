@@ -79,7 +79,7 @@ $(function(){
                         var totalAmount = unloading_tonnage * this.value;
 
                         //显示在金额的input上
-                        $('#amount').val(totalAmount);
+                        $('#amount').val(totalAmount.toFixed(2));
                     }
                 }
 
