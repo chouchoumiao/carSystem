@@ -40,7 +40,13 @@
                                     <div class="form-group ">
                                         <label class="col-lg-2 control-label">费用内容</label>
                                         <div class="col-lg-5">
-                                            <input type="text" placeholder="请输入费用名称" class="form-control"  name="cost_name[]" value="">
+                                            <select class="form-control" name="cost_name[]">
+                                                <option>过路费</option>
+                                                <option>油</option>
+                                                <option>其它</option>
+                                            </select>
+
+                                            <!--<input type="text" placeholder="请输入费用名称" class="form-control"  name="cost_name[]" value="">-->
                                         </div><!-- /.col -->
                                         <div class="col-lg-2">
                                             <input type="text" placeholder="费用金额" class="form-control"  name="cost_amount[]" value="">

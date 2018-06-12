@@ -114,7 +114,8 @@ $(function(){
 
 
         $('.addCost').click(function () {
-            $('.firstCost').append('<div class="form-group"><label class="col-lg-2 control-label">费用内容</label><div class="col-lg-5"><input type="text" placeholder="请输入费用名称" class="form-control"  name="cost_name[]" value=""> </div><!-- /.col --> <div class="col-lg-2"> <input type="text" placeholder="费用金额" class="form-control"  name="cost_amount[]" value=""> </div> <div class="col-lg-2"> <input type="button" class="delCost btn btn-danger m-left-xs btn-block" value="删除当前行 - "> </div> </div>');
+            //$('.firstCost').append('<div class="form-group"><label class="col-lg-2 control-label">费用内容</label><div class="col-lg-5"><input type="text" placeholder="请输入费用名称" class="form-control"  name="cost_name[]" value=""> </div><!-- /.col --> <div class="col-lg-2"> <input type="text" placeholder="费用金额" class="form-control"  name="cost_amount[]" value=""> </div> <div class="col-lg-2"> <input type="button" class="delCost btn btn-danger m-left-xs btn-block" value="删除当前行 - "> </div> </div>');
+            $('.firstCost').append('<div class="form-group"><label class="col-lg-2 control-label">费用内容</label><div class="col-lg-5"><select class="form-control" name="cost_name[]"><option>过路费</option><option>油</option><option>其它</option></select> </div><!-- /.col --> <div class="col-lg-2"> <input type="text" placeholder="费用金额" class="form-control"  name="cost_amount[]" value=""> </div> <div class="col-lg-2"> <input type="button" class="delCost btn btn-danger m-left-xs btn-block" value="删除当前行 - "> </div> </div>');
 
             //删除当前行数据
             $('.delCost').click(function () {
