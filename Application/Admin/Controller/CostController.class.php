@@ -253,7 +253,7 @@ class CostController extends Controller{
      * @param $data
      * @return string
      */
-    private function checkCostInfo($data){
+    private function checkCostInfo(&$data){
 
         $msg = '';
 
@@ -274,6 +274,11 @@ class CostController extends Controller{
         }
         if( (ToolModel::getStrLen($data['car_driver']) > 5) || (ToolModel::getStrLen($data['car_driver']) < 2) ){
             return $msg = '驾驶员姓名位数只能是2到5位';
+        }
+
+        //如果不是数字或者金额则改为0.00
+        if(!is_numeric($data['cost_amount']) || (!ValidateModel::isEmpty($data['cost_amount']))){
+            $data['cost_amount'] = '0.00';
         }
 
 //        if(!ValidateModel::isEmpty($data['cost_name'])){

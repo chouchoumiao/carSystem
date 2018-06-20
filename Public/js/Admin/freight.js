@@ -9,18 +9,33 @@ $(function(){
 
             if( $(this).is('#car_no')){
                 if(this.value.length > 3 ){
-                    //alert('5');
                     getCarNoInfo(this.value);
                 }
             }
-
 
             if( $(this).is('#car_driver')){
                 if(this.value.length > 0 ){
                     getDriverNoInfo(this.value);
                 }
             }
+        });
 
+        //新追加年份确认检查 新追加
+        $('form :submit').click(function () {
+
+            //防止输入错误的年份
+            if(new Date().getFullYear() != $('#car_date').val().substr(0,4)){
+
+                if (confirm('输入的日期对应的年份不是今年，请确认是否正确(需要重新修改请按取消)')==false){
+                    return false;
+                }
+            }
+
+            //防止输入空间含有空格的车牌号
+            if ($('#car_no').val().indexOf(' ') != -1) {
+                alert('请注意车牌中间有空格，请确认仔细');
+                return false;
+            }
         });
 
 
@@ -47,7 +62,6 @@ $(function(){
                     var errorMsg = '车牌位数不能为空并且只能在7到10位之间';
                     doError($parent,errorMsg,idname);
                 }else{
-
                     //getDriverInfo(this.value);  去除自动显示驾驶员姓名，因为车与驾驶员不绑定
                     doOK($parent,idname);
                 }

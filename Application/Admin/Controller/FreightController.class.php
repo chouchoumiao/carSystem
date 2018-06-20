@@ -385,7 +385,6 @@ class FreightController extends Controller{
 
         //追加单价修改为空时候会出错的问题
         if(!is_numeric($data['price']) || (!ValidateModel::isEmpty($data['price']))){
-//            return $msg = '金额为空或者不是数字';
             $data['price'] = '0.00';
         }
 
