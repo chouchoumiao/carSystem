@@ -30,6 +30,24 @@ $(function(){
 
         });
 
+        //新追加年份确认检查 新追加
+        $('form :submit').click(function () {
+
+            //防止输入错误的年份
+            if(new Date().getFullYear() != $('#cost_date').val().substr(0,4)){
+
+                if (confirm('输入的日期对应的年份不是今年，请确认是否正确(需要重新修改请按取消)')==false){
+                    return false;
+                }
+            }
+
+            //防止输入空间含有空格的车牌号
+            if ($('#car_no').val().indexOf(' ') != -1) {
+                alert('请注意车牌中间有空格，请确认仔细');
+                return false;
+            }
+        });
+
         //文本框失去焦点后
         $('form :input').blur(function(){
             var $parent = $(this).parent();
