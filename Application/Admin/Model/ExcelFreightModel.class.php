@@ -460,6 +460,18 @@ set_time_limit (0);
             //取得数据
             $data = $_SESSION['freightSerachData'];
 
+            //新需求，将导出数据按照日期升序进行导出 wujiayu 20180731
+            foreach($data as $key=>$v){
+                $data[$key]['car_date'] = date("Y-m-d",strtotime($v['car_date']));
+            }
+            $newDate = array();
+
+            foreach ($data as $info) {
+                $newDate[] = $info['car_date'];
+            }
+            array_multisort($newDate,SORT_ASC,$data);
+
+
             //设置具体内容
             ToolModel::setDetailCell($objSheet,$data,'J',13);
 
